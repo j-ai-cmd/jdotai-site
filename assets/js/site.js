@@ -12,14 +12,20 @@
   /* ── stages ─────────────────────────────────────────────── */
   var stages = document.querySelectorAll('.stage');
 
-  function revealStages() {
-    stages.forEach(function (s) { s.classList.add('live'); });
+  // Reveal any stage that is actually within the viewport. This is the
+  // correctness backstop: it never reveals a stage the reader has not
+  // reached, so it cannot flatten the effect the way a blanket timeout does.
+  function revealVisible() {
+    var h = window.innerHeight || document.documentElement.clientHeight;
+    stages.forEach(function (s) {
+      if (s.classList.contains('live')) return;
+      var r = s.getBoundingClientRect();
+      if (r.top < h * 0.85 && r.bottom > 0) s.classList.add('live');
+    });
   }
 
   if (stages.length) {
-    if (!hasIO) {
-      revealStages();
-    } else {
+    if (hasIO) {
       var stageObserver = new IntersectionObserver(function (entries) {
         entries.forEach(function (e) {
           if (e.isIntersecting) {
@@ -28,17 +34,20 @@
           }
         });
       }, { threshold: 0.25, rootMargin: '0px 0px -10% 0px' });
-
       stages.forEach(function (s) { stageObserver.observe(s); });
-
-      // Never let the sweep strand content. If nothing has activated shortly
-      // after load, the observer is throttled or broken — reveal everything.
-      setTimeout(function () {
-        if (document.querySelectorAll('.stage:not(.live)').length === stages.length) {
-          revealStages();
-        }
-      }, 1600);
     }
+
+    // Runs with or without IntersectionObserver, so a throttled or missing
+    // observer degrades to a plain scroll check rather than to hidden text.
+    var pending = false;
+    function onScroll() {
+      if (pending) return;
+      pending = true;
+      requestAnimationFrame(function () { revealVisible(); pending = false; });
+    }
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll, { passive: true });
+    revealVisible();
   }
 
   /* ── counting figures ───────────────────────────────────── */
