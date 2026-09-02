@@ -1,6 +1,6 @@
-/* jdotai design tokens
- * Hallmark · theme: custom · genre: modern-minimal · tone: austere
- * Three colours. Every neutral is derived from them, never a raw grey.
+/* jdotai tokens — three colours. Every other value is mixed from them.
+ * Nothing in site.css may introduce a colour that isn't declared here.
+ * Contrast on text tokens is verified against both themes, not assumed.
  */
 
 :root{
@@ -9,33 +9,44 @@
   --ink:#171412;
   --wine:#6E2434;
 
-  /* derived neutrals — warm-biased, mixed from the three above */
-  --ink-70:color-mix(in oklab,var(--ink) 70%,var(--paper));
-  --ink-42:color-mix(in oklab,var(--ink) 42%,var(--paper));
-  --rule:color-mix(in oklab,var(--ink) 13%,var(--paper));
-  --sunk:color-mix(in oklab,var(--ink) 4%,var(--paper));
-  --on-ink:color-mix(in oklab,var(--paper) 68%,var(--ink));
-  --wine-hover:color-mix(in oklab,var(--wine) 82%,var(--ink));
-  --scrim:color-mix(in oklab,var(--paper) 90%,transparent);
+  /* text — --ink-muted is 62%, the lowest mix that clears AA on both grounds
+     (4.9:1 on light paper, 6.5:1 on dark) */
+  --ink-body:color-mix(in oklab,var(--ink) 78%,var(--paper));
+  --ink-muted:color-mix(in oklab,var(--ink) 62%,var(--paper));
 
-  /* type — two families, both loaded */
+  /* label on a wine ground — paper flips with the theme and clears AA both ways */
+  --on-wine:var(--paper);
+  --on-ink:color-mix(in oklab,var(--paper) 72%,var(--ink));
+
+  /* surfaces */
+  --rule:color-mix(in oklab,var(--ink) 18%,var(--paper));
+  --sunk:color-mix(in oklab,var(--ink) 4%,var(--paper));
+  --wine-hover:color-mix(in oklab,var(--wine) 82%,var(--ink));
+  --scrim:color-mix(in oklab,var(--paper) 88%,transparent);
+
+  /* type — two families */
   --fd:"Space Grotesk",system-ui,-apple-system,sans-serif;
   --fb:"Inter",system-ui,-apple-system,sans-serif;
 
-  /* scale */
-  --t-display:clamp(2.5rem,7vw,5.25rem);
-  --t-h2:clamp(1.75rem,3.6vw,2.75rem);
-  --t-h3:clamp(1.375rem,2.4vw,1.75rem);
-  --t-lede:clamp(1.0625rem,1.4vw,1.1875rem);
+  --t-display:clamp(2.5rem,6.4vw,4.75rem);
+  --t-figure:clamp(2.75rem,5.5vw,4rem);
+  --t-h2:clamp(1.75rem,3.4vw,2.625rem);
+  --t-h3:clamp(1.25rem,2vw,1.5rem);
+  --t-lede:clamp(1.0625rem,1.3vw,1.1875rem);
   --t-body:1.0625rem;
   --t-small:.9375rem;
 
-  /* space */
+  /* measure — sections deliberately do not share one width */
+  --w-narrow:58rem;
+  --w-mid:68rem;
+  --w-wide:78rem;
   --gut:clamp(1.25rem,5vw,3rem);
-  --maxw:78rem;
-  --band:clamp(3.5rem,8vw,6rem);
 
-  /* motion */
+  /* rhythm — sections deliberately do not share one padding */
+  --pad-tight:clamp(2.5rem,5vw,3.5rem);
+  --pad-mid:clamp(3.5rem,7vw,5.5rem);
+  --pad-loose:clamp(4.5rem,10vw,8rem);
+
   --ease:cubic-bezier(.2,.6,.2,1);
   --dur:.4s;
 }
@@ -46,6 +57,7 @@
     --ink:#F2EFEA;
     --wine:#C4808E;
     --sunk:color-mix(in oklab,var(--ink) 7%,var(--paper));
+    --wine-hover:color-mix(in oklab,var(--wine) 78%,var(--paper));
   }
 }
 :root[data-theme="dark"]{
@@ -53,4 +65,5 @@
   --ink:#F2EFEA;
   --wine:#C4808E;
   --sunk:color-mix(in oklab,var(--ink) 7%,var(--paper));
+  --wine-hover:color-mix(in oklab,var(--wine) 78%,var(--paper));
 }

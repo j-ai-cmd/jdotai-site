@@ -1,8 +1,12 @@
 /* Hallmark · macrostructure: Narrative Workflow · genre: modern-minimal · tone: austere
- * theme: custom (three colours, two families) · nav: N5 floating pill · footer: Ft4 colophon
- * enrichment: none (typography + real demo video only)
- * No eyebrows. Stage numerals are structural — the page is a real sequence.
- * pre-emit critique: P4 H5 E5 S5 R4 V5
+ * theme: custom · paper #FBFAF8 · ink #171412 · accent wine #6E2434
+ * type: Space Grotesk (display) + Inter (body)
+ * nav: N5 floating pill · footer: Ft4 colophon · enrichment: none (typography + real demo video)
+ * No eyebrows. Stage numerals are structural — the page is a genuine sequence.
+ * Section rhythm is deliberately uneven: three widths, three paddings, three
+ * divider languages (hairline / tint / colour block). Nothing shares all three.
+ * Motion: count-up · scroll progress · numeral scrub · pill inversion.
+ * pre-emit critique: P4 H5 E4 S5 R4 V4
  */
 
 /* ─────────── base ─────────── */
@@ -21,20 +25,27 @@ img,video{max-width:100%;display:block}
 
 h1,h2,h3{
   font-family:var(--fd);font-weight:500;font-style:normal;margin:0;
-  letter-spacing:-.03em;line-height:1.04;
+  letter-spacing:-.03em;line-height:1.05;
   text-wrap:balance;overflow-wrap:anywhere;
 }
 h1{font-size:var(--t-display)}
 h2{font-size:var(--t-h2)}
-h3{font-size:var(--t-h3);letter-spacing:-.02em;line-height:1.15}
+h3{font-size:var(--t-h3);letter-spacing:-.02em;line-height:1.2}
 
-.wrap{max-width:var(--maxw);margin:0 auto;padding-inline:var(--gut)}
-.lede{color:var(--ink-70);font-size:var(--t-lede);line-height:1.6;max-width:46ch}
-.prose{color:var(--ink-70);max-width:46ch}
+.narrow{max-width:var(--w-narrow);margin:0 auto;padding-inline:var(--gut)}
+.mid{max-width:var(--w-mid);margin:0 auto;padding-inline:var(--gut)}
+.wide{max-width:var(--w-wide);margin:0 auto;padding-inline:var(--gut)}
+
+.lede{color:var(--ink-body);font-size:var(--t-lede);line-height:1.6;max-width:46ch}
+.prose{color:var(--ink-body);max-width:46ch}
 .prose p+p{margin-top:1rem}
+
 .skip{position:absolute;left:-9999px}
-.skip:focus{left:var(--gut);top:.75rem;z-index:99;background:var(--wine);color:#FBFAF8;
-  padding:.6rem 1rem;border-radius:999px;font-size:var(--t-small)}
+.skip:focus{
+  left:var(--gut);top:.75rem;z-index:99;
+  background:var(--wine);color:var(--on-wine);
+  padding:.6rem 1rem;border-radius:999px;font-size:var(--t-small);
+}
 
 /* ─────────── nav · N5 floating pill ─────────── */
 .pill{
@@ -44,13 +55,34 @@ h3{font-size:var(--t-h3);letter-spacing:-.02em;line-height:1.15}
   border:1px solid var(--rule);border-radius:999px;
   background:var(--scrim);backdrop-filter:blur(12px);
   max-width:calc(100vw - 2rem);
+  overflow:hidden;
+  transition:background var(--dur) var(--ease),border-color var(--dur) var(--ease),
+             color var(--dur) var(--ease);
 }
+/* scroll progress — fills the pill as the page is read */
+.pill::before{
+  content:"";position:absolute;inset:0 auto 0 0;
+  width:var(--read,0%);
+  background:color-mix(in oklab,var(--wine) 12%,transparent);
+  pointer-events:none;transition:width .1s linear;
+}
+.pill>*{position:relative;z-index:1}
+/* inverted while the dark band is behind it */
+.pill.over-dark{
+  background:color-mix(in oklab,var(--ink) 88%,transparent);
+  border-color:color-mix(in oklab,var(--paper) 22%,transparent);
+  color:var(--paper);
+}
+.pill.over-dark .links a{color:var(--on-ink)}
+.pill.over-dark .links a:hover{color:var(--paper)}
+
 .wm{
   font-family:var(--fd);font-weight:700;font-size:1.0625rem;letter-spacing:-.04em;
   text-decoration:none;white-space:nowrap;
 }
 .wm i{font-style:normal;color:var(--wine)}
-.pill .links{display:flex;gap:1.1rem;font-size:.875rem;color:var(--ink-70)}
+.pill.over-dark .wm i{color:var(--paper)}
+.pill .links{display:flex;gap:1.1rem;font-size:.875rem;color:var(--ink-muted)}
 .pill .links a{
   text-decoration:none;padding:.3rem 0;white-space:nowrap;
   transition:color var(--dur) var(--ease);
@@ -61,7 +93,7 @@ h3{font-size:var(--t-h3);letter-spacing:-.02em;line-height:1.15}
 .btn{
   display:inline-flex;align-items:center;justify-content:center;
   min-height:2.75rem;padding:.7rem 1.4rem;border-radius:999px;
-  border:1px solid var(--wine);background:var(--wine);color:#FBFAF8;
+  border:1px solid var(--wine);background:var(--wine);color:var(--on-wine);
   font-family:var(--fb);font-size:var(--t-small);font-weight:500;
   text-decoration:none;white-space:nowrap;cursor:pointer;
   transition:background var(--dur) var(--ease),border-color var(--dur) var(--ease),
@@ -73,29 +105,60 @@ h3{font-size:var(--t-h3);letter-spacing:-.02em;line-height:1.15}
 .btn--sm{min-height:2.25rem;padding:.5rem 1.05rem;font-size:.875rem}
 .btn--line{background:transparent;color:var(--ink);border-color:var(--ink)}
 .btn--line:hover{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.pill.over-dark .btn--line{color:var(--paper);border-color:var(--paper)}
 .go{margin-top:2.5rem;display:flex;gap:.75rem;flex-wrap:wrap}
 
-/* ─────────── opening ─────────── */
-.open{padding-block:clamp(7rem,14vw,11rem) clamp(3rem,6vw,4.5rem)}
-.open h1{max-width:17ch}
+/* ─────────── opening · narrow measure, loose padding, no divider ─────────── */
+.open{padding-block:clamp(7rem,13vw,10rem) var(--pad-mid)}
+.open h1{max-width:15ch}
 .open .lede{margin-top:1.75rem}
 
-/* ─────────── stages ─────────── */
-.stage{border-top:1px solid var(--rule)}
+/* ─────────── figures · full-bleed, tight padding, hairline grid ─────────── */
+.figures{border-block:1px solid var(--rule);background:var(--sunk)}
+.figures .in{
+  display:grid;grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:1px;background:var(--rule);
+}
+.figures .f{background:var(--paper);padding:var(--pad-tight) clamp(1rem,2vw,1.5rem)}
+.figures .n{
+  font-family:var(--fd);font-weight:500;font-size:var(--t-figure);
+  line-height:1;letter-spacing:-.04em;color:var(--wine);
+  font-variant-numeric:tabular-nums;
+}
+.figures .l{margin-top:.7rem;font-size:var(--t-small);color:var(--ink-body);line-height:1.5}
+
+/* ─────────── stages · wide, loose, fixed numeral track ─────────── */
+.stage+.stage{border-top:1px solid var(--rule)}
 .stage .in{
-  display:grid;grid-template-columns:minmax(0,.34fr) minmax(0,.66fr);
-  gap:clamp(1.5rem,5vw,4rem);padding-block:var(--band);align-items:start;
+  display:grid;grid-template-columns:minmax(0,7rem) minmax(0,1fr);
+  gap:clamp(1.25rem,3vw,2.5rem);padding-block:var(--pad-loose);align-items:start;
 }
 .stage .num{
   position:sticky;top:5.5rem;
-  font-family:var(--fd);font-weight:700;font-size:clamp(3rem,7vw,5.5rem);
+  font-family:var(--fd);font-weight:700;font-size:clamp(2.75rem,5.5vw,4.25rem);
   line-height:.9;letter-spacing:-.05em;color:var(--rule);
   font-variant-numeric:tabular-nums;
   transition:color .5s var(--ease);
 }
 .stage.live .num{color:var(--wine)}
 .stage h2{max-width:16ch}
-.stage .prose{margin-top:1.25rem}
+.stage .prose{margin-top:1.25rem;max-width:52ch}
+
+/* numeral scrub — where scroll-driven animation is supported it replaces the
+   class toggle entirely; elsewhere the .live class above still does the work */
+@supports (animation-timeline:view()){
+  @media (prefers-reduced-motion:no-preference){
+    .stage .num{
+      animation:scrub linear both;
+      animation-timeline:view();
+      animation-range:entry 12% cover 42%;
+    }
+    @keyframes scrub{
+      from{color:var(--rule);transform:translateY(.25rem)}
+      to{color:var(--wine);transform:none}
+    }
+  }
+}
 
 .sweep{position:relative;overflow:hidden}
 .js .sweep::after{
@@ -105,24 +168,29 @@ h3{font-size:var(--t-h3);letter-spacing:-.02em;line-height:1.15}
 }
 .js .stage.live .sweep::after{transform:scaleX(0)}
 
-/* ─────────── dark band ─────────── */
+/* ─────────── tinted section · mid measure, tint divider, no rule ─────────── */
+.tint{background:var(--sunk)}
+.tint .in{padding-block:var(--pad-mid)}
+.tint h2{max-width:18ch}
+
+/* ─────────── plain section · mid measure, hairline divider ─────────── */
+.sec{border-top:1px solid var(--rule)}
+.sec .in{padding-block:var(--pad-mid)}
+.sec h2{max-width:18ch}
+
+/* ─────────── dark band · full-bleed colour block, no rule ─────────── */
 .band{background:var(--ink);color:var(--paper)}
-.band .in{padding-block:clamp(4rem,9vw,7rem)}
+.band .in{padding-block:var(--pad-loose)}
 .band h2{color:var(--paper);max-width:15ch}
 .band .prose{color:var(--on-ink);margin-top:1.5rem}
 .band .btn--line{color:var(--paper);border-color:var(--paper)}
 .band .btn--line:hover{background:var(--paper);color:var(--ink)}
 .band--split .in{
-  display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);
-  gap:clamp(2rem,6vw,5rem);align-items:center;
+  display:grid;grid-template-columns:minmax(0,1fr) minmax(0,auto);
+  gap:clamp(1.5rem,5vw,4rem);align-items:center;
 }
 
-/* ─────────── plain section ─────────── */
-.sec{border-top:1px solid var(--rule)}
-.sec .in{padding-block:var(--band)}
-.sec h2{max-width:18ch}
-
-/* ─────────── two-up definition pairs ─────────── */
+/* ─────────── definition pairs ─────────── */
 .pairs{
   margin:2.5rem 0 0;display:grid;gap:1px;background:var(--rule);
   border:1px solid var(--rule);border-radius:3px;overflow:hidden;
@@ -131,24 +199,22 @@ h3{font-size:var(--t-h3);letter-spacing:-.02em;line-height:1.15}
 .pairs>div{background:var(--paper);padding:clamp(1.5rem,3vw,2rem)}
 .pairs dt{font-family:var(--fd);font-weight:500;font-size:var(--t-h3);
   letter-spacing:-.02em;margin-bottom:.5rem}
-.pairs dd{margin:0;color:var(--ink-70);font-size:var(--t-small);line-height:1.65}
+.pairs dd{margin:0;color:var(--ink-body);font-size:var(--t-small);line-height:1.65}
 
-/* ─────────── fit / not-fit ─────────── */
-.fit{margin-top:2.5rem;display:grid;gap:1.5rem;
+/* ─────────── fit / not-fit — two columns, no side stripes ─────────── */
+.fit{margin-top:2.5rem;display:grid;gap:clamp(1.75rem,4vw,3rem);
   grid-template-columns:repeat(auto-fit,minmax(min(100%,22rem),1fr))}
-.fit>div{padding-left:1.1rem;border-left:2px solid var(--rule)}
-.fit>div:first-child{border-left-color:var(--wine)}
 .fit h3{margin-bottom:.6rem}
-.fit p{color:var(--ink-70);font-size:var(--t-small);line-height:1.65}
+.fit h3 .mk{color:var(--wine)}
+.fit p{color:var(--ink-body);font-size:var(--t-small);line-height:1.65;max-width:40ch}
 
 /* ─────────── integrations ─────────── */
-.tags{list-style:none;margin:1rem 0 0;padding:0;display:flex;flex-wrap:wrap;gap:.5rem}
+.tags{list-style:none;margin:1.25rem 0 0;padding:0;display:flex;flex-wrap:wrap;gap:.5rem}
 .tags li{
-  font-size:.875rem;color:var(--ink-70);
+  font-size:.875rem;color:var(--ink-body);font-weight:500;
   border:1px solid var(--rule);border-radius:2px;
-  padding:.45rem .8rem;background:var(--sunk);
+  padding:.45rem .8rem;background:var(--paper);
 }
-.tags li b{font-weight:500;color:var(--ink)}
 .grouped{margin-top:2.5rem;display:grid;gap:2rem;
   grid-template-columns:repeat(auto-fit,minmax(min(100%,20rem),1fr))}
 .grouped h3{font-size:var(--t-body);font-family:var(--fb);font-weight:600;letter-spacing:0}
@@ -161,17 +227,17 @@ h3{font-size:var(--t-h3);letter-spacing:-.02em;line-height:1.15}
 .demo figure{margin:0;border:1px solid var(--rule);border-radius:4px;overflow:hidden;
   background:var(--sunk)}
 .demo video{width:100%;aspect-ratio:16/10;object-fit:cover;background:var(--sunk)}
-.demo figcaption{padding:.75rem 1rem;font-size:.875rem;color:var(--ink-42);
+.demo figcaption{padding:.75rem 1rem;font-size:.875rem;color:var(--ink-muted);
   border-top:1px solid var(--rule)}
 
 /* ─────────── flow ─────────── */
 .flow{margin-top:2.5rem;display:grid;gap:1rem;
   grid-template-columns:repeat(auto-fit,minmax(min(100%,15rem),1fr))}
-.flow>div{padding:1.5rem;border:1px solid var(--rule);border-radius:4px}
-.flow>div.mid{border-color:var(--wine);background:var(--sunk)}
+.flow>div{padding:1.5rem;border:1px solid var(--rule);border-radius:4px;background:var(--paper)}
+.flow>div.mid-step{border-color:var(--wine)}
 .flow h3{font-size:var(--t-body);font-family:var(--fd);font-weight:500;margin-bottom:.5rem}
-.flow .mid h3{color:var(--wine)}
-.flow p{color:var(--ink-70);font-size:var(--t-small);line-height:1.6}
+.flow .mid-step h3{color:var(--wine)}
+.flow p{color:var(--ink-body);font-size:var(--t-small);line-height:1.6}
 
 /* ─────────── numbered sequence ─────────── */
 .seq{margin:2.5rem 0 0;padding:0;list-style:none;counter-reset:s;
@@ -186,7 +252,7 @@ h3{font-size:var(--t-h3);letter-spacing:-.02em;line-height:1.15}
   font-variant-numeric:tabular-nums;padding-top:.2rem;
 }
 .seq b{font-weight:600;display:block;margin-bottom:.2rem}
-.seq span{color:var(--ink-70);font-size:var(--t-small);line-height:1.65}
+.seq span{color:var(--ink-body);font-size:var(--t-small);line-height:1.65}
 
 /* ─────────── faq ─────────── */
 .faq{margin-top:2.5rem;max-width:52rem;border-top:1px solid var(--rule)}
@@ -202,53 +268,58 @@ h3{font-size:var(--t-h3);letter-spacing:-.02em;line-height:1.15}
   flex:none;transition:transform var(--dur) var(--ease);
 }
 .faq details[open] summary::after{transform:rotate(45deg)}
-.faq .ans{padding:0 0 1.4rem;color:var(--ink-70);font-size:var(--t-small);
+.faq .ans{padding:0 0 1.4rem;color:var(--ink-body);font-size:var(--t-small);
   line-height:1.7;max-width:60ch}
 
 /* ─────────── form ─────────── */
 .formwrap{margin-top:2.5rem;display:grid;
   grid-template-columns:repeat(auto-fit,minmax(min(100%,22rem),1fr));
   gap:clamp(2rem,5vw,4rem);align-items:start}
-form.enq{background:var(--sunk);border:1px solid var(--rule);border-radius:4px;
+form.enq{background:var(--paper);border:1px solid var(--rule);border-radius:4px;
   padding:clamp(1.5rem,3vw,2rem);display:grid;gap:1rem}
-form.enq label{display:grid;gap:.4rem;font-size:.875rem;color:var(--ink-70)}
+form.enq label{display:grid;gap:.4rem;font-size:.875rem;color:var(--ink-body)}
 form.enq input,form.enq select{
   width:100%;font:inherit;font-size:var(--t-small);color:var(--ink);
   background:var(--paper);border:1px solid var(--rule);border-radius:3px;
   padding:.7rem .85rem;-webkit-appearance:none;appearance:none;
   transition:border-color var(--dur) var(--ease);
 }
-form.enq select{background-image:none}
 form.enq input:focus,form.enq select:focus{border-color:var(--wine);outline:none}
 form.enq input:focus-visible,form.enq select:focus-visible{
   outline:2px solid var(--wine);outline-offset:1px}
 form.enq input[aria-invalid="true"]{border-color:var(--wine)}
-.enq-note{font-size:.875rem;color:var(--ink-42);min-height:1.25rem}
+.enq-note{font-size:.875rem;color:var(--ink-muted);min-height:1.25rem}
 .enq-note[data-state="error"]{color:var(--wine)}
 .enq-done{padding:2.5rem 1rem;text-align:center}
 .enq-done h3{margin-bottom:.5rem}
-.enq-done p{color:var(--ink-70);font-size:var(--t-small)}
+.enq-done p{color:var(--ink-body);font-size:var(--t-small)}
 
 /* ─────────── footer · Ft4 colophon ─────────── */
 .foot{border-top:1px solid var(--rule);background:var(--sunk)}
 .foot .in{
   padding-block:2rem;display:grid;gap:1.25rem 2rem;
   grid-template-columns:repeat(auto-fit,minmax(min(100%,13rem),1fr));
-  font-family:var(--fd);font-size:.875rem;color:var(--ink-42);line-height:1.6;
+  font-family:var(--fd);font-size:.875rem;color:var(--ink-muted);line-height:1.6;
 }
-.foot a{color:var(--ink-70);text-decoration:none;padding:.2rem 0}
+.foot a{color:var(--ink-body);text-decoration:none;padding:.2rem 0}
 .foot a:hover{color:var(--wine)}
 .foot span{display:block}
 
 /* ─────────── responsive ─────────── */
 @media (max-width:60rem){
-  .stage .in,.band--split .in{grid-template-columns:minmax(0,1fr)}
+  .stage .in{grid-template-columns:minmax(0,1fr);gap:.75rem}
   .stage .num{position:static}
+  .band--split .in{grid-template-columns:minmax(0,1fr)}
+  .figures .in{grid-template-columns:repeat(2,minmax(0,1fr))}
   .pill .links{display:none}
+}
+@media (max-width:26rem){
+  .figures .in{grid-template-columns:minmax(0,1fr)}
 }
 
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
   .js .sweep::after{display:none}
+  .pill::before{display:none}
   *,*::before,*::after{transition-duration:.01ms !important;animation-duration:.01ms !important}
 }
