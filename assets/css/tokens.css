@@ -1,24 +1,24 @@
 /* jdotai tokens — three colours. Every other value is mixed from them.
  * Nothing in site.css may introduce a colour that isn't declared here.
  *
- * Single theme by choice: the page is white in every context, including for
- * readers whose system is set to dark. Because there is no second palette to
- * fall back on, every surface and every text colour is painted explicitly.
- * Contrast is verified against the one ground, not assumed.
+ * Single theme by choice: the page is this warm white in every context,
+ * including for readers whose system is set to dark. Because there is no
+ * second palette to fall back on, every surface and every text colour is
+ * painted explicitly. Contrast is verified against the one ground.
  */
 
 :root{
   /* the three */
-  --paper:#FFFFFF;
+  --paper:#FBFAF8;
   --ink:#171412;
   --wine:#6E2434;
 
   /* text — --ink-muted is 62%, the lowest mix that still clears AA on white
-     (5.15:1). Anything lighter fails and is not worth the delicacy. */
+     (5.07:1). Anything lighter fails and is not worth the delicacy. */
   --ink-body:color-mix(in oklab,var(--ink) 78%,var(--paper));
   --ink-muted:color-mix(in oklab,var(--ink) 62%,var(--paper));
 
-  /* label on a wine ground — white on wine is 10.69:1 */
+  /* label on a wine ground — paper on wine is 10.25:1 */
   --on-wine:var(--paper);
   --on-ink:color-mix(in oklab,var(--paper) 72%,var(--ink));
 

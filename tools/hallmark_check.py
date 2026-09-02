@@ -21,7 +21,9 @@ def read(p):
     f = ROOT / p
     return f.read_text() if f.exists() else ""
 
-HTML_FILES = ["index.html", "legal/index.html"]
+# every page the site actually serves, including generated article pages
+HTML_FILES = ["index.html", "legal/index.html", "blog/index.html"] + \
+    sorted(str(p.relative_to(ROOT)) for p in (ROOT / "blog").glob("*/index.html"))
 html = "".join(read(f) for f in HTML_FILES)
 site_css = read("assets/css/site.css")
 tokens_css = read("assets/css/tokens.css")
@@ -267,6 +269,9 @@ used_cls = set()
 for u in re.findall(r'class="([^"]+)"', html): used_cls.update(u.split())
 used_cls |= set(re.findall(r"classList\.(?:add|toggle)\('([\w-]+)'", js))
 used_cls |= set(re.findall(r"className\s*=\s*'([\w-]+)'", js))
+used_cls |= set(re.findall(r"'([\w-]+ [\w-]+)'", js))
+used_cls |= {c for chunk in re.findall(r"className\s*=\s*([^;]+);", js)
+             for c in re.findall(r"'\s*([\w-]+)\s*'", chunk)}
 used_cls |= {'js'}
 dead_cls = sorted(c for c in defined_cls - used_cls if not c.endswith('css'))
 gate("clean-css", "no dead CSS classes", not dead_cls, f"{dead_cls}")

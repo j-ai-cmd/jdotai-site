@@ -109,6 +109,51 @@
     update();
   }
 
+
+  /* ── post lists ─────────────────────────────────────────── */
+  var posts = (window.POSTS || []).slice().sort(function (a, b) {
+    return a.date < b.date ? 1 : a.date > b.date ? -1 : 0;
+  });
+
+  function formatDate(iso) {
+    var d = new Date(iso + 'T00:00:00');
+    return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+  }
+
+  // A post is only linkable once its page exists. Unpublished entries render as
+  // plain items so the site never ships a link to a page that isn't there.
+  function renderPosts(mount, list) {
+    if (!mount) return;
+    mount.innerHTML = '';
+    list.forEach(function (p) {
+      var li = document.createElement('li');
+      li.className = 'card' + (p.published ? '' : ' card--scheduled');
+
+      var inner = p.published
+        ? document.createElement('a')
+        : document.createElement('div');
+      if (p.published) inner.href = '/blog/' + p.slug + '/';
+      inner.className = 'card-in';
+
+      var h = document.createElement('h3');
+      h.textContent = p.title;
+
+      var meta = document.createElement('p');
+      meta.className = 'card-meta';
+      meta.textContent = (p.published ? '' : 'Scheduled — ') + formatDate(p.date)
+        + (p.published && p.category ? ' · ' + p.category : '');
+
+      inner.appendChild(h);
+      inner.appendChild(meta);
+      li.appendChild(inner);
+      mount.appendChild(li);
+    });
+  }
+
+  renderPosts(document.getElementById('latest-posts'), posts.slice(0, 3));
+  renderPosts(document.getElementById('all-posts'), posts);
+
+
   /* ── invert the pill while a dark band sits behind it ───── */
   var bands = document.querySelectorAll('.band');
 
