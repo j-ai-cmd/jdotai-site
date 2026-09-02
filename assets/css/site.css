@@ -31,6 +31,25 @@ body::before{
   background-image:var(--grain);background-size:180px 180px;
 }
 body > *{position:relative;z-index:1}
+
+/* The frame. Two large arcs drawn down the left and right margins, holding the
+   page between them. It is generated, not an asset, it scales with the
+   viewport, and it hides itself below 64rem where there is no margin to spare.
+   Purpose: it gives the wide empty gutters something to be, and it is what
+   makes the centred column read as deliberate rather than narrow. */
+.frame{
+  position:fixed;inset:0;z-index:0;pointer-events:none;
+  display:none;
+}
+@media (min-width:64rem){ .frame{display:block} }
+.frame svg{position:absolute;top:0;height:100%;width:clamp(120px,13vw,220px)}
+.frame .l{left:0}
+.frame .r{right:0;transform:scaleX(-1)}
+.frame path{
+  fill:none;stroke:var(--wine);stroke-width:1.25;
+  opacity:.28;vector-effect:non-scaling-stroke;
+}
+.frame .hair{opacity:.14}
 img,video{max-width:100%;display:block}
 :focus-visible{outline:2px solid var(--wine);outline-offset:3px;border-radius:2px}
 
@@ -175,16 +194,19 @@ h3{font-size:var(--t-h3);letter-spacing:-.02em;line-height:1.2}
 .sec h2{max-width:18ch}
 
 /* ─────────── dark band · full-bleed colour block, no rule ─────────── */
-.band{background:var(--ink);color:var(--paper)}
-.band .in{padding-block:var(--pad-loose)}
-.band h2{color:var(--paper);max-width:15ch}
-.band .prose{color:var(--on-ink);margin-top:1.5rem}
-.band .btn--line{color:var(--paper);border-color:var(--paper)}
-.band .btn--line:hover{background:var(--paper);color:var(--ink)}
-.band--split .in{
-  display:grid;grid-template-columns:minmax(0,1fr) minmax(0,auto);
-  gap:clamp(1.5rem,5vw,4rem);align-items:center;
+/* the closing statement: full-bleed wine, centred, and given room. This is
+   the page's last word, so it gets the largest type on the site. */
+.band{background:var(--wine);color:var(--paper);text-align:center}
+.band .in{padding-block:clamp(5rem,12vw,9rem)}
+.band h2{
+  color:var(--paper);max-width:18ch;margin-inline:auto;
+  font-size:clamp(2.25rem,5.6vw,4.25rem);line-height:1.06;
 }
+.band .prose{color:var(--on-wine-muted);margin:1.5rem auto 0;text-align:center}
+.band .go{justify-content:center}
+.band .btn--line{color:var(--paper);border-color:var(--paper)}
+.band .btn--line:hover{background:var(--paper);color:var(--wine)}
+.band--split .in{display:block}
 
 /* ─────────── definition pairs ─────────── */
 .pairs{
@@ -340,15 +362,25 @@ form.enq input[aria-invalid="true"]{border-color:var(--wine)}
 .enq-done p{color:var(--ink-body);font-size:var(--t-small)}
 
 /* ─────────── footer · Ft4 colophon ─────────── */
-.foot{border-top:1px solid var(--rule);background:var(--sunk)}
+.foot{background:var(--ink);color:var(--paper)}
 .foot .in{
-  padding-block:2rem;display:grid;gap:1.25rem 2rem;
-  grid-template-columns:repeat(auto-fit,minmax(min(100%,13rem),1fr));
-  font-family:var(--fd);font-size:.875rem;color:var(--ink-muted);line-height:1.6;
+  padding-block:clamp(2.5rem,5vw,3.5rem);
+  display:flex;flex-wrap:wrap;gap:1.5rem 2rem;
+  align-items:flex-start;justify-content:space-between;
+  font-family:var(--fd);font-size:.9375rem;line-height:1.6;
 }
-.foot a{color:var(--ink-body);text-decoration:none;padding:.2rem 0}
-.foot a:hover{color:var(--wine)}
-.foot span{display:block}
+.foot .mark{font-weight:700;font-size:1.25rem;letter-spacing:-.04em;color:var(--paper)}
+.foot .mark i{font-style:normal;color:var(--paper);opacity:.62}
+.foot .tag{margin-top:.35rem;color:var(--on-ink)}
+.foot .right{display:flex;flex-direction:column;align-items:flex-end;gap:.5rem;text-align:right}
+.foot a{color:var(--paper);text-decoration:none;padding:.2rem 0;
+  transition:opacity var(--dur) var(--ease)}
+.foot a:hover{opacity:.7}
+.foot .cp{color:var(--on-ink);font-size:.8125rem}
+@media (max-width:40rem){
+  .foot .in{flex-direction:column}
+  .foot .right{align-items:flex-start;text-align:left}
+}
 
 /* ─────────── responsive ─────────── */
 @media (max-width:60rem){
