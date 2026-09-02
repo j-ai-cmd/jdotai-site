@@ -61,10 +61,10 @@ h3{font-size:var(--t-h3);letter-spacing:-.02em;line-height:1.2}
 }
 /* scroll progress — fills the pill as the page is read */
 .pill::before{
-  content:"";position:absolute;inset:0 auto 0 0;
-  width:var(--read,0%);
+  content:"";position:absolute;inset:0;
+  transform:scaleX(var(--read,0));transform-origin:left;
   background:color-mix(in oklab,var(--wine) 12%,transparent);
-  pointer-events:none;transition:width .1s linear;
+  pointer-events:none;transition:transform .1s linear;
 }
 .pill>*{position:relative;z-index:1}
 /* inverted while the dark band is behind it */
@@ -206,7 +206,7 @@ h3{font-size:var(--t-h3);letter-spacing:-.02em;line-height:1.2}
   grid-template-columns:repeat(auto-fit,minmax(min(100%,22rem),1fr))}
 .fit h3{margin-bottom:.6rem}
 .fit h3 .mk{color:var(--wine)}
-.fit p{color:var(--ink-body);font-size:var(--t-small);line-height:1.65;max-width:40ch}
+.fit p{color:var(--ink-body);font-size:var(--t-small);line-height:1.65;max-width:46ch}
 
 /* ─────────── integrations ─────────── */
 .tags{list-style:none;margin:1.25rem 0 0;padding:0;display:flex;flex-wrap:wrap;gap:.5rem}

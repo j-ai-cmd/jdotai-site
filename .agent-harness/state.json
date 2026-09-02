@@ -1,0 +1,78 @@
+{
+  "schema": "agent-harness/state.v1",
+  "goal": "The jdotai two-page site passes every mechanised hallmark slop-test gate",
+  "domain": null,
+  "plan_file": ".agent-harness/plan.json",
+  "created_at": "2026-09-02T10:09:20Z",
+  "iteration": 2,
+  "max_loop_iterations": 12,
+  "status": "open",
+  "tasks": [
+    {
+      "id": "T1",
+      "skill": null,
+      "objective": "Site passes every mechanised hallmark gate (tools/hallmark_check.py exits 0)",
+      "verification": [
+        {
+          "cmd": "python3 tools/hallmark_check.py",
+          "expect_exit": 0,
+          "kind": "gate"
+        }
+      ],
+      "max_attempts": 3,
+      "attempts": 1,
+      "status": "pending",
+      "evidence": [
+        {
+          "at": "2026-09-02T10:09:26Z",
+          "phase": "execute",
+          "exit_code": 0,
+          "attempt": 1
+        },
+        {
+          "at": "2026-09-02T10:09:26Z",
+          "phase": "verify-run",
+          "checks": [
+            {
+              "cmd": "python3 tools/hallmark_check.py",
+              "exit": 1,
+              "passed": false,
+              "tail": [
+                "FAIL  gate 43: footer is not 4 link columns + social row",
+                "",
+                "54 passed, 2 failed (56 mechanised gates)"
+              ]
+            }
+          ],
+          "attempt": 1
+        }
+      ]
+    },
+    {
+      "id": "T2",
+      "skill": null,
+      "objective": "Both pages are well-formed HTML and free of dead CSS/tokens",
+      "verification": [
+        {
+          "cmd": "python3 tools/hallmark_check.py",
+          "expect_exit": 0,
+          "kind": "gate"
+        },
+        {
+          "cmd": "node --check assets/js/site.js",
+          "expect_exit": 0,
+          "kind": "syntax"
+        },
+        {
+          "cmd": "node --check assets/js/enquiry.js",
+          "expect_exit": 0,
+          "kind": "syntax"
+        }
+      ],
+      "max_attempts": 3,
+      "attempts": 0,
+      "status": "pending",
+      "evidence": []
+    }
+  ]
+}

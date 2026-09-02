@@ -1,0 +1,25 @@
+{
+  "goal": "The jdotai two-page site passes every mechanised hallmark slop-test gate",
+  "max_loop_iterations": 12,
+  "max_attempts_per_task": 3,
+  "tasks": [
+    {
+      "id": "T1",
+      "objective": "Site passes every mechanised hallmark gate (tools/hallmark_check.py exits 0)",
+      "done_when": "tools/hallmark_check.py exits 0 against the working tree",
+      "verification": [
+        { "cmd": "python3 tools/hallmark_check.py", "expect_exit": 0, "kind": "gate" }
+      ]
+    },
+    {
+      "id": "T2",
+      "objective": "Both pages are well-formed HTML and free of dead CSS/tokens",
+      "done_when": "structural checks inside the gate script pass",
+      "verification": [
+        { "cmd": "python3 tools/hallmark_check.py", "expect_exit": 0, "kind": "gate" },
+        { "cmd": "node --check assets/js/site.js", "expect_exit": 0, "kind": "syntax" },
+        { "cmd": "node --check assets/js/enquiry.js", "expect_exit": 0, "kind": "syntax" }
+      ]
+    }
+  ]
+}

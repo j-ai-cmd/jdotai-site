@@ -91,7 +91,7 @@
       var doc = document.documentElement;
       var max = doc.scrollHeight - doc.clientHeight;
       var pct = max > 0 ? (doc.scrollTop / max) * 100 : 0;
-      pill.style.setProperty('--read', pct.toFixed(1) + '%');
+      pill.style.setProperty('--read', (pct / 100).toFixed(4));
       ticking = false;
     };
     window.addEventListener('scroll', function () {
