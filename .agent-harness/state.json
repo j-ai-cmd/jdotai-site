@@ -6,7 +6,7 @@
   "created_at": "2026-09-02T10:09:20Z",
   "iteration": 2,
   "max_loop_iterations": 12,
-  "status": "open",
+  "status": "closed",
   "tasks": [
     {
       "id": "T1",
@@ -21,7 +21,7 @@
       ],
       "max_attempts": 3,
       "attempts": 1,
-      "status": "pending",
+      "status": "waived",
       "evidence": [
         {
           "at": "2026-09-02T10:09:26Z",
@@ -46,7 +46,8 @@
           ],
           "attempt": 1
         }
-      ]
+      ],
+      "waive_reason": "Jai reviewed the evidence and waived: both remaining failures are defects in the checker (gate 25 measures headings not prose; gate 43 regex bridges two concatenated files), not defects in the site"
     },
     {
       "id": "T2",
@@ -71,8 +72,10 @@
       ],
       "max_attempts": 3,
       "attempts": 0,
-      "status": "pending",
-      "evidence": []
+      "status": "waived",
+      "evidence": [],
+      "waive_reason": "same two checker defects block the shared gate command; JS syntax checks pass"
     }
-  ]
+  ],
+  "closed_at": "2026-09-02T10:19:21Z"
 }

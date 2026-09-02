@@ -25,16 +25,16 @@
   --scrim:color-mix(in oklab,var(--paper) 88%,transparent);
 
   /* type — two families */
-  --fd:"Space Grotesk",system-ui,-apple-system,sans-serif;
-  --fb:"Inter",system-ui,-apple-system,sans-serif;
+  --fd:"Libre Franklin",system-ui,-apple-system,sans-serif;
+  --fb:"Lora",Georgia,"Times New Roman",serif;
 
   --t-display:clamp(2.5rem,6.4vw,4.75rem);
   --t-figure:clamp(2.75rem,5.5vw,4rem);
   --t-h2:clamp(1.75rem,3.4vw,2.625rem);
   --t-h3:clamp(1.25rem,2vw,1.5rem);
-  --t-lede:clamp(1.0625rem,1.3vw,1.1875rem);
-  --t-body:1.0625rem;
-  --t-small:.9375rem;
+  --t-lede:clamp(1.125rem,1.3vw,1.3125rem);
+  --t-body:1.125rem;
+  --t-small:1rem;
 
   /* measure — sections deliberately do not share one width */
   --w-narrow:58rem;

@@ -1,11 +1,12 @@
 /* Hallmark · macrostructure: Narrative Workflow · genre: modern-minimal · tone: austere
  * theme: custom · paper #FBFAF8 · ink #171412 · accent wine #6E2434
- * type: Space Grotesk (display) + Inter (body)
+ * type: Libre Franklin (display) + Lora (body)
  * nav: N5 floating pill · footer: Ft4 colophon · enrichment: none (typography + real demo video)
- * No eyebrows. Stage numerals are structural — the page is a genuine sequence.
+ * No eyebrows, no section numbering. Stages are carried by a pinned heading;
+ * the sequence is the reading order, not a decorative numeral.
  * Section rhythm is deliberately uneven: three widths, three paddings, three
  * divider languages (hairline / tint / colour block). Nothing shares all three.
- * Motion: count-up · scroll progress · numeral scrub · pill inversion.
+ * Motion: count-up · scroll progress · stage reveal · pill inversion.
  * pre-emit critique: P4 H5 E4 S5 R4 V4
  */
 
@@ -130,65 +131,11 @@ h3{font-size:var(--t-h3);letter-spacing:-.02em;line-height:1.2}
 /* ─────────── stages · wide, loose, fixed numeral track ─────────── */
 .stage+.stage{border-top:1px solid var(--rule)}
 .stage .in{
-  display:grid;grid-template-columns:minmax(0,7rem) minmax(0,1fr);
-  gap:clamp(1.25rem,3vw,2.5rem);padding-block:var(--pad-loose);align-items:start;
+  display:grid;grid-template-columns:minmax(0,22rem) minmax(0,1fr);
+  gap:clamp(1.5rem,5vw,4rem);padding-block:var(--pad-loose);align-items:start;
 }
-.stage .num{
-  position:sticky;top:5.5rem;
-  font-family:var(--fd);font-weight:700;font-size:clamp(2.75rem,5.5vw,4.25rem);
-  line-height:.9;letter-spacing:-.05em;color:var(--rule);
-  font-variant-numeric:tabular-nums;
-  transition:color .5s var(--ease);
-}
-.stage.live .num{color:var(--wine)}
-.stage h2{max-width:16ch}
+.stage h2{position:sticky;top:5.5rem;max-width:14ch}
 .stage .prose{margin-top:1.25rem;max-width:52ch}
-
-/* numeral scrub — where scroll-driven animation is supported it replaces the
-   class toggle entirely; elsewhere the .live class above still does the work */
-@supports (animation-timeline:view()){
-  @media (prefers-reduced-motion:no-preference){
-    .stage .num{
-      animation:scrub linear both;
-      animation-timeline:view();
-      animation-range:entry 12% cover 42%;
-    }
-    @keyframes scrub{
-      from{color:var(--rule);transform:translateY(.25rem)}
-      to{color:var(--wine);transform:none}
-    }
-  }
-}
-
-.sweep{position:relative;overflow:hidden}
-.js .sweep::after{
-  content:"";position:absolute;inset:0;background:var(--paper);
-  transform:scaleX(1);transform-origin:right;
-  transition:transform .72s var(--ease);
-}
-.js .stage.live .sweep::after{transform:scaleX(0)}
-
-/* ─────────── tinted section · mid measure, tint divider, no rule ─────────── */
-.tint{background:var(--sunk)}
-.tint .in{padding-block:var(--pad-mid)}
-.tint h2{max-width:18ch}
-
-/* ─────────── plain section · mid measure, hairline divider ─────────── */
-.sec{border-top:1px solid var(--rule)}
-.sec .in{padding-block:var(--pad-mid)}
-.sec h2{max-width:18ch}
-
-/* ─────────── dark band · full-bleed colour block, no rule ─────────── */
-.band{background:var(--ink);color:var(--paper)}
-.band .in{padding-block:var(--pad-loose)}
-.band h2{color:var(--paper);max-width:15ch}
-.band .prose{color:var(--on-ink);margin-top:1.5rem}
-.band .btn--line{color:var(--paper);border-color:var(--paper)}
-.band .btn--line:hover{background:var(--paper);color:var(--ink)}
-.band--split .in{
-  display:grid;grid-template-columns:minmax(0,1fr) minmax(0,auto);
-  gap:clamp(1.5rem,5vw,4rem);align-items:center;
-}
 
 /* ─────────── definition pairs ─────────── */
 .pairs{
@@ -240,16 +187,11 @@ h3{font-size:var(--t-h3);letter-spacing:-.02em;line-height:1.2}
 .flow p{color:var(--ink-body);font-size:var(--t-small);line-height:1.6}
 
 /* ─────────── numbered sequence ─────────── */
-.seq{margin:2.5rem 0 0;padding:0;list-style:none;counter-reset:s;
+.seq{margin:2.5rem 0 0;padding:0;list-style:none;
   border-top:1px solid var(--rule);max-width:52rem}
 .seq li{
-  counter-increment:s;display:grid;grid-template-columns:2.75rem minmax(0,1fr);
-  gap:0 1.25rem;padding-block:1.4rem;border-bottom:1px solid var(--rule);
-}
-.seq li::before{
-  content:counter(s,decimal-leading-zero);
-  font-family:var(--fd);font-size:var(--t-small);color:var(--wine);
-  font-variant-numeric:tabular-nums;padding-top:.2rem;
+  display:grid;gap:.25rem;padding-block:1.4rem;
+  border-bottom:1px solid var(--rule);
 }
 .seq b{font-weight:600;display:block;margin-bottom:.2rem}
 .seq span{color:var(--ink-body);font-size:var(--t-small);line-height:1.65}
@@ -308,12 +250,7 @@ form.enq input[aria-invalid="true"]{border-color:var(--wine)}
 /* ─────────── responsive ─────────── */
 @media (max-width:60rem){
   .stage .in{grid-template-columns:minmax(0,1fr);gap:.75rem}
-  .stage .num{position:static}
-  .band--split .in{grid-template-columns:minmax(0,1fr)}
-  .figures .in{grid-template-columns:repeat(2,minmax(0,1fr))}
-  .pill .links{display:none}
-}
-@media (max-width:26rem){
+  @media (max-width:26rem){
   .figures .in{grid-template-columns:minmax(0,1fr)}
 }
 
