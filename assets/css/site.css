@@ -21,6 +21,16 @@ body{
 }
 a{color:inherit}
 p{margin:0}
+
+/* A single sheet of grain over the whole page. Paper is a surface, not a void;
+   at 3% it is felt rather than seen, and it stops large flat areas reading as
+   empty screen. Fixed, so it does not travel with the scroll. */
+body::before{
+  content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
+  opacity:.035;mix-blend-mode:multiply;
+  background-image:var(--grain);background-size:180px 180px;
+}
+body > *{position:relative;z-index:1}
 img,video{max-width:100%;display:block}
 :focus-visible{outline:2px solid var(--wine);outline-offset:3px;border-radius:2px}
 
@@ -88,7 +98,8 @@ h3{font-size:var(--t-h3);letter-spacing:-.02em;line-height:1.2}
   text-decoration:none;padding:.3rem 0;white-space:nowrap;
   transition:color var(--dur) var(--ease);
 }
-.pill .links a:hover,.pill .links a[aria-current]{color:var(--wine)}
+.pill .links a:hover{color:var(--wine)}
+.pill .links a[aria-current]{color:var(--ink);font-weight:700}
 
 /* ─────────── buttons ─────────── */
 .btn{
@@ -137,6 +148,14 @@ h3{font-size:var(--t-h3);letter-spacing:-.02em;line-height:1.2}
 .stage .prose{max-width:52ch}
 
 /* reveal — the sweep uncovers a stage's text as it enters */
+/* generic entrance — a section's children arrive in reading order */
+.js [data-rise]{opacity:0;transform:translateY(12px);
+  transition:opacity .55s var(--ease),transform .55s var(--ease)}
+.js [data-rise].shown{opacity:1;transform:none}
+.js [data-rise]:nth-child(2){transition-delay:.07s}
+.js [data-rise]:nth-child(3){transition-delay:.14s}
+.js [data-rise]:nth-child(4){transition-delay:.21s}
+
 .sweep{position:relative;overflow:hidden}
 .js .sweep::after{
   content:"";position:absolute;inset:0;background:var(--paper);
@@ -170,27 +189,45 @@ h3{font-size:var(--t-h3);letter-spacing:-.02em;line-height:1.2}
 /* ─────────── definition pairs ─────────── */
 .pairs{
   margin:2.5rem 0 0;display:grid;gap:1px;background:var(--rule);
-  border:1px solid var(--rule);border-radius:3px;overflow:hidden;
+  border:1px solid var(--rule);border-radius:var(--r-lg);overflow:hidden;
   grid-template-columns:repeat(auto-fit,minmax(min(100%,20rem),1fr));
 }
-.pairs>div{background:var(--paper);padding:clamp(1.5rem,3vw,2rem)}
+.pairs>div{background:var(--paper);padding:clamp(1.5rem,3vw,2rem);
+  transition:background var(--dur) var(--ease)}
+.pairs>div:hover{background:var(--sunk)}
 .pairs dt{font-family:var(--fd);font-weight:500;font-size:var(--t-h3);
   letter-spacing:-.02em;margin-bottom:.5rem}
 .pairs dd{margin:0;color:var(--ink-body);font-size:var(--t-small);line-height:1.65}
 
   grid-template-columns:repeat(auto-fit,minmax(min(100%,22rem),1fr))}
 
+/* the donna wordmark — set, never drawn. Fraunces is the brand's own face and
+   appears nowhere else on the site, which keeps it an outlier rather than a
+   third body font. */
+.donna{font-family:var(--fd-donna);font-weight:400;
+  letter-spacing:-.01em;color:var(--wine);font-style:normal}
+.band .donna,.pill .donna{color:inherit}
+
 /* ─────────── article ─────────── */
 .byline{margin-top:1.25rem;font-family:var(--fd);font-size:var(--t-small);
   color:var(--ink-muted);font-variant-numeric:tabular-nums}
-.article{padding-block:var(--pad-mid);max-width:var(--w-narrow)}
+/* the reading column is framed, not floated: a burgundy rule down each side
+   holds the text in the centre of the page and gives long articles an edge to
+   sit against. The prose itself stays left-aligned — centred body copy costs
+   the reader a new starting point on every line. */
+.article{
+  padding-block:var(--pad-mid);
+  padding-inline:clamp(1.25rem,4vw,3rem);
+  max-width:52rem;margin-inline:auto;
+  border-inline:2px solid var(--wine);
+}
 .article h2{font-size:var(--t-h3);margin-top:2.5rem;margin-bottom:.75rem;max-width:28ch}
 .article h2:first-child{margin-top:0}
 .article p{color:var(--ink-body);max-width:68ch}
 .article p + p{margin-top:1rem}
 
 .more{list-style:none;margin:2rem 0 0;padding:0;display:grid;gap:1px;
-  background:var(--rule);border-block:1px solid var(--rule)}
+  background:var(--rule);border:1px solid var(--rule);border-radius:var(--r-lg);overflow:hidden}
 .more li{background:var(--paper)}
 .more a{display:block;padding:1.25rem 0;text-decoration:none;
   font-family:var(--fd);font-weight:500;
@@ -201,12 +238,9 @@ h3{font-size:var(--t-h3);letter-spacing:-.02em;line-height:1.2}
 
 /* ─────────── post cards ─────────── */
 .cards{list-style:none;margin:2.5rem 0 0;padding:0;display:grid;gap:1px;
-  background:var(--rule);border-block:1px solid var(--rule);
-  grid-template-columns:minmax(0,1.4fr) minmax(0,1fr) minmax(0,1fr)}
-/* the most recent piece carries more weight than the two behind it */
-.cards .card:first-child .card-in{padding-block:2.5rem}
-.cards .card:first-child h3{font-size:clamp(1.375rem,2.2vw,1.75rem)}
-.cards--all{grid-template-columns:repeat(auto-fill,minmax(min(100%,20rem),1fr))}
+  background:var(--rule);border:1px solid var(--rule);border-radius:var(--r-lg);overflow:hidden;
+  grid-template-columns:repeat(4,minmax(0,1fr))}
+.cards--all{grid-template-columns:repeat(4,minmax(0,1fr))}
 .card{background:var(--paper)}
 .card-in{display:block;height:100%;padding:1.75rem 1.5rem;
   text-decoration:none;color:inherit;
@@ -223,11 +257,12 @@ a.card-in:hover h3{color:var(--wine)}
 
 /* ─────────── integrations ─────────── */
 .tags{list-style:none;margin:1.25rem 0 0;padding:0;display:flex;flex-wrap:wrap;gap:.5rem}
-.tags li{
+.tags li{transition:border-color var(--dur) var(--ease),color var(--dur) var(--ease);
   font-size:.875rem;color:var(--ink-body);font-weight:500;
-  border:1px solid var(--rule);border-radius:2px;
+  border:1px solid var(--rule);border-radius:var(--r-sm);
   padding:.45rem .8rem;background:var(--paper);
 }
+.tags li:hover{border-color:var(--wine);color:var(--wine)}
 .grouped{margin-top:2.5rem;display:grid;gap:2rem;
   grid-template-columns:repeat(auto-fit,minmax(min(100%,20rem),1fr))}
 .grouped h3{font-size:var(--t-body);font-family:var(--fb);font-weight:600;letter-spacing:0}
@@ -237,7 +272,7 @@ a.card-in:hover h3{color:var(--wine)}
   grid-template-columns:repeat(auto-fit,minmax(min(100%,24rem),1fr))}
 .demo h3{font-size:var(--t-body);font-family:var(--fb);font-weight:600;
   letter-spacing:0;margin-bottom:.75rem}
-.demo figure{margin:0;border:1px solid var(--rule);border-radius:4px;overflow:hidden;
+.demo figure{margin:0;border:1px solid var(--rule);border-radius:var(--r-md);overflow:hidden;
   background:var(--sunk)}
 .demo video{width:100%;aspect-ratio:16/10;object-fit:cover;background:var(--sunk)}
 .demo figcaption{padding:.75rem 1rem;font-size:.875rem;color:var(--ink-muted);
@@ -246,7 +281,9 @@ a.card-in:hover h3{color:var(--wine)}
 /* ─────────── flow ─────────── */
 .flow{margin-top:2.5rem;display:grid;gap:1rem;
   grid-template-columns:repeat(auto-fit,minmax(min(100%,15rem),1fr))}
-.flow>div{padding:1.5rem;border:1px solid var(--rule);border-radius:4px;background:var(--paper)}
+.flow>div{padding:1.5rem;border:1px solid var(--rule);border-radius:var(--r-md);
+  background:var(--paper);transition:border-color var(--dur) var(--ease)}
+.flow>div:hover{border-color:var(--wine)}
 .flow>div.mid-step{border-color:var(--wine)}
 .flow h3{font-size:var(--t-body);font-family:var(--fd);font-weight:500;margin-bottom:.5rem}
 .flow .mid-step h3{color:var(--wine)}
@@ -283,12 +320,12 @@ a.card-in:hover h3{color:var(--wine)}
 .formwrap{margin-top:2.5rem;display:grid;
   grid-template-columns:repeat(auto-fit,minmax(min(100%,22rem),1fr));
   gap:clamp(2rem,5vw,4rem);align-items:start}
-form.enq{background:var(--paper);border:1px solid var(--rule);border-radius:4px;
+form.enq{background:var(--paper);border:1px solid var(--rule);border-radius:var(--r-lg);
   padding:clamp(1.5rem,3vw,2rem);display:grid;gap:1rem}
 form.enq label{display:grid;gap:.4rem;font-size:.875rem;color:var(--ink-body)}
 form.enq input,form.enq select{
   width:100%;font:inherit;font-size:var(--t-small);color:var(--ink);
-  background:var(--paper);border:1px solid var(--rule);border-radius:3px;
+  background:var(--paper);border:1px solid var(--rule);border-radius:var(--r-sm);
   padding:.7rem .85rem;-webkit-appearance:none;appearance:none;
   transition:border-color var(--dur) var(--ease);
 }
@@ -317,11 +354,12 @@ form.enq input[aria-invalid="true"]{border-color:var(--wine)}
 @media (max-width:60rem){
   .stage .in,.band--split .in{grid-template-columns:minmax(0,1fr);gap:.75rem}
   @media (max-width:26rem){
-  .figures .in{grid-template-columns:minmax(0,1fr)}
+  .figures .in,.cards,.cards--all{grid-template-columns:minmax(0,1fr)}
 }
 
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
+  .js [data-rise]{opacity:1;transform:none;transition:none}
   .js .sweep::after{display:none}
   .pill::before{display:none}
   *,*::before,*::after{transition-duration:.01ms !important;animation-duration:.01ms !important}

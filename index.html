@@ -14,7 +14,7 @@
 <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@500;700&family=Lora:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@500;700&family=Lora:wght@400;500;600&family=Fraunces:opsz,wght@9..144,400&display=swap">
 <link rel="stylesheet" href="/assets/css/tokens.css">
 <link rel="stylesheet" href="/assets/css/site.css">
 <script>document.documentElement.className+=" js";</script>
@@ -28,8 +28,9 @@
   <nav class="links" aria-label="Primary">
     <a href="/" aria-current="page">Home</a>
     <a href="/legal/">Legal</a>
-    <a href="/blog/">Blog</a>
+    <a href="/blog/">Blogs</a>
   </nav>
+  <a class="btn btn--sm" href="/contact/">Contact us</a>
 </header>
 
 <main id="main">
@@ -70,14 +71,14 @@
 
   <section class="tint" id="donna">
     <div class="in mid">
-      <h2>Introducing donna for legal.</h2>
+      <h2>Introducing <span class="donna">donna</span> for legal.</h2>
       <p class="lede donna-lede">donna does two things.</p>
       <dl class="pairs">
-        <div>
+        <div data-rise>
           <dt>Custom intake forms</dt>
           <dd>Every missing answer creates another email, another call, and another delay. donna helps firms collect exactly what they need from the start.</dd>
         </div>
-        <div>
+        <div data-rise>
           <dt>MCP connector</dt>
           <dd>Your firm&rsquo;s practice management system holds everything you need, but finding it still means clicking through matters, documents and records. donna lets you simply ask for what you need, right inside your Claude or ChatGPT account.</dd>
         </div>
@@ -88,15 +89,6 @@
     </div>
   </section>
 
-  <section class="sec" id="writing">
-    <div class="in wide">
-      <h2>Writing.</h2>
-      <ul class="cards" id="latest-posts"></ul>
-      <div class="go">
-        <a class="btn btn--line" href="/blog/">All writing</a>
-      </div>
-    </div>
-  </section>
 
   <section class="band band--split" id="close">
     <div class="in wide">

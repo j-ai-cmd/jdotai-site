@@ -27,10 +27,14 @@
   --sunk:color-mix(in oklab,var(--ink) 4%,var(--paper));
   --wine-hover:color-mix(in oklab,var(--wine) 82%,var(--ink));
   --scrim:color-mix(in oklab,var(--paper) 88%,transparent);
+  /* fractal noise, generated inline — no asset request */
+  --grain:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 
   /* type — two families */
   --fd:"Libre Franklin",system-ui,-apple-system,sans-serif;
   --fb:"Lora",Georgia,"Times New Roman",serif;
+  /* outlier: the donna wordmark only — two slots at most, never body copy */
+  --fd-donna:"Fraunces",Georgia,serif;
 
   --t-display:clamp(2.5rem,6.4vw,4.75rem);
   --t-figure:clamp(2.75rem,5.5vw,4rem);
@@ -50,6 +54,11 @@
   --pad-tight:clamp(2.5rem,5vw,3.5rem);
   --pad-mid:clamp(3.5rem,7vw,5.5rem);
   --pad-loose:clamp(4.5rem,10vw,8rem);
+
+  /* corner radius — panels are softened, never pill-round except affordances */
+  --r-sm:4px;
+  --r-md:8px;
+  --r-lg:12px;
 
   --ease:cubic-bezier(.2,.6,.2,1);
   --dur:.4s;

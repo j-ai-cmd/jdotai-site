@@ -110,6 +110,34 @@
   }
 
 
+  /* ── generic entrances ──────────────────────────────────── */
+  var risers = document.querySelectorAll('[data-rise]');
+  if (risers.length) {
+    if (!hasIO) {
+      risers.forEach(function (el) { el.classList.add('shown'); });
+    } else {
+      var riseObserver = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting) {
+            e.target.classList.add('shown');
+            riseObserver.unobserve(e.target);
+          }
+        });
+      }, { threshold: 0.2, rootMargin: '0px 0px -8% 0px' });
+      risers.forEach(function (el) { riseObserver.observe(el); });
+
+      // same discipline as the stages: never leave content stranded
+      window.addEventListener('scroll', function () {
+        var h = window.innerHeight || document.documentElement.clientHeight;
+        risers.forEach(function (el) {
+          if (el.classList.contains('shown')) return;
+          var r = el.getBoundingClientRect();
+          if (r.top < h * 0.9 && r.bottom > 0) el.classList.add('shown');
+        });
+      }, { passive: true });
+    }
+  }
+
   /* ── post lists ─────────────────────────────────────────── */
   var posts = (window.POSTS || []).slice().sort(function (a, b) {
     return a.date < b.date ? 1 : a.date > b.date ? -1 : 0;

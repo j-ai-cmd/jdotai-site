@@ -22,7 +22,7 @@ def read(p):
     return f.read_text() if f.exists() else ""
 
 # every page the site actually serves, including generated article pages
-HTML_FILES = ["index.html", "legal/index.html", "blog/index.html"] + \
+HTML_FILES = ["index.html", "legal/index.html", "blog/index.html", "contact/index.html"] + \
     sorted(str(p.relative_to(ROOT)) for p in (ROOT / "blog").glob("*/index.html"))
 html = "".join(read(f) for f in HTML_FILES)
 site_css = read("assets/css/site.css")
@@ -58,7 +58,7 @@ gate(1, "display font is not a default sans",
      bool(fd) and fd.group(1) not in BANNED_DISPLAY,
      f"--fd = {fd.group(1) if fd else 'MISSING'}")
 
-fams = set(re.findall(r'--f[a-z]+:\s*"([^"]+)"', css_code))
+fams = set(re.findall(r'--f[a-z-]+:\s*"([^"]+)"', css_code))
 gate(37, "at most 3 font families", len(fams) <= 3, f"{sorted(fams)}")
 
 goog = re.findall(r'fonts\.googleapis\.com/css2\?([^"]+)', html)
