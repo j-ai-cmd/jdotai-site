@@ -135,7 +135,7 @@ h3{font-size:var(--t-h3);letter-spacing:-.02em;line-height:1.2}
   gap:clamp(1.5rem,5vw,4rem);padding-block:var(--pad-loose);align-items:start;
 }
 .stage h2{position:sticky;top:5.5rem;max-width:14ch}
-.stage .prose{margin-top:1.25rem;max-width:52ch}
+.stage .prose{max-width:52ch}
 
 /* reveal — the sweep uncovers a stage's text as it enters */
 .sweep{position:relative;overflow:hidden}

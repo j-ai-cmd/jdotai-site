@@ -102,12 +102,22 @@ def grab(block, name):
 
 root_block = tokens_css.split(':root{')[1].split('}')[0] if ':root{' in tokens_css else tokens_css
 dark_m = re.search(r':root\[data-theme="dark"\]\{(.*?)\}', tokens_css, re.S)
-dark_block = dark_m.group(1) if dark_m else ""
 
 light = theme(grab(root_block, 'paper'), grab(root_block, 'ink'), grab(root_block, 'wine'))
-dark = theme(grab(dark_block, 'paper'), grab(dark_block, 'ink'), grab(dark_block, 'wine'))
+themes = [("light", light)]
 
-for label, t in (("light", light), ("dark", dark)):
+# A single-theme page is a legitimate choice, but only when it is deliberate:
+# it must then paint its own ground rather than inherit the reader's.
+if dark_m:
+    themes.append(("dark", theme(grab(dark_m.group(1), 'paper'),
+                                 grab(dark_m.group(1), 'ink'),
+                                 grab(dark_m.group(1), 'wine'))))
+else:
+    gate("theme", "single-theme page paints its own background",
+         re.search(r'body\{[^}]*background:var\(--paper\)', site_code.replace(' ', '').replace('\n', '')) is not None,
+         "no dark palette declared, so body must set --paper explicitly")
+
+for label, t in themes:
     if not all([t['paper'], t['ink'], t['wine']]):
         gate(40, f"{label} theme tokens resolve", False, "missing paper/ink/wine"); continue
     checks = {

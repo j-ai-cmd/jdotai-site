@@ -1,20 +1,24 @@
 /* jdotai tokens — three colours. Every other value is mixed from them.
  * Nothing in site.css may introduce a colour that isn't declared here.
- * Contrast on text tokens is verified against both themes, not assumed.
+ *
+ * Single theme by choice: the page is white in every context, including for
+ * readers whose system is set to dark. Because there is no second palette to
+ * fall back on, every surface and every text colour is painted explicitly.
+ * Contrast is verified against the one ground, not assumed.
  */
 
 :root{
   /* the three */
-  --paper:#FBFAF8;
+  --paper:#FFFFFF;
   --ink:#171412;
   --wine:#6E2434;
 
-  /* text — --ink-muted is 62%, the lowest mix that clears AA on both grounds
-     (4.9:1 on light paper, 6.5:1 on dark) */
+  /* text — --ink-muted is 62%, the lowest mix that still clears AA on white
+     (5.15:1). Anything lighter fails and is not worth the delicacy. */
   --ink-body:color-mix(in oklab,var(--ink) 78%,var(--paper));
   --ink-muted:color-mix(in oklab,var(--ink) 62%,var(--paper));
 
-  /* label on a wine ground — paper flips with the theme and clears AA both ways */
+  /* label on a wine ground — white on wine is 10.69:1 */
   --on-wine:var(--paper);
   --on-ink:color-mix(in oklab,var(--paper) 72%,var(--ink));
 
@@ -49,21 +53,4 @@
 
   --ease:cubic-bezier(.2,.6,.2,1);
   --dur:.4s;
-}
-
-:root:not([data-theme="light"]){
-  @media (prefers-color-scheme:dark){
-    --paper:#131110;
-    --ink:#F2EFEA;
-    --wine:#C4808E;
-    --sunk:color-mix(in oklab,var(--ink) 7%,var(--paper));
-    --wine-hover:color-mix(in oklab,var(--wine) 78%,var(--paper));
-  }
-}
-:root[data-theme="dark"]{
-  --paper:#131110;
-  --ink:#F2EFEA;
-  --wine:#C4808E;
-  --sunk:color-mix(in oklab,var(--ink) 7%,var(--paper));
-  --wine-hover:color-mix(in oklab,var(--wine) 78%,var(--paper));
 }
