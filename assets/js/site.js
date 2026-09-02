@@ -110,6 +110,68 @@
   }
 
 
+  /* ── the question hero: the first three tick, the last two never do ─── */
+  var ticks = document.querySelectorAll('#checks [data-tick]');
+  if (ticks.length) {
+    if (reduced) {
+      ticks.forEach(function (li) { li.classList.add('on'); });
+    } else {
+      ticks.forEach(function (li, i) {
+        setTimeout(function () { li.classList.add('on'); }, 500 + i * 380);
+      });
+    }
+  }
+
+  /* ── the ask line: real questions, typed ──────────────────── */
+  var askq = document.getElementById('askq');
+  if (askq) {
+    var QUESTIONS = [
+      'Which estate planning matters are missing a signed will?',
+      'What documents are still outstanding on my open matters?',
+      'Which intakes came in this week?',
+      'Which files are ready to close?'
+    ];
+
+    // The caret is a real element rather than a CSS pseudo on the text, so the
+    // question itself stays plain text for anything reading the page.
+    var caret = document.createElement('span');
+    caret.className = 'caret';
+    caret.setAttribute('aria-hidden', 'true');
+    var text = document.createTextNode('');
+    askq.appendChild(text);
+    askq.appendChild(caret);
+
+    function type() {
+      var qi = 0, ci = 0, deleting = false;
+      (function step() {
+        var full = QUESTIONS[qi];
+        ci += deleting ? -1 : 1;
+        text.data = full.slice(0, ci);
+
+        var wait = deleting ? 22 : 42;
+        if (!deleting && ci === full.length) { deleting = true; wait = 2100; }
+        else if (deleting && ci === 0) { deleting = false; qi = (qi + 1) % QUESTIONS.length; wait = 320; }
+        setTimeout(step, wait);
+      })();
+    }
+
+    if (reduced) {
+      text.data = QUESTIONS[0];
+    } else if (document.visibilityState === 'visible') {
+      type();
+    } else {
+      // Opened in a background tab — show the first question as plain text, and
+      // start typing the moment the reader actually looks at it.
+      text.data = QUESTIONS[0];
+      document.addEventListener('visibilitychange', function start() {
+        if (document.visibilityState !== 'visible') return;
+        document.removeEventListener('visibilitychange', start);
+        text.data = '';
+        type();
+      });
+    }
+  }
+
   /* ── generic entrances ──────────────────────────────────── */
   var risers = document.querySelectorAll('[data-rise]');
   if (risers.length) {
