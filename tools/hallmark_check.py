@@ -276,6 +276,46 @@ used_cls |= {'js'}
 dead_cls = sorted(c for c in defined_cls - used_cls if not c.endswith('css'))
 gate("clean-css", "no dead CSS classes", not dead_cls, f"{dead_cls}")
 
+# ─────────────────────────── stylesheet integrity ───────────────────────────
+# Two regressions shipped from hand-edited CSS: a regex deleted six rule blocks,
+# and a sed left a dangling declaration with no selector. Neither was visible to
+# any other gate, because a broken stylesheet still parses — the browser simply
+# drops what it cannot read. These check the structure itself.
+def brace_scan(name, text):
+    blanked = re.sub(r'/\*.*?\*/', lambda m: re.sub(r'[^\n]', '', m.group(0)), text, flags=re.S)
+    depth, orphans = 0, []
+    for i, line in enumerate(blanked.split('\n'), 1):
+        for ch in line:
+            if ch == '{':
+                depth += 1
+            elif ch == '}':
+                depth -= 1
+                if depth < 0:
+                    orphans.append(i); depth = 0
+    gate(f"css/{name}", "braces balance", depth == 0 and not orphans,
+         f"unclosed={depth} orphan_lines={orphans[:4]}")
+
+brace_scan("site", site_css)
+brace_scan("tokens", tokens_css)
+
+# a declaration sitting outside any rule is dropped silently by the browser
+for name, text in (("site", site_css), ("tokens", tokens_css)):
+    blanked = re.sub(r'/\*.*?\*/', lambda m: re.sub(r'[^\n]', '', m.group(0)), text, flags=re.S)
+    depth, stray = 0, []
+    for i, line in enumerate(blanked.split('\n'), 1):
+        stripped = line.strip()
+        # a selector can look like a declaration (body::before, a:hover), so a
+        # real stray must not open a rule and must terminate like a declaration
+        looks_decl = (re.match(r'^[a-z-]+\s*:', stripped)
+                      and '{' not in stripped
+                      and stripped.endswith((';', '}'))
+                      and not stripped.startswith('--'))
+        if depth == 0 and looks_decl:
+            stray.append(i)
+        depth += line.count('{') - line.count('}')
+        depth = max(depth, 0)
+    gate(f"css/{name}", "no declaration outside a rule", not stray, f"lines={stray[:4]}")
+
 # ─────────────────────────── report ─────────────────────────────────────────
 if __name__ == '__main__':
     for n, d, det in FAILS:
