@@ -61,8 +61,13 @@ match to the GitHub account. Commits must be signed with an address verified
 on `j-ai-cmd`:
 
 ```bash
-git config user.email "dhingrajai04@gmail.com"
+git config user.email "297267163+j-ai-cmd@users.noreply.github.com"
 ```
 
-`jai@jdotai.com` is not verified on that account and will block the deploy,
-even though it is the address on the site.
+That is GitHub's own noreply address for `j-ai-cmd`, so it is bound to the
+account by construction and cannot fail the check.
+
+Two addresses that do **not** work, both tried:
+
+- `jai@jdotai.com` — the address on the site, not verified on any GitHub account
+- `dhingrajai04@gmail.com` — belongs to a different account (`dhingrajai04-del`)
