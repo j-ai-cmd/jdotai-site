@@ -53,3 +53,16 @@ Known gaps:
 - "Who this is for" is a guess and needs rewriting
 - The FAQ has four entries and needs the objections that actually come up on
   calls — security and data residency are almost certainly missing
+
+## Deploying
+
+Vercel refuses a deployment whose HEAD commit has an author email it cannot
+match to the GitHub account. Commits must be signed with an address verified
+on `j-ai-cmd`:
+
+```bash
+git config user.email "dhingrajai04@gmail.com"
+```
+
+`jai@jdotai.com` is not verified on that account and will block the deploy,
+even though it is the address on the site.
