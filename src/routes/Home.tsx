@@ -1,4 +1,6 @@
 import DemoVideo from '@/components/DemoVideo'
+import { FadeUp } from '@/components/amicro/fade-up'
+import { TextReveal } from '@/components/amicro/text-reveal'
 import { useSeo } from '@/lib/seo'
 
 const META = {
@@ -15,17 +17,19 @@ export default function Home() {
     <main id="main">
       <section className="open ask-q">
         <div className="narrow">
-          <h1>Which part of your week shouldn&rsquo;t need a lawyer?</h1>
-          <ul className="checks" id="checks">
-            <li data-tick><span className="bx" aria-hidden="true" />Re-typing intake into the practice management system</li>
-            <li data-tick><span className="bx" aria-hidden="true" />Chasing documents that never arrived</li>
-            <li data-tick><span className="bx" aria-hidden="true" />Turning emails into tasks</li>
-            <li><span className="bx" aria-hidden="true" />Advising the client</li>
-            <li><span className="bx" aria-hidden="true" />Exercising judgment on the matter</li>
-          </ul>
-          <p className="lede after">
-            The first three we automate. The last two are why you went to law school.
-          </p>
+          <TextReveal as="h1" text="Which part of your week shouldn’t need a lawyer?" />
+          <FadeUp delay={0.15}>
+            <ul className="checks" id="checks">
+              <li data-tick><span className="bx" aria-hidden="true" />Re-typing intake into the practice management system</li>
+              <li data-tick><span className="bx" aria-hidden="true" />Chasing documents that never arrived</li>
+              <li data-tick><span className="bx" aria-hidden="true" />Turning emails into tasks</li>
+              <li><span className="bx" aria-hidden="true" />Advising the client</li>
+              <li><span className="bx" aria-hidden="true" />Exercising judgment on the matter</li>
+            </ul>
+            <p className="lede after">
+              The first three we automate. The last two are why you went to law school.
+            </p>
+          </FadeUp>
         </div>
       </section>
 
@@ -34,6 +38,15 @@ export default function Home() {
       <section className="showreel" aria-labelledby="showreel-h">
         <div className="in mid">
           <h2 id="showreel-h">This is one we built.</h2>
+          <video
+            className="title-bumper"
+            src="/assets/video/title-card.mp4"
+            aria-hidden="true"
+            muted
+            playsInline
+            autoPlay
+            preload="metadata"
+          />
           <DemoVideo
             className="showreel-frame"
             src="/assets/video/donna-hero-loop.mp4"

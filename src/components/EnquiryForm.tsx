@@ -1,4 +1,16 @@
 import { useRef, useState } from 'react'
+import { FadeUp } from '@/components/amicro/fade-up'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { Textarea } from '@/components/ui/textarea'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
 
 const WEBHOOK = 'https://hook.eu1.make.com/waciaz78ykdmfaxh4glg6vdhjjqi4jh5'
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
@@ -12,7 +24,10 @@ type State = 'idle' | 'sending' | 'error' | 'done'
 type Variant = 'donna' | 'contact'
 
 /** Same webhook, same validation, same copy as the static build — the only
- *  change is that React owns the state instead of replaceWith(). */
+ *  change is that React owns the state instead of replaceWith(). Fields are
+ *  now shadcn primitives; the practice-management select can't ride along in
+ *  FormData the way a native <select> did, so its value is tracked separately
+ *  and merged into the payload at submit time. */
 export default function EnquiryForm({
   variant = 'donna',
   source,
@@ -20,6 +35,7 @@ export default function EnquiryForm({
   const form = useRef<HTMLFormElement>(null)
   const [state, setState] = useState<State>('idle')
   const [note, setNote] = useState('')
+  const [pms, setPms] = useState('')
 
   const fail = (message: string, field?: HTMLElement | null) => {
     setState('error')
@@ -37,6 +53,7 @@ export default function EnquiryForm({
 
     el.querySelectorAll('[aria-invalid]').forEach((n) => n.removeAttribute('aria-invalid'))
     const data = Object.fromEntries(new FormData(el).entries()) as Record<string, string>
+    data.pms = pms
 
     if (!data.name) return fail('Add your name so we know who we are replying to.', el.elements.namedItem('name') as HTMLElement)
     if (!data.email || !EMAIL.test(data.email)) {
@@ -65,40 +82,66 @@ export default function EnquiryForm({
 
   if (state === 'done') {
     return (
-      <div className="enq-done">
-        <h3>Enquiry received.</h3>
-        <p>We will be in touch within 24 hours.</p>
-      </div>
+      <FadeUp yOffset={12} duration={0.5}>
+        <div className="enq-done">
+          <h3>Enquiry received.</h3>
+          <p>We will be in touch within 24 hours.</p>
+        </div>
+      </FadeUp>
     )
   }
 
   return (
     <form className="enq" id="enq" ref={form} noValidate onSubmit={onSubmit}>
-      <label>Name<input name="name" type="text" autoComplete="name" required /></label>
-      <label>Email<input name="email" type="email" autoComplete="email" required /></label>
+      <div className="enq-field">
+        <Label htmlFor="enq-name">Name</Label>
+        <Input id="enq-name" name="name" type="text" autoComplete="name" required />
+      </div>
+      <div className="enq-field">
+        <Label htmlFor="enq-email">Email</Label>
+        <Input id="enq-email" name="email" type="email" autoComplete="email" required />
+      </div>
       {variant === 'donna' && (
-        <label>Phone<input name="phone" type="tel" autoComplete="tel" placeholder="+61 4xx xxx xxx" /></label>
+        <div className="enq-field">
+          <Label htmlFor="enq-phone">Phone</Label>
+          <Input id="enq-phone" name="phone" type="tel" autoComplete="tel" placeholder="+61 4xx xxx xxx" />
+        </div>
       )}
-      <label>Firm<input name="firm" type="text" autoComplete="organization" /></label>
-      <label>
-        Practice management system
-        <select name="pms" defaultValue="">
-          <option value="">Select one</option>
-          {PMS.map((p) => <option key={p}>{p}</option>)}
-          {variant === 'contact' && <option>None yet</option>}
-        </select>
-      </label>
+      <div className="enq-field">
+        <Label htmlFor="enq-firm">Firm</Label>
+        <Input id="enq-firm" name="firm" type="text" autoComplete="organization" />
+      </div>
+      <div className="enq-field">
+        <Label htmlFor="enq-pms">Practice management system</Label>
+        <Select value={pms} onValueChange={setPms}>
+          <SelectTrigger id="enq-pms">
+            <SelectValue placeholder="Select one" />
+          </SelectTrigger>
+          <SelectContent>
+            {PMS.map((p) => (
+              <SelectItem key={p} value={p}>{p}</SelectItem>
+            ))}
+            {variant === 'contact' && <SelectItem value="None yet">None yet</SelectItem>}
+          </SelectContent>
+        </Select>
+      </div>
       {variant === 'donna' ? (
-        <label>Area of law<input name="area" type="text" /></label>
+        <div className="enq-field">
+          <Label htmlFor="enq-area">Area of law</Label>
+          <Input id="enq-area" name="area" type="text" />
+        </div>
       ) : (
-        <label>What is taking up the time?<textarea name="message" rows={4} /></label>
+        <div className="enq-field">
+          <Label htmlFor="enq-message">What is taking up the time?</Label>
+          <Textarea id="enq-message" name="message" rows={4} />
+        </div>
       )}
       <p className="enq-note" id="enq-note" role="status" aria-live="polite" data-state={state === 'error' ? 'error' : undefined}>
         {note}
       </p>
-      <button className="btn" type="submit" id="enq-submit" aria-busy={state === 'sending'} disabled={state === 'sending'}>
+      <Button type="submit" id="enq-submit" aria-busy={state === 'sending'} disabled={state === 'sending'}>
         Send enquiry
-      </button>
+      </Button>
     </form>
   )
 }

@@ -64,44 +64,6 @@ export function initPageEffects(): () => void {
     revealVisible()
   }
 
-  /* ── figures count up once, when they arrive ─────────────────────────── */
-  const figures = Array.from(document.querySelectorAll<HTMLElement>('.n[data-to]'))
-  if (figures.length) {
-    const count = (el: HTMLElement) => {
-      const target = Number(el.getAttribute('data-to'))
-      if (!Number.isFinite(target)) return
-      if (reduced) { el.textContent = String(target); return }
-      const dur = 900
-      let start = 0
-      let done = false
-      const settle = () => { if (!done) { done = true; el.textContent = String(target) } }
-      const frame = (now: number) => {
-        if (!start) start = now
-        const t = Math.min(1, (now - start) / dur)
-        const eased = 1 - Math.pow(1 - t, 3)
-        el.textContent = String(Math.round(target * eased))
-        if (t < 1) requestAnimationFrame(frame)
-        else settle()
-      }
-      requestAnimationFrame(frame)
-    }
-    if (hasIO) {
-      const io = new IntersectionObserver(
-        (entries) =>
-          entries.forEach((e) => {
-            if (!e.isIntersecting) return
-            count(e.target as HTMLElement)
-            io.unobserve(e.target)
-          }),
-        { threshold: 0.6 },
-      )
-      figures.forEach((n) => io.observe(n))
-      teardown.push(() => io.disconnect())
-    } else {
-      figures.forEach(count)
-    }
-  }
-
   /* ── the question hero: the first three tick, the last two never do ───── */
   const ticks = Array.from(document.querySelectorAll<HTMLElement>('#checks [data-tick]'))
   if (ticks.length) {

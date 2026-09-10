@@ -1,4 +1,5 @@
 @import './tokens.css';
+@import './shadcn.css';
 @import './site.css';
 
 @tailwind base;

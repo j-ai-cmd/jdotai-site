@@ -2,6 +2,11 @@ import { useEffect, useRef } from 'react'
 import ConnectionMap from '@/components/ConnectionMap'
 import DemoVideo from '@/components/DemoVideo'
 import EnquiryForm from '@/components/EnquiryForm'
+import { FadeUp } from '@/components/amicro/fade-up'
+import { TextReveal } from '@/components/amicro/text-reveal'
+import { BrandStatTile } from '@/components/mono-charts/BrandStatTile'
+import { BrandBulletChart } from '@/components/mono-charts/BrandBulletChart'
+import { BrandGaugeRing } from '@/components/mono-charts/BrandGaugeRing'
 import { initAskLine } from '@/lib/effects'
 import { useSeo } from '@/lib/seo'
 
@@ -19,12 +24,7 @@ const QUESTIONS = [
   'Which files are ready to close?',
 ]
 
-const FIGURES = [
-  { n: 5, label: 'Practice management systems' },
-  { n: 3, label: 'AI assistants' },
-  { n: 2, label: 'Weeks from signing to live' },
-  { n: 24, label: 'Hours to hear back from us' },
-]
+const CONNECTS = { pms: 5, assistants: 3 }
 
 const FAQ = [
   {
@@ -55,33 +55,33 @@ export default function Legal() {
     <main id="main">
       <section className="open">
         <div className="narrow">
-          <h1>Ask your practice management system a question.</h1>
-          <p className="lede">
-            <span className="donna">donna</span> connects Clio, Smokeball, Actionstep, myCase and
-            LEAP to Claude and ChatGPT, so your matters answer back in plain English.
-          </p>
-          <div className="askline">
-            <span className="q" id="askq" ref={askRef} aria-live="off" />
-            <span className="go" aria-hidden="true">Ask</span>
-          </div>
-          <p className="askline-note">
-            Real questions, answered by <span className="donna">donna</span> inside your own assistant.
-          </p>
-          <div className="go">
-            <a className="btn" href="#enquire">Get donna for your firm</a>
-            <a className="btn btn--line" href="#demos">Watch the demos</a>
-          </div>
+          <TextReveal as="h1" text="Ask your practice management system a question." />
+          <FadeUp delay={0.15}>
+            <p className="lede">
+              <span className="donna">donna</span> connects Clio, Smokeball, Actionstep, myCase and
+              LEAP to Claude and ChatGPT, so your matters answer back in plain English.
+            </p>
+            <div className="askline">
+              <span className="q" id="askq" ref={askRef} aria-live="off" />
+              <span className="go" aria-hidden="true">Ask</span>
+            </div>
+            <p className="askline-note">
+              Real questions, answered by <span className="donna">donna</span> inside your own assistant.
+            </p>
+            <div className="go">
+              <a className="btn" href="#enquire">Get donna for your firm</a>
+              <a className="btn btn--line" href="#demos">Watch the demos</a>
+            </div>
+          </FadeUp>
         </div>
       </section>
 
       <section className="figures" aria-label="donna in numbers">
-        <div className="in wide">
-          {FIGURES.map((f) => (
-            <div className="f" key={f.label}>
-              <p className="n" data-to={f.n}>{f.n}</p>
-              <p className="l">{f.label}</p>
-            </div>
-          ))}
+        <div className="in wide stat-tiles">
+          <BrandStatTile value={CONNECTS.pms} outOf={CONNECTS.pms} label="Practice management systems" />
+          <BrandStatTile value={CONNECTS.assistants} outOf={CONNECTS.assistants} label="AI assistants" />
+          <BrandBulletChart weeks={2} fromLabel="Signing" toLabel="Live" />
+          <BrandGaugeRing value={24} unit="hours" label="to hear back — every time" />
         </div>
       </section>
 

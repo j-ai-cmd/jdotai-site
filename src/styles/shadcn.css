@@ -1,0 +1,43 @@
+/* shadcn/ui variable bridge.
+ *
+ * shadcn components reference a fixed set of names (--background, --primary,
+ * --border …). Rather than let its init write a stone-grey palette in here,
+ * every one of them is mapped onto the three colours already declared in
+ * tokens.css. No raw colour value appears in this file — a shadcn button
+ * comes out wine, on paper, in Libre Franklin, because it can't come out
+ * any other way.
+ *
+ * If a shadcn component ever looks off-brand, the fix belongs in tokens.css.
+ */
+:root{
+  --background:var(--paper);
+  --foreground:var(--ink);
+
+  --card:var(--paper);
+  --card-foreground:var(--ink);
+  --popover:var(--paper);
+  --popover-foreground:var(--ink);
+
+  --primary:var(--wine);
+  --primary-foreground:var(--on-wine);
+
+  --secondary:var(--sunk);
+  --secondary-foreground:var(--ink);
+
+  --muted:var(--sunk);
+  --muted-foreground:var(--ink-muted);
+
+  --accent:var(--sunk);
+  --accent-foreground:var(--ink);
+
+  /* No destructive colour exists in the three. Wine carries it — the system
+     has one accent and borrowing a red from outside would break gate 48. */
+  --destructive:var(--wine-hover);
+  --destructive-foreground:var(--on-wine);
+
+  --border:var(--rule);
+  --input:var(--rule);
+  --ring:var(--wine);
+
+  --radius:var(--r-md);
+}
