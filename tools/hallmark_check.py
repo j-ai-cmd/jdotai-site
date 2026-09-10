@@ -21,14 +21,41 @@ def read(p):
     f = ROOT / p
     return f.read_text() if f.exists() else ""
 
-# every page the site actually serves, including generated article pages
-HTML_FILES = ["index.html", "legal/index.html", "blog/index.html", "contact/index.html"] + \
-    sorted(str(p.relative_to(ROOT)) for p in (ROOT / "blog").glob("*/index.html"))
-html = "".join(read(f) for f in HTML_FILES)
-site_css = read("assets/css/site.css")
-tokens_css = read("assets/css/tokens.css")
+# Every page the site actually serves. Since the React port these are the
+# prerendered files in dist/ — which is a better input than the old
+# hand-written HTML, because it is literally what ships to a reader. The build
+# must have run; `npm run build` is the gate's precondition.
+DIST = ROOT / "dist"
+# dist/legacy is the preserved pre-React site, kept so the old design stays
+# viewable. It is not what this build ships and is not graded.
+HTML_FILES = sorted(
+    str(p.relative_to(ROOT))
+    for p in DIST.rglob("index.html")
+    if "legacy" not in p.parts and "server" not in p.parts
+)
+if (DIST / "404.html").exists():
+    HTML_FILES.append(str((DIST / "404.html").relative_to(ROOT)))
+
+if not HTML_FILES:
+    raise SystemExit(
+        "No prerendered HTML found in dist/.\n"
+        "hallmark_check grades what ships, so build first:  npm run build"
+    )
+
+html_pages = [(f, read(f)) for f in HTML_FILES]
+html = "".join(s for _, s in html_pages)
+
+# CSS is read from source, not from the bundle: the token-block gates need the
+# authored :root block, and the bundler rewrites/minifies it out of shape.
+site_css = read("src/styles/site.css")
+tokens_css = read("src/styles/tokens.css")
 css = tokens_css + "\n" + site_css
-js = "".join(read(p) for p in ["assets/js/site.js", "assets/js/enquiry.js"])
+
+# The behaviour that used to live in assets/js now lives in the components.
+js = "".join(
+    read(str(p.relative_to(ROOT)))
+    for p in sorted((ROOT / "src").rglob("*.ts*"))
+)
 
 def strip_comments(s):
     return re.sub(r'/\*.*?\*/', '', s, flags=re.S)
@@ -147,9 +174,28 @@ gate(56, "no two sticky-at-top:0 elements", len(stickies) <= 1, f"{stickies}")
 nowrap = 'white-space:nowrap' in flat
 gate(49, "clickable text cannot wrap", nowrap, "buttons/nav declare nowrap")
 
-measures = [int(m) for m in re.findall(r'max-width:\s*(\d+)ch', css_code)]
-bad_measure = [m for m in measures if not (45 <= m <= 75)]
-gate(25, "prose measures inside 45-75ch", not bad_measure, f"outside: {bad_measure}")
+# 45–75ch is a *prose* rule. Display type wants the opposite — a heading held
+# to 14–20ch is deliberate, and the previous version of this gate failed the
+# build for every one of them. Only selectors that actually carry running text
+# are measured; headings are checked against their own ceiling.
+PROSE_SEL = re.compile(r'(^|[\s,>])(p\b|li\b|dd\b|figcaption\b|\.prose|\.lede|\.ans|\.card-meta)')
+HEAD_SEL = re.compile(r'(^|[\s,>])(h[1-4]\b|\.donna-logo|\.mark)')
+
+prose_bad, head_bad = [], []
+for rule in re.finditer(r'([^{}]+)\{([^}]*)\}', css_code):
+    sel, body = rule.group(1).strip(), rule.group(2)
+    for m in re.findall(r'max-width:\s*(\d+)ch', body):
+        n = int(m)
+        if HEAD_SEL.search(sel):
+            # A display line past ~28ch stops being a headline and becomes prose.
+            if n > 28:
+                head_bad.append(f"{sel.splitlines()[-1].strip()[:40]}={n}ch")
+        elif PROSE_SEL.search(sel):
+            if not (45 <= n <= 75):
+                prose_bad.append(f"{sel.splitlines()[-1].strip()[:40]}={n}ch")
+
+gate(25, "prose measures inside 45-75ch", not prose_bad, f"outside: {prose_bad}")
+gate("25b", "display measures stay under 28ch", not head_bad, f"over: {head_bad}")
 
 # ─────────────────────────── motion / interaction ───────────────────────────
 gate(10, "no transition-all",
@@ -206,8 +252,16 @@ gate(42, "nav is not the AI default (4-5 links + button)",
      len(re.findall(r'<nav[^>]*>.*?</nav>', html, re.S)) > 0
      and max([len(re.findall(r'<a ', n)) for n in re.findall(r'<nav[^>]*>(.*?)</nav>', html, re.S)] or [0]) <= 3,
      "")
-gate(43, "footer is not 4 link columns + social row",
-     not re.search(r'<footer.*?(Product|Company|Resources|Legal).*?</footer>', html, re.S), "")
+# Checked per page, not against the concatenation: joining every page into one
+# string let a <footer> in one file pair with a nav word in the next and a
+# </footer> two files later, which failed this gate on a footer that has never
+# had a link column in it.
+_ft_hits = [
+    f"{f}:{m.group(1)}"
+    for f, s in html_pages
+    if (m := re.search(r'<footer.*?(Product|Company|Resources|Legal).*?</footer>', s, re.S))
+]
+gate(43, "footer is not 4 link columns + social row", not _ft_hits, f"{_ft_hits[:3]}")
 
 # ─────────────────────────── content honesty ────────────────────────────────
 gate(19, "no placeholder names / startup clichés",
@@ -272,6 +326,14 @@ used_cls |= set(re.findall(r"className\s*=\s*'([\w-]+)'", js))
 used_cls |= set(re.findall(r"'([\w-]+ [\w-]+)'", js))
 used_cls |= {c for chunk in re.findall(r"className\s*=\s*([^;]+);", js)
              for c in re.findall(r"'\s*([\w-]+)\s*'", chunk)}
+
+# Since the React port, most markup never appears in a class="..." string in
+# source — it is JSX. Classes reachable only at runtime (a form's success
+# state, a Suspense fallback, a scroll-activated stage) are real usages that
+# no amount of scanning the prerendered HTML will find.
+used_cls |= {c for v in re.findall(r'className\s*=\s*"([^"]+)"', js) for c in v.split()}
+used_cls |= {c for v in re.findall(r'className\s*=\s*\{`([^`]+)`\}', js) for c in re.findall(r'[\w-]+', v)}
+used_cls |= {c for v in re.findall(r"className=\{[^}]*\?\s*'([^']+)'\s*:\s*'([^']*)'", js) for c in ' '.join(v).split()}
 used_cls |= {'js'}
 dead_cls = sorted(c for c in defined_cls - used_cls if not c.endswith('css'))
 gate("clean-css", "no dead CSS classes", not dead_cls, f"{dead_cls}")

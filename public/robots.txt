@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+# The pre-React site, kept online so the old design stays viewable.
+# It duplicates every page and must never be indexed alongside the live one.
+Disallow: /legacy/
+
+Sitemap: https://jdotai.com/sitemap.xml
