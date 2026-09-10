@@ -12,6 +12,11 @@ interface TextRevealProps {
   as?: 'div' | 'h1' | 'h2' | 'h3';
 }
 
+// Same no-JS guard as fade-up.tsx: without it, a failed or still-loading JS
+// bundle leaves every heading built with TextReveal permanently masked by
+// its own overflow-hidden clip — the registry's variants have no fallback.
+const hasJs = typeof document !== 'undefined' && document.documentElement.classList.contains('js');
+
 export function TextReveal({
   text,
   duration = 0.8,
@@ -49,7 +54,7 @@ export function TextReveal({
   return (
     <Container
       variants={containerVariants}
-      initial="hidden"
+      initial={hasJs ? 'hidden' : 'visible'}
       whileInView="visible"
       viewport={{ once: true, margin: '-20%' }}
       className={`flex flex-col ${className}`}
