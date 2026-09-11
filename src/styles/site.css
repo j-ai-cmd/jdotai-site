@@ -95,12 +95,12 @@ h3{font-size:var(--t-h3);letter-spacing:-.02em;line-height:1.2}
   height:4.25rem;display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:center;
 }
 .nav__brand{
-  grid-column:1;justify-self:start;font-family:var(--fd);font-weight:700;font-size:1.0625rem;
+  grid-column:1;justify-self:start;font-family:var(--fd);font-weight:700;font-size:var(--t-h4);
   letter-spacing:-.04em;text-decoration:none;white-space:nowrap;color:inherit;
 }
 .nav__brand i{font-style:normal;color:var(--wine)}
 .nav__center{
-  grid-column:2;justify-self:center;display:flex;gap:2rem;font-size:.9375rem;
+  grid-column:2;justify-self:center;display:flex;gap:2rem;font-size:var(--t-small);
   color:inherit;opacity:.7;
 }
 .nav__link{text-decoration:none;padding:.3rem 0;white-space:nowrap;color:inherit;
@@ -118,7 +118,7 @@ h3{font-size:var(--t-h3);letter-spacing:-.02em;line-height:1.2}
   display:inline-flex;align-items:center;justify-content:center;
   min-height:2.5rem;padding:.6rem 1.25rem;border-radius:999px;
   border:1px solid var(--wine);background:var(--wine);color:var(--on-wine);
-  font-family:var(--fb);font-size:.9375rem;font-weight:500;
+  font-family:var(--fb);font-size:var(--t-small);font-weight:500;
   text-decoration:none;white-space:nowrap;cursor:pointer;
   transition:background var(--dur) var(--ease),border-color var(--dur) var(--ease),
              opacity var(--dur) var(--ease);
@@ -146,13 +146,13 @@ h3{font-size:var(--t-h3);letter-spacing:-.02em;line-height:1.2}
    product sitting directly under the headline, not decoration. Lost its
    styling in the redesign pass; restored here rather than as bare text. */
 .askline{
-  margin-top:2rem;max-width:34rem;display:flex;align-items:center;gap:.75rem;
+  margin-top:2rem;margin-inline:0;max-width:34rem;display:flex;align-items:center;gap:.75rem;
   border:1px solid var(--rule);border-radius:999px;padding:.85rem 1.15rem;
   background:var(--paper);
   box-shadow:0 1px 3px color-mix(in oklab,var(--ink) 7%,transparent);
 }
 .askline .q{
-  flex:1;min-width:0;font-family:var(--fd);font-size:.9375rem;
+  flex:1;min-width:0;font-family:var(--fd);font-size:var(--t-small);
   color:var(--ink-body);white-space:nowrap;overflow:hidden;
 }
 .askline .caret{
@@ -162,7 +162,7 @@ h3{font-size:var(--t-h3);letter-spacing:-.02em;line-height:1.2}
 @keyframes caret{50%{opacity:0}}
 .askline .go{
   flex:none;background:var(--wine);color:var(--on-wine);border-radius:999px;
-  padding:.4rem .95rem;font-family:var(--fd);font-size:.8125rem;font-weight:500;
+  padding:.4rem .95rem;font-family:var(--fd);font-size:var(--t-micro);font-weight:500;
 }
 @media (max-width:34rem){
   .askline{border-radius:var(--r-lg);flex-wrap:wrap}
@@ -176,39 +176,48 @@ h3{font-size:var(--t-h3);letter-spacing:-.02em;line-height:1.2}
    Studied from harvey.ai: a real SaaS sequence, not a single essay. Each
    section owns its own width and padding on purpose — the rhythm is meant
    to feel dense and varied, the opposite of the previous pass. */
+/* Section rhythm is deliberately uneven — that is the whole point of having
+   three padding tokens. Every content section had defaulted to --pad-loose,
+   which flattened the page into one evenly-spaced stack. --pad-loose is now
+   reserved for the sections that open and close the page; the middle of the
+   page breathes at two other rates. */
 .section{padding-block:var(--pad-loose)}
+.section--mid{padding-block:var(--pad-mid)}
+.section--tight{padding-block:var(--pad-tight)}
 .section--tint{background:var(--sunk)}
 .section--top{border-top:1px solid var(--rule)}
 .section-in{max-width:var(--w-wide);margin:0 auto;padding-inline:var(--gut)}
 .section-in--mid{max-width:var(--w-mid)}
 .section-head{max-width:36rem;margin:0 0 2.5rem}
-.section-head.center{margin-inline:auto;text-align:center}
 .section-head h2{max-width:20ch}
-.section-head.center h2{margin-inline:auto}
-
 /* hero — dark, full-bleed, studied from lex-ops.io: a near-black band, not
    another light section, is what actually reads as a different site rather
    than a rearranged one. The wine glow is the same accent the rest of the
    page uses, just used as light instead of ink — no new colour introduced.
    The demo loop breaks out of the band's bottom edge into the light section
    beneath it (lex-ops' console screenshot does the same against its hero). */
+/* Left-aligned, not centred. A four-line display headline set centre gives
+   every line a different width and the block reads as a ragged diamond; ranged
+   left it reads as one edge. The column is also wider now (44rem held the
+   headline to four lines in the first place). */
 .hero-dark{
   position:relative;overflow:hidden;background:var(--ink);color:var(--paper);
   padding-block:clamp(6.5rem,13vw,9rem) clamp(8rem,16vw,11rem);
-  text-align:center;
+  text-align:start;
 }
-.hero-dark::before{
-  content:"";position:absolute;inset:0;pointer-events:none;
-  background:
-    radial-gradient(ellipse 60% 50% at 15% 0%,color-mix(in oklab,var(--wine) 55%,transparent),transparent 60%),
-    radial-gradient(ellipse 50% 40% at 100% 100%,color-mix(in oklab,var(--wine) 35%,transparent),transparent 65%);
-  opacity:.55;
+.hero-dark::after{
+  content:"";position:absolute;left:0;right:0;bottom:0;height:1px;
+  background:color-mix(in oklab,var(--wine) 60%,transparent);
+  pointer-events:none;
 }
-.hero-dark__in{position:relative;max-width:44rem;margin:0 auto;padding-inline:var(--gut)}
+.hero-dark__in{position:relative;max-width:52rem;margin:0 auto;padding-inline:var(--gut)}
 .hero-dark h1{max-width:18ch;margin-inline:auto;color:var(--paper)}
-.hero-dark .lede{color:color-mix(in oklab,var(--paper) 74%,var(--ink));margin:1.25rem auto 0;max-width:46ch;text-align:center}
-.hero-dark .askline{margin-inline:auto;box-shadow:0 12px 32px -12px color-mix(in oklab,var(--ink) 60%,transparent)}
-.hero-dark .go{justify-content:center}
+.hero-dark .lede{color:color-mix(in oklab,var(--paper) 74%,var(--ink));margin:1.5rem 0 0;max-width:52ch;text-align:start}
+/* Ranged left with the headline and the lede. This rule used to re-centre
+   it, which left the one interactive element in the hero floating out of
+   line with everything above and below it. */
+.hero-dark .askline{margin-inline:0;box-shadow:0 12px 32px -12px color-mix(in oklab,var(--ink) 60%,transparent)}
+.hero-dark .go{justify-content:flex-start}
 
 /* the clip — pulled up over the dark band's bottom edge by design, framed
    in paper so the seam between the two surfaces reads as intentional. */
@@ -230,7 +239,7 @@ h3{font-size:var(--t-h3);letter-spacing:-.02em;line-height:1.2}
   padding-block:var(--pad-tight);border-block:1px solid var(--rule);background:var(--sunk);
 }
 .trust__caption{
-  font-family:var(--fd);font-size:.875rem;color:var(--ink-muted);margin:0 0 1.25rem;
+  font-family:var(--fd);font-size:var(--t-meta);color:var(--ink-muted);margin:0 0 1.25rem;
 }
 .trust__row{display:flex;flex-wrap:wrap;gap:.6rem}
 .trust__row + .trust__row{margin-top:.6rem}
@@ -246,11 +255,11 @@ h3{font-size:var(--t-h3);letter-spacing:-.02em;line-height:1.2}
   display:inline-flex;align-items:center;justify-content:center;
   width:2rem;height:2rem;border-radius:var(--r-md);
   background:color-mix(in oklab,var(--wine) 12%,var(--paper));color:var(--wine);
-  font-family:var(--fd);font-weight:600;font-size:.8125rem;
+  font-family:var(--fd);font-weight:600;font-size:var(--t-micro);
   font-variant-numeric:tabular-nums;margin-bottom:1rem;
 }
-.problem-card h3{font-size:1.0625rem}
-.problem-card p{margin-top:.5rem;color:var(--ink-body);font-size:.9375rem;line-height:1.6}
+.problem-card h3{font-size:var(--t-h4)}
+.problem-card p{margin-top:.5rem;color:var(--ink-body);font-size:var(--t-small);line-height:1.6}
 @media (max-width:56rem){
   .problems{grid-template-columns:minmax(0,1fr)}
 }
@@ -290,8 +299,8 @@ h3{font-size:var(--t-h3);letter-spacing:-.02em;line-height:1.2}
   grid-column:span 3;display:flex;flex-direction:column;gap:.75rem;
 }
 .bento__tile--wide{grid-column:span 6}
-.bento__tile h3{font-size:1.1875rem;letter-spacing:-.015em}
-.bento__tile p{color:var(--ink-body);font-size:.9375rem;line-height:1.6}
+.bento__tile h3{font-size:var(--t-h4);letter-spacing:-.015em}
+.bento__tile p{color:var(--ink-body);font-size:var(--t-small);line-height:1.6}
 .bento__tile .cmap{margin-top:auto}
 @media (max-width:56rem){
   .bento{grid-template-columns:repeat(2,minmax(0,1fr))}
@@ -316,14 +325,9 @@ h3{font-size:var(--t-h3);letter-spacing:-.02em;line-height:1.2}
   position:relative;overflow:hidden;background:var(--ink);color:var(--paper);
   text-align:center;padding-block:var(--pad-loose);
 }
-.cta-band::before{
-  content:"";position:absolute;inset:0;pointer-events:none;
-  background:radial-gradient(ellipse 55% 60% at 85% 100%,color-mix(in oklab,var(--wine) 45%,transparent),transparent 65%);
-  opacity:.6;
-}
 .cta-band .section-in{position:relative}
 .cta-band h2{color:var(--paper);max-width:18ch;margin-inline:auto;
-  font-size:clamp(2rem,5vw,3.25rem)}
+  font-size:var(--t-statement)}
 .cta-band .go{justify-content:center;margin-top:2rem}
 
 /* ─────────── essay · the continuous read ───────────
@@ -393,12 +397,12 @@ h3{font-size:var(--t-h3);letter-spacing:-.02em;line-height:1.2}
 .stat-tile-ring--wide{width:88px;height:58px}
 .stat-tile-n{
   position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
-  font-family:var(--fd);font-weight:600;font-size:1.25rem;letter-spacing:-.03em;
+  font-family:var(--fd);font-weight:600;font-size:var(--t-h4);letter-spacing:-.03em;
   color:var(--ink);font-variant-numeric:tabular-nums;
 }
 .stat-tile-n--gauge{align-items:flex-end;padding-bottom:2px;font-size:var(--t-h3)}
-.stat-tile-caption{font-size:.9375rem;color:var(--ink-body);line-height:1.5}
-.stat-tile-caption-sub{display:block;color:var(--ink-muted);font-size:.8125rem}
+.stat-tile-caption{font-size:var(--t-small);color:var(--ink-body);line-height:1.5}
+.stat-tile-caption-sub{display:block;color:var(--ink-muted);font-size:var(--t-micro)}
 
 .stat-tile--bullet{width:100%}
 .stat-tile-bullet-head{display:flex;align-items:baseline;gap:.4rem;align-self:stretch}
@@ -406,14 +410,14 @@ h3{font-size:var(--t-h3);letter-spacing:-.02em;line-height:1.2}
   position:static;font-family:var(--fd);font-weight:600;font-size:var(--t-figure);
   line-height:1;letter-spacing:-.04em;color:var(--wine);
 }
-.stat-tile-unit{font-size:.9375rem;color:var(--ink-muted)}
+.stat-tile-unit{font-size:var(--t-small);color:var(--ink-muted)}
 .stat-tile-bullet-track{
   align-self:stretch;height:6px;border-radius:99px;background:var(--rule);overflow:hidden;
 }
 .stat-tile-bullet-fill{height:100%;width:100%;border-radius:99px}
 .stat-tile-bullet-ends{
   align-self:stretch;display:flex;justify-content:space-between;
-  font-size:.8125rem;color:var(--ink-muted);
+  font-size:var(--t-micro);color:var(--ink-muted);
 }
 
 /* treemap — real category counts, sized by opacity rather than invented
@@ -424,8 +428,8 @@ h3{font-size:var(--t-h3);letter-spacing:-.02em;line-height:1.2}
   padding:.9rem 1rem;display:flex;flex-direction:column;justify-content:space-between;
   min-height:5.5rem;gap:1.5rem;
 }
-.treemap__name{font-size:.8125rem;font-weight:600;line-height:1.25}
-.treemap__n{font-family:var(--fd);font-size:1.375rem;font-weight:600;
+.treemap__name{font-size:var(--t-micro);font-weight:600;line-height:1.25}
+.treemap__n{font-family:var(--fd);font-size:var(--t-h3);font-weight:600;
   color:var(--on-wine-muted);font-variant-numeric:tabular-nums;letter-spacing:-.02em}
 
 /* step flow — a real 3-stage process, connected by a line, not a metric */
@@ -435,9 +439,9 @@ h3{font-size:var(--t-h3);letter-spacing:-.02em;line-height:1.2}
 .step-flow__n{
   flex:none;width:1.75rem;height:1.75rem;border-radius:50%;background:var(--wine);color:var(--on-wine);
   display:flex;align-items:center;justify-content:center;font-family:var(--fd);
-  font-weight:600;font-size:.8125rem;font-variant-numeric:tabular-nums;
+  font-weight:600;font-size:var(--t-micro);font-variant-numeric:tabular-nums;
 }
-.step-flow__body{color:var(--ink-body);font-size:.9375rem;line-height:1.6}
+.step-flow__body{color:var(--ink-body);font-size:var(--t-small);line-height:1.6}
 .step-flow__body b{display:block;color:var(--ink);font-weight:600;margin-bottom:.15rem}
 
 /* ─────────── connection map ───────────
@@ -449,12 +453,12 @@ h3{font-size:var(--t-h3);letter-spacing:-.02em;line-height:1.2}
   opacity:.34;vector-effect:non-scaling-stroke;
 }
 .cmap-node{
-  font-family:var(--fd);font-size:15px;font-weight:500;
+  font-family:var(--fd);font-size:var(--t-small);font-weight:500;
   fill:var(--ink-body);letter-spacing:-.01em;
 }
 .cmap-hub{fill:var(--wine)}
 .cmap-hub-name{
-  font-family:var(--fd-donna);font-size:19px;
+  font-family:var(--fd-donna);font-size:var(--t-h4);
   fill:var(--on-wine);letter-spacing:-.01em;
 }
 @media (max-width:48rem){
@@ -465,10 +469,10 @@ h3{font-size:var(--t-h3);letter-spacing:-.02em;line-height:1.2}
 form.enq{background:var(--sunk);border:1px solid var(--rule);border-radius:var(--r-lg);
   padding:clamp(1.5rem,3vw,2rem);display:grid;gap:1rem}
 .enq-field{display:grid;gap:.4rem}
-.enq-field label{font-size:.875rem;font-weight:500;color:var(--ink-body)}
+.enq-field label{font-size:var(--t-meta);font-weight:500;color:var(--ink-body)}
 .enq-field input,.enq-field textarea,.enq-field button[role="combobox"]{font-family:var(--fb)}
 .enq-field input[aria-invalid="true"]{border-color:var(--wine)}
-.enq-note{font-size:.875rem;color:var(--ink-muted);min-height:1.25rem}
+.enq-note{font-size:var(--t-meta);color:var(--ink-muted);min-height:1.25rem}
 .enq-note[data-state="error"]{color:var(--wine)}
 .enq-done{padding:2.5rem 1rem;text-align:center}
 .enq-done h3{margin-bottom:.5rem}
@@ -478,7 +482,7 @@ form.enq{background:var(--sunk);border:1px solid var(--rule);border-radius:var(-
 .faq-item button{
   font-family:var(--fd);font-weight:500;font-size:var(--t-h3);letter-spacing:-.02em;
 }
-.faq-item p{color:var(--ink-body);font-size:.9375rem;line-height:1.65;max-width:60ch}
+.faq-item p{color:var(--ink-body);font-size:var(--t-small);line-height:1.65;max-width:60ch}
 
 /* ─────────── blog index ─────────── */
 .cards{list-style:none;margin:0;padding:0;display:grid;gap:1px;
@@ -489,9 +493,9 @@ form.enq{background:var(--sunk);border:1px solid var(--rule);border-radius:var(-
   text-decoration:none;color:inherit;
   transition:background var(--dur) var(--ease)}
 a.card-in:hover{background:var(--sunk)}
-.card h3{font-size:1.0625rem;letter-spacing:-.02em;line-height:1.3;margin-bottom:.6rem}
+.card h3{font-size:var(--t-h4);letter-spacing:-.02em;line-height:1.3;margin-bottom:.6rem}
 a.card-in:hover h3{color:var(--wine)}
-.card-meta{font-family:var(--fd);font-size:.8125rem;color:var(--ink-muted);
+.card-meta{font-family:var(--fd);font-size:var(--t-micro);color:var(--ink-muted);
   font-variant-numeric:tabular-nums;display:flex;align-items:center;gap:.5rem}
 .card--scheduled .card-in{opacity:.62}
 .card--scheduled h3{font-weight:500}
@@ -523,23 +527,23 @@ a.card-in:hover h3{color:var(--wine)}
   font-family:var(--fd);font-weight:500;
   transition:color var(--dur) var(--ease)}
 .more a:hover{color:var(--wine)}
-.more .dir{display:block;font-size:.75rem;letter-spacing:.06em;
+.more .dir{display:block;font-size:var(--t-micro);letter-spacing:.06em;
   color:var(--ink-muted);margin-bottom:.3rem;font-weight:500}
 
 /* ─────────── footer · Ft1 mast-headed, plain ─────────── */
 .foot-simple{border-top:1px solid var(--rule);padding-block:var(--pad-tight) var(--pad-tight)}
 .foot-simple__grid{
   display:grid;gap:2rem;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr) minmax(0,1fr);
-  font-family:var(--fd);font-size:.9375rem;
+  font-family:var(--fd);font-size:var(--t-small);
 }
-.foot-simple .wm{font-weight:700;letter-spacing:-.04em;font-size:1.0625rem}
+.foot-simple .wm{font-weight:700;letter-spacing:-.04em;font-size:var(--t-h4)}
 .foot-simple .muted{margin-top:.4rem;color:var(--ink-muted)}
 .foot-simple__grid nav,.foot-simple__grid > div:last-child{display:flex;flex-direction:column;gap:.6rem}
 .foot-simple a{text-decoration:none;color:var(--ink-body);transition:color var(--dur) var(--ease)}
 .foot-simple a:hover{color:var(--wine)}
 .foot-simple__cp{
   max-width:var(--w-wide);margin:2.5rem auto 0;padding-inline:var(--gut);
-  color:var(--ink-muted);font-size:.8125rem;
+  color:var(--ink-muted);font-size:var(--t-micro);
 }
 @media (max-width:40rem){
   .foot-simple__grid{grid-template-columns:minmax(0,1fr)}
