@@ -227,6 +227,7 @@ export default function Home() {
             <figure className="figure figure--reel">
               <video
                 src="/assets/video/process-reel.mp4"
+                poster="/assets/video/process-reel-poster.png"
                 muted
                 playsInline
                 autoPlay
