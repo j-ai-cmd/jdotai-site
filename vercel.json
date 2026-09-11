@@ -3,6 +3,9 @@
   "outputDirectory": "dist",
   "cleanUrls": true,
   "trailingSlash": true,
+  "redirects": [
+    { "source": "/legal", "destination": "/#donna", "permanent": true }
+  ],
   "headers": [
     {
       "source": "/assets/(.*)",

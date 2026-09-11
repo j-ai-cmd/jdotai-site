@@ -4,7 +4,7 @@ import { Magnetic } from '@/components/amicro/magnetic'
 import { Button } from '@/components/ui/button'
 
 const LINKS = [
-  { to: '/legal', label: 'donna', end: false },
+  { to: '/#donna', label: 'donna', end: true },
   { to: '/blog', label: 'Blogs', end: false },
 ]
 

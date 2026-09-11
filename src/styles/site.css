@@ -1,16 +1,19 @@
-/* Hallmark · macrostructure: Long Document · genre: modern-minimal · theme: custom
- * paper #FBFAF8 · ink #171412 · accent wine #6E2434 · type: Geist (single family) + Fraunces (donna outlier)
+/* Hallmark · macrostructure: studied-DNA (source: url, harvey.ai) · genre: modern-minimal
+ * theme: custom · paper #FBFAF8 · ink #171412 · accent wine #6E2434
+ * type: Geist (single family) + Fraunces (donna outlier)
  * nav: N1b canonical SaaS three-section · footer: Ft5 Statement
- * enrichment: inline figures — demo video, a hand-built connection diagram, and
- * six real-data charts sit inside the running prose like a long-read's own
- * illustrations, never as a bolted-on dashboard section.
- * Was Narrative Workflow (numbered stages) · N5 floating pill · Ft4 colophon —
- * replaced outright at the user's request, not layered on top of it.
+ * studied DNA: dense SaaS sequence — split hero, trust bar of integration
+ * badges, bento feature grid, full-width stat band, tabbed demo, process,
+ * connection diagram, FAQ, closing CTA. Adapted honestly: Harvey's customer
+ * logos become donna's real PMS/assistant integrations (nothing invented);
+ * Harvey has no testimonials here because donna has none to show yet.
+ * Second full pass on this project — was Long Document (continuous essay)
+ * before that, Narrative Workflow before that. Replaced outright each time
+ * at the user's explicit request: "one page, loads of elements."
  * No eyebrows, no section numbering, no uppercase micro-labels anywhere.
- * Motion: reading-progress · one page-load reveal per element · a magnetic
- * CTA · one figure-reveal voice for charts/video · one character-emphasis
- * moment, in the footer, since it is the one element every page shares.
- * pre-emit critique: P5 H4 E5 S4 R5 V5
+ * Motion: reading-progress · page-load reveals · a magnetic CTA · one
+ * figure-reveal voice for charts/video · one character-emphasis moment.
+ * pre-emit critique: P4 H4 E5 S4 R3 V4
  */
 
 /* ─────────── base ─────────── */
@@ -62,7 +65,7 @@ h3{font-size:var(--t-h3);letter-spacing:-.02em;line-height:1.2}
    third body font. */
 .donna{font-family:var(--fd-donna);font-weight:400;
   letter-spacing:-.01em;color:var(--wine);font-style:normal}
-.nav .donna,.foot-stmt .donna{color:inherit}
+.nav .donna,.foot-stmt .donna,.cta-band .donna{color:inherit}
 
 /* ─────────── reading progress ─────────── */
 .reading-progress{
@@ -115,6 +118,8 @@ h3{font-size:var(--t-h3);letter-spacing:-.02em;line-height:1.2}
 .btn:hover{background:var(--wine-hover);border-color:transparent}
 .btn:active{transform:translateY(1px)}
 .btn[disabled],.btn[aria-busy="true"]{opacity:.55;cursor:default;pointer-events:none}
+.btn--line{background:transparent;color:var(--ink);border-color:var(--ink)}
+.btn--line:hover{background:var(--ink);color:var(--paper);border-color:var(--ink)}
 
 /* an inline typographic CTA — the Long Document voice for a call to action
    that lives inside a sentence, not a separate block. */
@@ -159,6 +164,88 @@ h3{font-size:var(--t-h3);letter-spacing:-.02em;line-height:1.2}
   .askline .caret{animation:none}
 }
 
+/* ─────────── one-page sections (Home) ───────────
+   Studied from harvey.ai: a real SaaS sequence, not a single essay. Each
+   section owns its own width and padding on purpose — the rhythm is meant
+   to feel dense and varied, the opposite of the previous pass. */
+.section{padding-block:var(--pad-loose)}
+.section--tint{background:var(--sunk)}
+.section--top{border-top:1px solid var(--rule)}
+.section-in{max-width:var(--w-wide);margin:0 auto;padding-inline:var(--gut)}
+.section-in--mid{max-width:var(--w-mid)}
+.section-head{max-width:36rem;margin:0 0 2.5rem}
+.section-head.center{margin-inline:auto;text-align:center}
+.section-head h2{max-width:20ch}
+.section-head.center h2{margin-inline:auto}
+
+/* hero — split diptych: statement + proof on one side, the product running
+   on the other. Harvey leads with a headline and a screenshot; this is the
+   same shape with donna's own real demo loop instead of a static capture. */
+.hero{
+  padding-block:clamp(6.5rem,13vw,9.5rem) var(--pad-loose);
+  display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+  gap:clamp(2rem,5vw,4rem);align-items:center;
+}
+.hero h1{max-width:16ch}
+.hero .lede{margin-top:1.5rem}
+.hero .go{margin-top:2rem;display:flex;gap:.75rem;flex-wrap:wrap}
+.hero-media{position:relative}
+.hero-media video{border-radius:var(--r-lg)}
+@media (max-width:64rem){
+  .hero{grid-template-columns:minmax(0,1fr)}
+}
+
+/* trust bar — what donna actually connects to, presented the way a logo
+   wall would be. Real integration partners, not customers; nothing here is
+   a claim, just an inventory. */
+.trust{
+  padding-block:var(--pad-tight);border-block:1px solid var(--rule);background:var(--sunk);
+}
+.trust__caption{
+  font-family:var(--fd);font-size:.875rem;color:var(--ink-muted);margin:0 0 1.25rem;
+}
+.trust__row{display:flex;flex-wrap:wrap;gap:.6rem}
+.trust__row + .trust__row{margin-top:.6rem}
+
+/* bento — mixed-span feature grid. Never three equal columns: the middle
+   tile runs taller to hold the connection diagram, breaking the rhythm the
+   way layout-and-space.md asks for. */
+.bento{
+  display:grid;gap:1px;background:var(--rule);border:1px solid var(--rule);
+  border-radius:var(--r-lg);overflow:hidden;
+  grid-template-columns:repeat(6,minmax(0,1fr));
+}
+.bento__tile{
+  background:var(--paper);padding:clamp(1.5rem,3vw,2.25rem);
+  grid-column:span 3;display:flex;flex-direction:column;gap:.75rem;
+}
+.bento__tile--wide{grid-column:span 6}
+.bento__tile h3{font-size:1.1875rem;letter-spacing:-.015em}
+.bento__tile p{color:var(--ink-body);font-size:.9375rem;line-height:1.6}
+.bento__tile .cmap{margin-top:auto}
+@media (max-width:56rem){
+  .bento{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .bento__tile{grid-column:span 2}
+}
+
+/* the tabbed demo — shadcn Tabs switching between the two real product
+   loops, Harvey's "feature deep-dive" pattern with donna's own footage. */
+.demo-tabs{margin-top:2rem}
+.demo-tabs figure{margin:0}
+.demo-tabs video{
+  width:100%;height:auto;aspect-ratio:16/10;object-fit:cover;
+  border:1px solid var(--rule);border-radius:var(--r-lg);background:var(--sunk);
+}
+.demo-tabs figcaption{margin-top:.9rem;color:var(--ink-muted);font-size:var(--t-small);line-height:1.55}
+
+/* closing CTA band — full-bleed, the one place accent covers more than a
+   hairline. Harvey's footer-CTA pattern; the only wine-filled band on the
+   page, which is what makes it read as the close rather than a repeat. */
+.cta-band{background:var(--wine);color:var(--on-wine);text-align:center}
+.cta-band h2{color:var(--on-wine);max-width:18ch;margin-inline:auto;
+  font-size:clamp(2rem,5vw,3.25rem)}
+.cta-band .go{justify-content:center;margin-top:2rem}
+
 /* ─────────── essay · the continuous read ───────────
    One column, one measure, no marketing sections. Section heads emerge from
    the body flow — bold, in the same rhythm as a paragraph, never a hanging
@@ -183,10 +270,6 @@ h3{font-size:var(--t-h3);letter-spacing:-.02em;line-height:1.2}
   margin:1.75rem 0 0;padding-left:1.25rem;border-left:2px solid var(--rule);
   color:var(--ink);font-size:var(--t-lede);line-height:1.55;max-width:60ch;
 }
-
-/* the ornament — a single centred rule between movements of the essay,
-   used once or twice, never as a section-per-chapter device */
-.essay .ornament{margin:3rem auto;max-width:4rem;background:var(--rule)}
 
 /* a figure — chart, video, diagram — deliberately wider than the prose
    column. The one break in an otherwise single-column grid. */
