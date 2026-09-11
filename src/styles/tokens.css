@@ -37,17 +37,34 @@
      the same face. Fraunces remains the one outlier, donna-wordmark only —
      "Geist body, Fraunces wordmark" is typography.md's own canonical pairing
      for this exact genre. */
-  --fd:"Geist",system-ui,-apple-system,sans-serif;
-  --fb:"Geist",system-ui,-apple-system,sans-serif;
+  /* A real pairing, not one family doing both jobs. Geist sat in both slots,
+     which removed the last contrast between a heading and a paragraph — and
+     Geist is the house font of every generated startup page this year.
+     Libre Franklin is the grotesk that carries the display line; Lora is the
+     serif the body reads in. Fraunces stays on the donna wordmark only. */
+  --fd:"Libre Franklin",system-ui,-apple-system,sans-serif;
+  --fb:"Lora",Georgia,"Times New Roman",serif;
   --fd-donna:"Fraunces",Georgia,serif;
 
-  --t-display:clamp(2.5rem,6.4vw,4.75rem);
-  --t-figure:clamp(2.75rem,5.5vw,4rem);
-  --t-h2:clamp(1.75rem,3.4vw,2.625rem);
-  --t-h3:clamp(1.25rem,2vw,1.5rem);
-  --t-lede:clamp(1.125rem,1.3vw,1.3125rem);
-  --t-body:1.125rem;
-  --t-small:1rem;
+  /* The scale. Every font-size in site.css references one of these rungs —
+     a size that isn't here doesn't get invented at the call site, it gets
+     added here first. The previous build skipped that and hardcoded 17px
+     headings above 15px body, which is a 2px hierarchy.
+
+     --t-h4 and --t-meta/--t-micro are the rungs that were missing: cards
+     needed a heading smaller than h3 and a caption smaller than small, and
+     with nothing to reach for they improvised. */
+  --t-display:clamp(2.5rem,6.4vw,4.75rem);   /* 40 → 76 */
+  --t-statement:clamp(2rem,5vw,3.25rem);     /* 32 → 52 · dark closing band */
+  --t-figure:clamp(2.75rem,5.5vw,4rem);      /* 44 → 64 · numerals */
+  --t-h2:clamp(1.75rem,3.4vw,2.625rem);      /* 28 → 42 */
+  --t-h3:clamp(1.375rem,2vw,1.625rem);       /* 22 → 26 */
+  --t-h4:clamp(1.125rem,1.4vw,1.25rem);      /* 18 → 20 · card headings */
+  --t-lede:clamp(1.125rem,1.3vw,1.3125rem);  /* 18 → 21 */
+  --t-body:1.125rem;                         /* 18 */
+  --t-small:1rem;                            /* 16 · card body */
+  --t-meta:.875rem;                          /* 14 · labels, form hints */
+  --t-micro:.8125rem;                        /* 13 · badges, tabular chips */
 
   /* measure — sections deliberately do not share one width */
   --w-narrow:58rem;

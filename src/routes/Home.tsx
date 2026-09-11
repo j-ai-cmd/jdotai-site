@@ -135,7 +135,7 @@ export default function Home() {
       </section>
 
       {/* ── problems — the real pain points, numbered ───────────────── */}
-      <section className="section section--tint">
+      <section className="section section--tint section--mid">
         <div className="section-in">
           <FigureReveal>
             <div className="problems">
@@ -186,9 +186,9 @@ export default function Home() {
       </section>
 
       {/* ── stats band ───────────────────────────────────────────────── */}
-      <section className="section section--tint section--top">
+      <section className="section section--tint section--top section--mid">
         <div className="section-in section-in--mid">
-          <div className="section-head center">
+          <div className="section-head">
             <h2><span className="donna">donna</span>, by the numbers.</h2>
           </div>
           <FigureReveal>
@@ -213,9 +213,9 @@ export default function Home() {
       </section>
 
       {/* ── demo tabs ────────────────────────────────────────────────── */}
-      <section className="section" id="demo">
+      <section className="section section--tight" id="demo">
         <div className="section-in section-in--mid">
-          <div className="section-head center">
+          <div className="section-head">
             <h2>See it work.</h2>
           </div>
           <FigureReveal>
@@ -258,9 +258,9 @@ export default function Home() {
       </section>
 
       {/* ── faq ──────────────────────────────────────────────────────── */}
-      <section className="section">
+      <section className="section section--mid">
         <div className="section-in section-in--mid">
-          <div className="section-head center">
+          <div className="section-head">
             <h2>Questions.</h2>
           </div>
           <Accordion type="single" collapsible>
@@ -291,7 +291,7 @@ export default function Home() {
       {/* ── enquiry form ─────────────────────────────────────────────── */}
       <section className="section" id="enquire">
         <div className="section-in section-in--mid">
-          <div className="section-head center">
+          <div className="section-head">
             <h2>Tell us about your firm.</h2>
           </div>
           <FigureReveal>
