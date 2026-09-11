@@ -49,7 +49,7 @@ export default function Post() {
             {formatDate(post.date)}
             {post.category ? ` · ${post.category}` : ''}
           </p>
-          <p><Link className="tlink" to="/blog">&larr; All posts</Link></p>
+          <p><Link className="cta-link" to="/blog">&larr; All posts</Link></p>
         </div>
       </section>
     </main>

@@ -1,4 +1,9 @@
 import PostCards from '@/components/PostCards'
+import { FadeUp } from '@/components/amicro/fade-up'
+import { FigureReveal } from '@/components/amicro/figure-reveal'
+import { TextReveal } from '@/components/amicro/text-reveal'
+import { BrandCategoryTreemap } from '@/components/mono-charts/BrandCategoryTreemap'
+import { BrandMonthlySparkline } from '@/components/mono-charts/BrandMonthlySparkline'
 import { posts } from '@/lib/posts'
 import { useSeo } from '@/lib/seo'
 
@@ -15,17 +20,27 @@ export default function Blog() {
     <main id="main">
       <section className="open">
         <div className="narrow">
-          <h1>Blogs.</h1>
+          <TextReveal as="h1" text="Notes on AI, automation, and where the hours go." />
+        </div>
+      </section>
+
+      <div className="essay">
+        <FadeUp>
           <p className="lede">
-            Notes on AI, automation, and how small firms actually get work off their plate.
+            {posts.length} posts, written as we build — not a content calendar working backward
+            from keywords.
           </p>
-        </div>
-      </section>
-      <section className="sec">
-        <div className="in wide">
-          <PostCards posts={posts} all />
-        </div>
-      </section>
+        </FadeUp>
+
+        <FigureReveal>
+          <div className="figure chart-pair">
+            <BrandMonthlySparkline posts={posts} />
+            <BrandCategoryTreemap posts={posts} />
+          </div>
+        </FigureReveal>
+
+        <PostCards posts={posts} />
+      </div>
     </main>
   )
 }

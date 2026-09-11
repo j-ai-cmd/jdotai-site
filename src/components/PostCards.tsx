@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import { Badge } from '@/components/ui/badge'
 import type { Post } from '@/lib/posts'
 
 export function formatDate(iso: string) {
@@ -8,17 +9,19 @@ export function formatDate(iso: string) {
 
 /** A post is only linkable once its page exists. Unpublished entries render as
  *  plain items so the site never ships a link to a page that isn't there. */
-export default function PostCards({ posts, all = false }: { posts: Post[]; all?: boolean }) {
+export default function PostCards({ posts }: { posts: Post[] }) {
   return (
-    <ul className={all ? 'cards cards--all' : 'cards'}>
+    <ul className="cards">
       {posts.map((p) => {
-        const meta = `${p.published ? '' : 'Scheduled — '}${formatDate(p.date)}${
-          p.published && p.category ? ` · ${p.category}` : ''
-        }`
         const body = (
           <>
+            {p.published && p.category && (
+              <Badge variant="secondary" className="mb-2">{p.category}</Badge>
+            )}
             <h3>{p.title}</h3>
-            <p className="card-meta">{meta}</p>
+            <p className="card-meta">
+              {p.published ? formatDate(p.date) : 'Scheduled — ' + formatDate(p.date)}
+            </p>
           </>
         )
         return (

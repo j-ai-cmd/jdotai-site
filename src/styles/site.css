@@ -1,19 +1,22 @@
-/* Hallmark · macrostructure: Narrative Workflow · genre: modern-minimal · tone: austere
- * theme: custom · paper #FBFAF8 · ink #171412 · accent wine #6E2434
- * type: Libre Franklin (display) + Lora (body)
- * nav: N5 floating pill · footer: Ft4 colophon · enrichment: none (typography + real demo video)
- * No eyebrows, no section numbering. Stages are carried by a pinned heading;
- * the sequence is the reading order, not a decorative numeral.
- * Section rhythm is deliberately uneven: three widths, three paddings, three
- * divider languages (hairline / tint / colour block). Nothing shares all three.
- * Motion: count-up · scroll progress · stage reveal · pill inversion.
- * pre-emit critique: P4 H5 E4 S5 R4 V4
+/* Hallmark · macrostructure: Long Document · genre: modern-minimal · theme: custom
+ * paper #FBFAF8 · ink #171412 · accent wine #6E2434 · type: Geist (single family) + Fraunces (donna outlier)
+ * nav: N1b canonical SaaS three-section · footer: Ft5 Statement
+ * enrichment: inline figures — demo video, a hand-built connection diagram, and
+ * six real-data charts sit inside the running prose like a long-read's own
+ * illustrations, never as a bolted-on dashboard section.
+ * Was Narrative Workflow (numbered stages) · N5 floating pill · Ft4 colophon —
+ * replaced outright at the user's request, not layered on top of it.
+ * No eyebrows, no section numbering, no uppercase micro-labels anywhere.
+ * Motion: reading-progress · one page-load reveal per element · a magnetic
+ * CTA · one figure-reveal voice for charts/video · one character-emphasis
+ * moment, in the footer, since it is the one element every page shares.
+ * pre-emit critique: P5 H4 E5 S4 R5 V5
  */
 
 /* ─────────── base ─────────── */
 *{box-sizing:border-box}
 html,body{overflow-x:clip}
-html{scroll-behavior:smooth;scroll-padding-top:6rem}
+html{scroll-behavior:smooth;scroll-padding-top:5rem}
 body{
   margin:0;background:var(--paper);color:var(--ink);
   font-family:var(--fb);font-size:var(--t-body);line-height:1.65;
@@ -21,37 +24,17 @@ body{
 }
 a{color:inherit}
 p{margin:0}
+img,video{max-width:100%;display:block}
+:focus-visible{outline:2px solid var(--wine);outline-offset:3px;border-radius:var(--r-sm)}
 
-/* A single sheet of grain over the whole page. Paper is a surface, not a void;
-   at 3% it is felt rather than seen, and it stops large flat areas reading as
-   empty screen. Fixed, so it does not travel with the scroll. */
+/* A single sheet of grain over the whole page — felt, not seen, at 3%. Fixed,
+   so it does not travel with the scroll. */
 body::before{
   content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
   opacity:.035;mix-blend-mode:multiply;
   background-image:var(--grain);background-size:180px 180px;
 }
 body > *{position:relative;z-index:1}
-
-/* The frame. Two large arcs drawn down the left and right margins, holding the
-   page between them. It is generated, not an asset, it scales with the
-   viewport, and it hides itself below 64rem where there is no margin to spare.
-   Purpose: it gives the wide empty gutters something to be, and it is what
-   makes the centred column read as deliberate rather than narrow. */
-.frame{
-  position:fixed;inset:0;z-index:0;pointer-events:none;
-  display:none;
-}
-@media (min-width:64rem){ .frame{display:block} }
-.frame svg{position:absolute;top:0;height:100%;width:clamp(120px,13vw,220px)}
-.frame .l{left:0}
-.frame .r{right:0;transform:scaleX(-1)}
-.frame path{
-  fill:none;stroke:var(--wine);stroke-width:1.25;
-  opacity:.28;vector-effect:non-scaling-stroke;
-}
-.frame .hair{opacity:.14}
-img,video{max-width:100%;display:block}
-:focus-visible{outline:2px solid var(--wine);outline-offset:3px;border-radius:2px}
 
 h1,h2,h3{
   font-family:var(--fd);font-weight:500;font-style:normal;margin:0;
@@ -64,11 +47,8 @@ h3{font-size:var(--t-h3);letter-spacing:-.02em;line-height:1.2}
 
 .narrow{max-width:var(--w-narrow);margin:0 auto;padding-inline:var(--gut)}
 .mid{max-width:var(--w-mid);margin:0 auto;padding-inline:var(--gut)}
-.wide{max-width:var(--w-wide);margin:0 auto;padding-inline:var(--gut)}
 
-.lede{color:var(--ink-body);font-size:var(--t-lede);line-height:1.6;max-width:46ch}
-.prose{color:var(--ink-body);max-width:46ch}
-.prose p+p{margin-top:1rem}
+.lede{color:var(--ink-body);font-size:var(--t-lede);line-height:1.6;max-width:65ch}
 
 .skip{position:absolute;left:-9999px}
 .skip:focus{
@@ -77,58 +57,53 @@ h3{font-size:var(--t-h3);letter-spacing:-.02em;line-height:1.2}
   padding:.6rem 1rem;border-radius:999px;font-size:var(--t-small);
 }
 
-/* ─────────── nav · N5 floating pill ─────────── */
-.pill{
-  position:fixed;top:1rem;left:50%;transform:translateX(-50%);z-index:60;
-  display:flex;align-items:center;justify-content:space-between;gap:2rem;
-  padding:.5rem .5rem .5rem 1.9rem;
-  border:1px solid var(--rule);border-radius:999px;
-  background:var(--scrim);backdrop-filter:blur(12px);
-  /* a long bar rather than a content-sized chip: it spans most of the
-     measure below it, so the wordmark and the action sit at real distance */
-  width:min(66rem,calc(100vw - 2.5rem));
-  overflow:hidden;
-  transition:background var(--dur) var(--ease),border-color var(--dur) var(--ease),
-             color var(--dur) var(--ease);
-}
-/* scroll progress — fills the pill as the page is read */
-.pill::before{
-  content:"";position:absolute;inset:0;
-  transform:scaleX(var(--read,0));transform-origin:left;
-  background:color-mix(in oklab,var(--wine) 12%,transparent);
-  pointer-events:none;transition:transform .1s linear;
-}
-.pill>*{position:relative;z-index:1}
-/* inverted while the dark band is behind it */
-.pill.over-dark{
-  background:color-mix(in oklab,var(--ink) 88%,transparent);
-  border-color:color-mix(in oklab,var(--paper) 22%,transparent);
-  color:var(--paper);
-}
-.pill.over-dark .links a{color:var(--on-ink)}
-.pill.over-dark .links a:hover{color:var(--paper)}
+/* the donna wordmark — set, never drawn. Fraunces is the one outlier and
+   appears nowhere else, which is what keeps it an outlier rather than a
+   third body font. */
+.donna{font-family:var(--fd-donna);font-weight:400;
+  letter-spacing:-.01em;color:var(--wine);font-style:normal}
+.nav .donna,.foot-stmt .donna{color:inherit}
 
-.wm{
-  font-family:var(--fd);font-weight:700;font-size:1.0625rem;letter-spacing:-.04em;
-  text-decoration:none;white-space:nowrap;
+/* ─────────── reading progress ─────────── */
+.reading-progress{
+  position:fixed;top:0;left:0;right:0;height:2px;transform-origin:0%;
+  background:var(--wine);z-index:70;
 }
-.wm i{font-style:normal;color:var(--wine)}
-.pill.over-dark .wm i{color:var(--paper)}
-.pill .links{display:flex;gap:2.25rem;font-size:.9375rem;color:var(--ink-muted);
-  margin-inline:auto}
-.pill .links a{
-  text-decoration:none;padding:.3rem 0;white-space:nowrap;
-  transition:color var(--dur) var(--ease);
+
+/* ─────────── nav · N1b canonical SaaS three-section ─────────── */
+.nav{
+  position:fixed;inset:0 0 auto;z-index:60;
+  background:transparent;border-bottom:1px solid transparent;
+  transition:background var(--dur) var(--ease),border-color var(--dur) var(--ease);
 }
-.pill .links a:hover{color:var(--wine)}
-.pill .links a[aria-current]{color:var(--ink);font-weight:700}
+.nav.is-scrolled{
+  background:var(--scrim);
+  backdrop-filter:blur(14px);border-bottom-color:var(--rule);
+}
+.nav__inner{
+  max-width:var(--w-wide);margin:0 auto;padding-inline:var(--gut);
+  height:4.25rem;display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:center;
+}
+.nav__brand{
+  justify-self:start;font-family:var(--fd);font-weight:700;font-size:1.0625rem;
+  letter-spacing:-.04em;text-decoration:none;white-space:nowrap;
+}
+.nav__brand i{font-style:normal;color:var(--wine)}
+.nav__center{
+  justify-self:center;display:flex;gap:2rem;font-size:.9375rem;color:var(--ink-muted);
+}
+.nav__link{text-decoration:none;padding:.3rem 0;white-space:nowrap;
+  transition:color var(--dur) var(--ease)}
+.nav__link:hover{color:var(--wine)}
+.nav__link[aria-current]{color:var(--ink);font-weight:600}
+.nav__right{justify-self:end}
 
 /* ─────────── buttons ─────────── */
 .btn{
   display:inline-flex;align-items:center;justify-content:center;
-  min-height:2.75rem;padding:.7rem 1.4rem;border-radius:999px;
+  min-height:2.5rem;padding:.6rem 1.25rem;border-radius:999px;
   border:1px solid var(--wine);background:var(--wine);color:var(--on-wine);
-  font-family:var(--fb);font-size:var(--t-small);font-weight:500;
+  font-family:var(--fb);font-size:.9375rem;font-weight:500;
   text-decoration:none;white-space:nowrap;cursor:pointer;
   transition:background var(--dur) var(--ease),border-color var(--dur) var(--ease),
              opacity var(--dur) var(--ease);
@@ -136,411 +111,141 @@ h3{font-size:var(--t-h3);letter-spacing:-.02em;line-height:1.2}
 .btn:hover{background:var(--wine-hover);border-color:transparent}
 .btn:active{transform:translateY(1px)}
 .btn[disabled],.btn[aria-busy="true"]{opacity:.55;cursor:default;pointer-events:none}
-.btn--line{background:transparent;color:var(--ink);border-color:var(--ink)}
-.btn--line:hover{background:var(--ink);color:var(--paper);border-color:var(--ink)}
-.pill.over-dark .btn--line{color:var(--paper);border-color:var(--paper)}
-.go{margin-top:2.5rem;display:flex;gap:.75rem;flex-wrap:wrap}
 
-/* ─────────── opening · narrow measure, loose padding, no divider ─────────── */
-.open{padding-block:clamp(7rem,13vw,10rem) var(--pad-mid)}
-.open h1{max-width:15ch}
-.open .lede{margin-top:1.75rem}
+/* an inline typographic CTA — the Long Document voice for a call to action
+   that lives inside a sentence, not a separate block. */
+.cta-link{
+  color:var(--wine);text-decoration:underline;text-underline-offset:.2em;
+  text-decoration-thickness:1px;font-weight:500;white-space:nowrap;
+  transition:text-decoration-thickness var(--dur) var(--ease);
+}
+.cta-link:hover{text-decoration-thickness:2px}
 
-/* ─────────── hero · the question (home) ─────────── */
-.ask-q h1{max-width:20ch}
-.checks{
-  margin:1.75rem 0 0;padding:0;display:grid;gap:1px;background:var(--rule);
-  border:1px solid var(--rule);border-radius:var(--r-lg);overflow:hidden;
-  max-width:36rem;
-}
-.checks li{
-  list-style:none;background:var(--paper);padding:.9rem 1.15rem;
-  display:flex;align-items:center;gap:.75rem;
-  font-family:var(--fd);font-size:var(--t-small);
-  transition:color var(--dur) var(--ease);
-}
-.checks .bx{
-  width:1.1rem;height:1.1rem;border:1.5px solid var(--rule);
-  border-radius:4px;flex:none;position:relative;
-  transition:background var(--dur) var(--ease),border-color var(--dur) var(--ease);
-}
-/* the tick is drawn, so it can be animated in rather than popped */
-.checks .bx::after{
-  content:"";position:absolute;left:.32rem;top:.13rem;
-  width:.3rem;height:.58rem;border:solid var(--on-wine);
-  border-width:0 2px 2px 0;transform:rotate(42deg) scale(0);
-  transform-origin:center;transition:transform .22s var(--ease);
-}
-.checks li.on{color:var(--wine)}
-.checks li.on .bx{background:var(--wine);border-color:var(--wine)}
-.checks li.on .bx::after{transform:rotate(42deg) scale(1)}
-.ask-q .after{margin-top:1.5rem;max-width:46ch}
+/* ─────────── opener · the headline only ─────────── */
+.open{padding-block:clamp(6rem,11vw,8.5rem) 0}
+.open h1{max-width:20ch}
 
-/* ─────────── hero · the ask line (donna) ─────────── */
-.askline{
-  margin-top:1.75rem;max-width:40rem;display:flex;align-items:center;gap:.75rem;
-  border:1px solid var(--rule);border-radius:999px;padding:.9rem 1.2rem;
-  background:var(--paper);
-  box-shadow:0 1px 3px color-mix(in oklab,var(--ink) 7%,transparent);
+/* ─────────── essay · the continuous read ───────────
+   One column, one measure, no marketing sections. Section heads emerge from
+   the body flow — bold, in the same rhythm as a paragraph, never a hanging
+   label. A hairline wine rule down each side is the only frame the reading
+   column gets. */
+.essay{
+  max-width:44rem;margin:0 auto;padding-inline:var(--gut);
+  padding-block:var(--pad-mid) var(--pad-loose);
+  border-inline:2px solid var(--wine);
 }
-.askline .q{
-  flex:1;min-width:0;font-family:var(--fd);font-size:var(--t-small);
-  color:var(--ink-body);white-space:nowrap;overflow:hidden;
+.essay > .lede{margin-top:0}
+.essay > p{color:var(--ink-body);max-width:65ch;margin-top:1.15rem}
+.essay > p:first-child{margin-top:0}
+.essay h2{
+  font-size:var(--t-h3);font-weight:600;letter-spacing:-.01em;
+  margin-top:3rem;margin-bottom:.9rem;max-width:28ch;
 }
-.askline .caret{
-  display:inline-block;width:2px;height:1em;vertical-align:-.15em;
-  background:var(--wine);margin-left:1px;animation:caret 1.1s step-end infinite;
-}
-@keyframes caret{50%{opacity:0}}
-.askline .go{
-  flex:none;background:var(--wine);color:var(--on-wine);border-radius:999px;
-  padding:.4rem .95rem;font-family:var(--fd);font-size:.8125rem;font-weight:500;
-}
-.askline-note{margin-top:.9rem;font-family:var(--fd);font-size:.8125rem;color:var(--ink-muted)}
-
-@media (max-width:34rem){
-  .askline{border-radius:var(--r-lg);flex-wrap:wrap}
-  .askline .q{white-space:normal}
-}
-@media (prefers-reduced-motion:reduce){
-  .askline .caret{animation:none}
-  .checks .bx::after{transition:none}
+.essay ul,.essay ol{margin:1.15rem 0 0;padding-left:1.25rem;color:var(--ink-body);max-width:65ch}
+.essay li{margin-top:.4rem;line-height:1.6}
+.essay li:first-child{margin-top:0}
+.essay blockquote{
+  margin:1.75rem 0 0;padding-left:1.25rem;border-left:2px solid var(--rule);
+  color:var(--ink);font-size:var(--t-lede);line-height:1.55;max-width:60ch;
 }
 
-/* ─────────── figures · full-bleed, tight padding, hairline grid ─────────── */
-.figures{border-block:1px solid var(--rule);background:var(--sunk)}
-.figures .in{
-  display:grid;grid-template-columns:repeat(4,minmax(0,1fr));
+/* the ornament — a single centred rule between movements of the essay,
+   used once or twice, never as a section-per-chapter device */
+.essay .ornament{margin:3rem auto;max-width:4rem;background:var(--rule)}
+
+/* a figure — chart, video, diagram — deliberately wider than the prose
+   column. The one break in an otherwise single-column grid. */
+.figure{
+  width:calc(100% + clamp(0px,6vw,4rem));
+  margin:2rem calc(clamp(0px,6vw,4rem) / -2) 0;
+}
+.figure figcaption{
+  margin-top:.9rem;color:var(--ink-muted);font-size:var(--t-small);
+  line-height:1.55;max-width:65ch;
+}
+.figure video{
+  width:100%;height:auto;border:1px solid var(--rule);border-radius:var(--r-lg);
+  background:var(--sunk);
 }
 
-/* ─────────── stat tiles · real counts only, four chart voices ─────────── */
+/* the process-reel bumper is compact and sits inline, unlike the full-width
+   demo — a smaller, quieter figure inside the same rhythm */
+.figure--reel{max-width:22rem;margin-inline:auto}
+.figure--reel video{aspect-ratio:1100/619}
+
+/* ─────────── mono-chart tiles ───────────
+   Reskinned from the mono-charts registry: real numbers, three token
+   colours, no dev-dashboard chrome. */
+.mono-chart{margin:0;background:var(--sunk);border:1px solid var(--rule);
+  border-radius:var(--r-lg);padding:clamp(1.25rem,3vw,1.75rem)}
+.mono-chart figcaption{margin-top:1rem;color:var(--ink-muted);font-size:var(--t-small);line-height:1.5}
+
+/* two mono-chart figures side by side — each is already its own bordered
+   figure, so this only owns the gap between them */
+.chart-pair{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,16rem),1fr));gap:1rem}
+
+.stat-tiles{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));
+  background:var(--sunk);border:1px solid var(--rule);border-radius:var(--r-lg);overflow:hidden}
 .stat-tile{
-  padding:var(--pad-tight) clamp(1rem,2vw,1.5rem);
-  display:flex;flex-direction:column;align-items:flex-start;gap:.9rem;
+  padding:clamp(1.25rem,3vw,1.75rem) clamp(1rem,2vw,1.25rem);
+  display:flex;flex-direction:column;align-items:flex-start;gap:.75rem;
 }
 .stat-tile + .stat-tile{border-left:1px solid var(--rule)}
-.stat-tile-ring{position:relative;width:72px;height:72px;flex:none}
-.stat-tile-ring--wide{width:96px;height:64px}
+.stat-tile-ring{position:relative;width:64px;height:64px;flex:none}
+.stat-tile-ring--wide{width:88px;height:58px}
 .stat-tile-n{
   position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
-  font-family:var(--fd);font-weight:500;font-size:1.375rem;letter-spacing:-.03em;
+  font-family:var(--fd);font-weight:600;font-size:1.25rem;letter-spacing:-.03em;
   color:var(--ink);font-variant-numeric:tabular-nums;
 }
 .stat-tile-n--gauge{align-items:flex-end;padding-bottom:2px;font-size:var(--t-h3)}
-.stat-tile-caption{font-size:var(--t-small);color:var(--ink-body);line-height:1.5}
-.stat-tile-caption-sub{display:block;color:var(--ink-muted);font-size:.875rem}
+.stat-tile-caption{font-size:.9375rem;color:var(--ink-body);line-height:1.5}
+.stat-tile-caption-sub{display:block;color:var(--ink-muted);font-size:.8125rem}
 
 .stat-tile--bullet{width:100%}
 .stat-tile-bullet-head{display:flex;align-items:baseline;gap:.4rem;align-self:stretch}
 .stat-tile-bullet-head .stat-tile-n{
-  position:static;font-family:var(--fd);font-weight:500;font-size:var(--t-figure);
+  position:static;font-family:var(--fd);font-weight:600;font-size:var(--t-figure);
   line-height:1;letter-spacing:-.04em;color:var(--wine);
 }
-.stat-tile-unit{font-size:var(--t-small);color:var(--ink-muted)}
+.stat-tile-unit{font-size:.9375rem;color:var(--ink-muted)}
 .stat-tile-bullet-track{
   align-self:stretch;height:6px;border-radius:99px;background:var(--rule);overflow:hidden;
 }
 .stat-tile-bullet-fill{height:100%;width:100%;border-radius:99px}
 .stat-tile-bullet-ends{
   align-self:stretch;display:flex;justify-content:space-between;
-  font-size:.875rem;color:var(--ink-muted);
+  font-size:.8125rem;color:var(--ink-muted);
 }
 
-@media (max-width:26rem){
-  .stat-tile + .stat-tile{border-left:none;border-top:1px solid var(--rule)}
+/* treemap — real category counts, sized by opacity rather than invented
+   percentages, so no number appears that wasn't just counted */
+.treemap{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,7rem),1fr));gap:.5rem}
+.treemap__tile{
+  background:var(--wine);color:var(--on-wine);border-radius:var(--r-md);
+  padding:.9rem 1rem;display:flex;flex-direction:column;justify-content:space-between;
+  min-height:5.5rem;gap:1.5rem;
 }
+.treemap__name{font-size:.8125rem;font-weight:600;line-height:1.25}
+.treemap__n{font-family:var(--fd);font-size:1.375rem;font-weight:600;
+  color:var(--on-wine-muted);font-variant-numeric:tabular-nums;letter-spacing:-.02em}
 
-/* ─────────── stages · wide, loose, fixed numeral track ─────────── */
-.stage+.stage{border-top:1px solid var(--rule)}
-.stage .in{
-  display:grid;grid-template-columns:minmax(0,22rem) minmax(0,1fr);
-  gap:clamp(1.5rem,5vw,4rem);padding-block:var(--pad-loose);align-items:start;
-}
-.stage h2{position:sticky;top:5.5rem;max-width:14ch}
-.stage .prose{max-width:52ch}
-
-/* reveal — the sweep uncovers a stage's text as it enters */
-/* generic entrance — a section's children arrive in reading order */
-.js [data-rise]{opacity:0;transform:translateY(12px);
-  transition:opacity .55s var(--ease),transform .55s var(--ease)}
-.js [data-rise].shown{opacity:1;transform:none}
-.js [data-rise]:nth-child(2){transition-delay:.07s}
-.js [data-rise]:nth-child(3){transition-delay:.14s}
-.js [data-rise]:nth-child(4){transition-delay:.21s}
-
-.sweep{position:relative;overflow:hidden}
-.js .sweep::after{
-  content:"";position:absolute;inset:0;background:var(--paper);
-  transform:scaleX(1);transform-origin:right;
-  transition:transform .72s var(--ease);
-}
-.js .stage.live .sweep::after{transform:scaleX(0)}
-
-/* ─────────── tinted section · mid measure, tint divider, no rule ─────────── */
-.tint{background:var(--sunk)}
-.tint .in{padding-block:var(--pad-mid)}
-.tint h2{max-width:18ch}
-
-/* ─────────── plain section · mid measure, hairline divider ─────────── */
-.sec{border-top:1px solid var(--rule)}
-.sec .in{padding-block:var(--pad-mid)}
-.sec h2{max-width:18ch}
-
-/* ─────────── dark band · full-bleed colour block, no rule ─────────── */
-/* the closing statement: full-bleed wine, centred, and given room. This is
-   the page's last word, so it gets the largest type on the site. */
-.band{background:var(--wine);color:var(--paper);text-align:center}
-.band .in{padding-block:clamp(5rem,12vw,9rem)}
-.band h2{
-  color:var(--paper);max-width:18ch;margin-inline:auto;
-  font-size:clamp(2.25rem,5.6vw,4.25rem);line-height:1.06;
-}
-.band .prose{color:var(--on-wine-muted);margin:1.5rem auto 0;text-align:center}
-.band .go{justify-content:center}
-.band .btn--line{color:var(--paper);border-color:var(--paper)}
-.band .btn--line:hover{background:var(--paper);color:var(--wine)}
-
-/* ─────────── definition pairs ─────────── */
-.pairs{
-  margin:2.5rem 0 0;display:grid;gap:1px;background:var(--rule);
-  border:1px solid var(--rule);border-radius:var(--r-lg);overflow:hidden;
-  grid-template-columns:repeat(auto-fit,minmax(min(100%,20rem),1fr));
-}
-.pairs>div{background:var(--paper);padding:clamp(1.5rem,3vw,2rem);
-  transition:background var(--dur) var(--ease)}
-.pairs>div:hover{background:var(--sunk)}
-.pairs dt{font-family:var(--fd);font-weight:500;font-size:var(--t-h3);
-  letter-spacing:-.02em;margin-bottom:.5rem}
-.pairs dd{margin:0;color:var(--ink-body);font-size:var(--t-small);line-height:1.65}
-
-
-/* the donna wordmark — set, never drawn. Fraunces is the brand's own face and
-   appears nowhere else on the site, which keeps it an outlier rather than a
-   third body font. */
-.donna{font-family:var(--fd-donna);font-weight:400;
-  letter-spacing:-.01em;color:var(--wine);font-style:normal}
-.band .donna,.pill .donna{color:inherit}
-
-/* ─────────── article ─────────── */
-.byline{margin-top:1.25rem;font-family:var(--fd);font-size:var(--t-small);
-  color:var(--ink-muted);font-variant-numeric:tabular-nums}
-/* the reading column is framed, not floated: a burgundy rule down each side
-   holds the text in the centre of the page and gives long articles an edge to
-   sit against. The prose itself stays left-aligned — centred body copy costs
-   the reader a new starting point on every line. */
-.article{
-  padding-block:var(--pad-mid);
-  padding-inline:clamp(1.25rem,4vw,3rem);
-  max-width:52rem;margin-inline:auto;
-  border-inline:2px solid var(--wine);
-}
-.article h2{font-size:var(--t-h3);margin-top:2.5rem;margin-bottom:.75rem;max-width:28ch}
-.article h2:first-child{margin-top:0}
-.article p{color:var(--ink-body);max-width:68ch}
-.article p + p{margin-top:1rem}
-
-.more{list-style:none;margin:2rem 0 0;padding:0;display:grid;gap:1px;
+/* step flow — a real 3-stage process, connected by a line, not a metric */
+.step-flow{list-style:none;margin:0;padding:0;display:grid;gap:1px;
   background:var(--rule);border:1px solid var(--rule);border-radius:var(--r-lg);overflow:hidden}
-.more li{background:var(--paper)}
-.more a{display:block;padding:1.25rem 0;text-decoration:none;
-  font-family:var(--fd);font-weight:500;
-  transition:color var(--dur) var(--ease)}
-.more a:hover{color:var(--wine)}
-.more .dir{display:block;font-size:.75rem;letter-spacing:.06em;
-  color:var(--ink-muted);margin-bottom:.3rem;font-weight:500}
-
-/* ─────────── post cards ─────────── */
-.cards{list-style:none;margin:2.5rem 0 0;padding:0;display:grid;gap:1px;
-  background:var(--rule);border:1px solid var(--rule);border-radius:var(--r-lg);overflow:hidden;
-  grid-template-columns:repeat(4,minmax(0,1fr))}
-.cards--all{grid-template-columns:repeat(4,minmax(0,1fr))}
-.card{background:var(--paper)}
-.card-in{display:block;height:100%;padding:1.75rem 1.5rem;
-  text-decoration:none;color:inherit;
-  transition:background var(--dur) var(--ease)}
-a.card-in:hover{background:var(--sunk)}
-.card h3{font-size:var(--t-h3);letter-spacing:-.02em;line-height:1.25;margin-bottom:.75rem}
-a.card-in:hover h3{color:var(--wine)}
-.card-meta{font-family:var(--fd);font-size:.8125rem;color:var(--ink-muted);
-  font-variant-numeric:tabular-nums}
-.card--scheduled .card-in{opacity:.62}
-.card--scheduled h3{font-weight:500}
-
-.donna-lede{margin-top:1.25rem}
-
-/* ─────────── integrations ─────────── */
-.tags{list-style:none;margin:1.25rem 0 0;padding:0;display:flex;flex-wrap:wrap;gap:.5rem}
-.tags li{transition:border-color var(--dur) var(--ease),color var(--dur) var(--ease);
-  font-size:.875rem;color:var(--ink-body);font-weight:500;
-  border:1px solid var(--rule);border-radius:var(--r-sm);
-  padding:.45rem .8rem;background:var(--paper);
+.step-flow__step{background:var(--paper);padding:1.25rem 1.5rem;display:flex;gap:1rem;align-items:flex-start}
+.step-flow__n{
+  flex:none;width:1.75rem;height:1.75rem;border-radius:50%;background:var(--wine);color:var(--on-wine);
+  display:flex;align-items:center;justify-content:center;font-family:var(--fd);
+  font-weight:600;font-size:.8125rem;font-variant-numeric:tabular-nums;
 }
-.tags li:hover{border-color:var(--wine);color:var(--wine)}
-.grouped{margin-top:2.5rem;display:grid;gap:2rem;
-  grid-template-columns:repeat(auto-fit,minmax(min(100%,20rem),1fr))}
-.grouped h3{font-size:var(--t-body);font-family:var(--fb);font-weight:600;letter-spacing:0}
-
-/* ─────────── demo video ─────────── */
-.demos{margin-top:2.5rem;display:grid;gap:2rem;
-  grid-template-columns:repeat(auto-fit,minmax(min(100%,24rem),1fr))}
-.demo h3{font-size:var(--t-body);font-family:var(--fb);font-weight:600;
-  letter-spacing:0;margin-bottom:.75rem}
-.demo figure{margin:0;border:1px solid var(--rule);border-radius:var(--r-md);overflow:hidden;
-  background:var(--sunk)}
-.demo video{width:100%;aspect-ratio:16/10;object-fit:cover;background:var(--sunk)}
-.demo figcaption{padding:.75rem 1rem;font-size:.875rem;color:var(--ink-muted);
-  border-top:1px solid var(--rule)}
-
-/* ─────────── flow ─────────── */
-.flow{margin-top:2.5rem;display:grid;gap:1rem;
-  grid-template-columns:repeat(auto-fit,minmax(min(100%,15rem),1fr))}
-.flow>div{padding:1.5rem;border:1px solid var(--rule);border-radius:var(--r-md);
-  background:var(--paper);transition:border-color var(--dur) var(--ease)}
-.flow>div:hover{border-color:var(--wine)}
-.flow>div.mid-step{border-color:var(--wine)}
-.flow h3{font-size:var(--t-body);font-family:var(--fd);font-weight:500;margin-bottom:.5rem}
-.flow .mid-step h3{color:var(--wine)}
-.flow p{color:var(--ink-body);font-size:var(--t-small);line-height:1.6}
-
-/* ─────────── numbered sequence ─────────── */
-.seq{margin:2.5rem 0 0;padding:0;list-style:none;
-  border-top:1px solid var(--rule);max-width:52rem}
-.seq li{
-  display:grid;gap:.25rem;padding-block:1.4rem;
-  border-bottom:1px solid var(--rule);
-}
-.seq b{font-weight:600;display:block;margin-bottom:.2rem}
-.seq span{color:var(--ink-body);font-size:var(--t-small);line-height:1.65}
-
-/* ─────────── faq ─────────── */
-.faq{margin-top:2.5rem;max-width:52rem;border-top:1px solid var(--rule)}
-.faq details{border-bottom:1px solid var(--rule)}
-.faq summary{
-  list-style:none;cursor:pointer;padding:1.35rem 0;
-  display:flex;align-items:baseline;justify-content:space-between;gap:1.25rem;
-  font-family:var(--fd);font-weight:500;font-size:var(--t-h3);letter-spacing:-.02em;
-}
-.faq summary::-webkit-details-marker{display:none}
-.faq summary::after{
-  content:"+";font-family:var(--fb);font-size:1.35rem;color:var(--wine);
-  flex:none;transition:transform var(--dur) var(--ease);
-}
-.faq details[open] summary::after{transform:rotate(45deg)}
-.faq .ans{padding:0 0 1.4rem;color:var(--ink-body);font-size:var(--t-small);
-  line-height:1.7;max-width:60ch}
-
-/* ─────────── form ─────────── */
-.formwrap{margin-top:2.5rem;display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(min(100%,22rem),1fr));
-  gap:clamp(2rem,5vw,4rem);align-items:start}
-form.enq{background:var(--paper);border:1px solid var(--rule);border-radius:var(--r-lg);
-  padding:clamp(1.5rem,3vw,2rem);display:grid;gap:1rem}
-/* shadcn's Input/Textarea/Select carry their own tokenised styling (see
-   shadcn.css + the tailwind.config bridge); .enq-field only owns the label
-   stack and the one state the registry components don't know about. */
-.enq-field{display:grid;gap:.4rem}
-.enq-field label{font-size:.875rem;font-weight:500;color:var(--ink-body)}
-.enq-field input,.enq-field textarea,.enq-field button[role="combobox"]{
-  font-family:var(--fb);
-}
-.enq-field input[aria-invalid="true"]{border-color:var(--wine)}
-.enq-note{font-size:.875rem;color:var(--ink-muted);min-height:1.25rem}
-.enq-note[data-state="error"]{color:var(--wine)}
-.enq-done{padding:2.5rem 1rem;text-align:center}
-.enq-done h3{margin-bottom:.5rem}
-.enq-done p{color:var(--ink-body);font-size:var(--t-small)}
-
-/* ─────────── footer · Ft4 colophon ─────────── */
-.foot{background:var(--ink);color:var(--paper)}
-.foot .in{
-  padding-block:clamp(2.5rem,5vw,3.5rem);
-  display:flex;flex-wrap:wrap;gap:1.5rem 2rem;
-  align-items:flex-start;justify-content:space-between;
-  font-family:var(--fd);font-size:.9375rem;line-height:1.6;
-}
-.foot .mark{font-weight:700;font-size:1.25rem;letter-spacing:-.04em;color:var(--paper)}
-.foot .mark i{font-style:normal;color:var(--paper);opacity:.62}
-.foot .tag{margin-top:.35rem;color:var(--on-ink)}
-.foot .right{display:flex;flex-direction:column;align-items:flex-end;gap:.5rem;text-align:right}
-.foot a{color:var(--paper);text-decoration:none;padding:.2rem 0;
-  transition:opacity var(--dur) var(--ease)}
-.foot a:hover{opacity:.7}
-.foot .cp{color:var(--on-ink);font-size:.8125rem}
-@media (max-width:40rem){
-  .foot .in{flex-direction:column}
-  .foot .right{align-items:flex-start;text-align:left}
-}
-
-/* ─────────── responsive ─────────── */
-@media (max-width:60rem){
-  .stage .in{grid-template-columns:minmax(0,1fr);gap:.75rem}
-  .stage h2{position:static}
-  /* the long bar reads as empty once the links go, so it shrinks to content */
-  .pill{width:auto;max-width:calc(100vw - 2rem);gap:1.25rem;
-    padding-left:1.25rem;justify-content:flex-start}
-  .pill .links{display:none}
-  .figures .in{grid-template-columns:repeat(2,minmax(0,1fr))}
-  .cards,.cards--all{grid-template-columns:repeat(2,minmax(0,1fr))}
-}
-
-@media (max-width:26rem){
-  .figures .in,.cards,.cards--all{grid-template-columns:minmax(0,1fr)}
-}
-
-@media (prefers-reduced-motion:reduce){
-  html{scroll-behavior:auto}
-  .js [data-rise]{opacity:1;transform:none;transition:none}
-  .js .sweep::after{display:none}
-  .pill::before{display:none}
-  *,*::before,*::after{transition-duration:.01ms !important;animation-duration:.01ms !important}
-  .title-bumper{display:none}
-}
-
-/* ─────────── showreel ───────────
-   The proof section. It sits directly under the question and before any
-   argument, because the fastest way to answer "can you actually build this"
-   is to show the thing running. Its own width and its own padding — it must
-   not fall into the rhythm of the stages that follow it. */
-.showreel{border-block:1px solid var(--rule)}
-.showreel .in{padding-block:var(--pad-tight) var(--pad-mid)}
-.showreel h2{max-width:16ch;margin-bottom:1.5rem}
-
-/* The Remotion title card — a four-second brand sting rendered from
-   video/src/TitleCard.tsx, not screen-recorded. Plays once, muted, ahead of
-   the real product demo below it. */
-.title-bumper{
-  display:block;width:100%;max-width:26rem;margin:0 auto 1.75rem;
-  aspect-ratio:1100/619;border:1px solid var(--rule);border-radius:var(--r-lg);
-  background:var(--ink);
-}
-
-.showreel-frame{margin:0}
-.showreel-frame video{
-  width:100%;height:auto;aspect-ratio:1100/619;
-  border:1px solid var(--rule);border-radius:var(--r-lg);
-  background:var(--sunk);
-}
-.showreel-frame figcaption{
-  margin-top:.9rem;color:var(--ink-muted);
-  font-size:var(--t-small);line-height:1.55;max-width:60ch;
-}
-
-/* Demo figures on the donna page share the frame treatment but keep controls. */
-.demo figure{margin:0}
-.demo figure video{
-  width:100%;height:auto;aspect-ratio:16/9;
-  border:1px solid var(--rule);border-radius:var(--r-md);
-  background:var(--sunk);
-}
-.demo figcaption{
-  margin-top:.75rem;color:var(--ink-muted);
-  font-size:var(--t-small);line-height:1.55;
-}
+.step-flow__body{color:var(--ink-body);font-size:.9375rem;line-height:1.6}
+.step-flow__body b{display:block;color:var(--ink);font-weight:600;margin-bottom:.15rem}
 
 /* ─────────── connection map ───────────
-   A structural diagram, not a chart. It replaces nothing — it sits under the
-   figures and gives the five-and-three the shape the numerals only assert. */
-.cmap{margin:2.5rem 0 0}
+   A structural diagram, not a chart. */
+.cmap{margin:0}
 .cmap svg{width:100%;height:auto;display:block;overflow:visible}
 .cmap-wire path{
   fill:none;stroke:var(--wine);stroke-width:1.25;
@@ -555,15 +260,115 @@ form.enq{background:var(--paper);border:1px solid var(--rule);border-radius:var(
   font-family:var(--fd-donna);font-size:19px;
   fill:var(--on-wine);letter-spacing:-.01em;
 }
-.cmap figcaption{
-  margin-top:1.25rem;color:var(--ink-muted);
-  font-size:var(--t-small);line-height:1.6;max-width:62ch;
-}
 @media (max-width:48rem){
-  /* Below this the wires cross too tightly to read; the caption carries it,
-     and the tag lists further down the page carry the full inventory. */
   .cmap svg{display:none}
-  .cmap figcaption{margin-top:0}
+}
+
+/* ─────────── form ─────────── */
+form.enq{background:var(--sunk);border:1px solid var(--rule);border-radius:var(--r-lg);
+  padding:clamp(1.5rem,3vw,2rem);display:grid;gap:1rem}
+.enq-field{display:grid;gap:.4rem}
+.enq-field label{font-size:.875rem;font-weight:500;color:var(--ink-body)}
+.enq-field input,.enq-field textarea,.enq-field button[role="combobox"]{font-family:var(--fb)}
+.enq-field input[aria-invalid="true"]{border-color:var(--wine)}
+.enq-note{font-size:.875rem;color:var(--ink-muted);min-height:1.25rem}
+.enq-note[data-state="error"]{color:var(--wine)}
+.enq-done{padding:2.5rem 1rem;text-align:center}
+.enq-done h3{margin-bottom:.5rem}
+.enq-done p{color:var(--ink-body);font-size:var(--t-small)}
+
+/* ─────────── faq · shadcn accordion ─────────── */
+.faq-item button{
+  font-family:var(--fd);font-weight:500;font-size:var(--t-h3);letter-spacing:-.02em;
+}
+.faq-item p{color:var(--ink-body);font-size:.9375rem;line-height:1.65;max-width:60ch}
+
+/* ─────────── blog index ─────────── */
+.cards{list-style:none;margin:0;padding:0;display:grid;gap:1px;
+  background:var(--rule);border:1px solid var(--rule);border-radius:var(--r-lg);overflow:hidden;
+  grid-template-columns:repeat(auto-fit,minmax(min(100%,17rem),1fr))}
+.card{background:var(--paper)}
+.card-in{display:block;height:100%;padding:1.5rem 1.35rem;
+  text-decoration:none;color:inherit;
+  transition:background var(--dur) var(--ease)}
+a.card-in:hover{background:var(--sunk)}
+.card h3{font-size:1.0625rem;letter-spacing:-.02em;line-height:1.3;margin-bottom:.6rem}
+a.card-in:hover h3{color:var(--wine)}
+.card-meta{font-family:var(--fd);font-size:.8125rem;color:var(--ink-muted);
+  font-variant-numeric:tabular-nums;display:flex;align-items:center;gap:.5rem}
+.card--scheduled .card-in{opacity:.62}
+.card--scheduled h3{font-weight:500}
+
+/* ─────────── article (single post) ───────────
+   .sec/.in are otherwise-retired section primitives from the previous
+   macrostructure — kept only because the 30 extracted post bodies in
+   src/content/posts/*.html are pre-rendered HTML strings, not JSX, and are
+   marked as content to preserve rather than page structure to redesign. */
+.sec{border-top:1px solid var(--rule)}
+.sec .in{padding-block:var(--pad-mid)}
+.byline{margin-top:1.25rem;font-family:var(--fd);font-size:var(--t-small);
+  color:var(--ink-muted);font-variant-numeric:tabular-nums}
+.article{
+  padding-block:var(--pad-mid);
+  padding-inline:clamp(1.25rem,4vw,3rem);
+  max-width:44rem;margin-inline:auto;
+  border-inline:2px solid var(--wine);
+}
+.article h2{font-size:var(--t-h3);margin-top:2.5rem;margin-bottom:.75rem;max-width:28ch}
+.article h2:first-child{margin-top:0}
+.article p{color:var(--ink-body);max-width:65ch}
+.article p + p{margin-top:1rem}
+
+.more{list-style:none;margin:2rem 0 0;padding:0;display:grid;gap:1px;
+  background:var(--rule);border:1px solid var(--rule);border-radius:var(--r-lg);overflow:hidden}
+.more li{background:var(--paper)}
+.more a{display:block;padding:1.25rem 0;text-decoration:none;
+  font-family:var(--fd);font-weight:500;
+  transition:color var(--dur) var(--ease)}
+.more a:hover{color:var(--wine)}
+.more .dir{display:block;font-size:.75rem;letter-spacing:.06em;
+  color:var(--ink-muted);margin-bottom:.3rem;font-weight:500}
+
+/* ─────────── footer · Ft5 statement ─────────── */
+.foot-stmt{
+  padding:var(--pad-loose) var(--gut) var(--pad-tight);
+  max-width:var(--w-mid);margin:0 auto;display:grid;gap:2rem;
+}
+.foot-stmt__line{
+  font-family:var(--fd);font-size:clamp(1.75rem,4.5vw,3rem);
+  line-height:1.05;letter-spacing:-.02em;max-width:24ch;margin:0;color:var(--wine);
+}
+.foot-stmt__meta{
+  display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:1rem;
+  padding-top:1.5rem;border-top:1px solid var(--rule);
+  font-family:var(--fd);font-size:.9375rem;
+}
+.foot-stmt .wm{font-weight:700;letter-spacing:-.04em}
+.foot-stmt__links{display:flex;gap:1.5rem}
+.foot-stmt__links a{text-decoration:none;transition:color var(--dur) var(--ease)}
+.foot-stmt__links a:hover{color:var(--wine)}
+.foot-stmt .muted{color:var(--ink-muted);font-size:.8125rem}
+
+/* ─────────── responsive ─────────── */
+@media (max-width:60rem){
+  .nav__center{display:none}
+  .stat-tiles{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (max-width:26rem){
+  .stat-tiles{grid-template-columns:minmax(0,1fr)}
+}
+@media (max-width:26rem){
+  .stat-tile + .stat-tile{border-left:none;border-top:1px solid var(--rule)}
+}
+@media (max-width:36rem){
+  .essay,.article{border-inline-width:1px;padding-inline:1rem}
+  .foot-stmt__meta{flex-direction:column;align-items:flex-start}
+}
+
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{transition-duration:.01ms !important;animation-duration:.01ms !important}
+  .figure video[autoplay]{display:none}
 }
 
 /* Route suspense holds the page height so the footer doesn't jump up and

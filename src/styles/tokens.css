@@ -20,24 +20,25 @@
 
   /* label on a wine ground — paper on wine is 10.25:1 */
   --on-wine:var(--paper);
-  --on-ink:color-mix(in oklab,var(--paper) 72%,var(--ink));
 
   /* surfaces */
   --rule:color-mix(in oklab,var(--ink) 18%,var(--paper));
   --sunk:color-mix(in oklab,var(--ink) 4%,var(--paper));
   --wine-hover:color-mix(in oklab,var(--wine) 82%,var(--ink));
   --scrim:color-mix(in oklab,var(--paper) 88%,transparent);
-  /* the closing band is wine, the footer is ink — two full-bleed grounds
-     that end the page the way the old site did */
+  /* a secondary label on a wine ground — used sparingly, e.g. the treemap's
+     count beneath its bolder name */
   --on-wine-muted:color-mix(in oklab,var(--paper) 72%,var(--wine));
 
   /* fractal noise, generated inline — no asset request */
   --grain:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 
-  /* type — two families */
-  --fd:"Libre Franklin",system-ui,-apple-system,sans-serif;
-  --fb:"Lora",Georgia,"Times New Roman",serif;
-  /* outlier: the donna wordmark only — two slots at most, never body copy */
+  /* type — modern-minimal's single-family discipline: display and body are
+     the same face. Fraunces remains the one outlier, donna-wordmark only —
+     "Geist body, Fraunces wordmark" is typography.md's own canonical pairing
+     for this exact genre. */
+  --fd:"Geist",system-ui,-apple-system,sans-serif;
+  --fb:"Geist",system-ui,-apple-system,sans-serif;
   --fd-donna:"Fraunces",Georgia,serif;
 
   --t-display:clamp(2.5rem,6.4vw,4.75rem);

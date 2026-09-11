@@ -17,28 +17,25 @@ export default function Contact() {
       <section className="open">
         <div className="narrow">
           <TextReveal as="h1" text="Tell us what your week looks like." />
-          <FadeUp delay={0.15}>
-            <p className="lede">
-              Which system you run on, and where the hours actually go. We read every enquiry and
-              reply within 24 hours.
-            </p>
-          </FadeUp>
         </div>
       </section>
-      <section className="sec">
-        <div className="in mid">
-          <div className="formwrap">
-            <div className="prose">
-              <p>
-                If you would rather just email,{' '}
-                <a className="tlink" href="mailto:jai@jdotai.com">jai@jdotai.com</a> reaches the
-                same place.
-              </p>
-            </div>
-            <EnquiryForm variant="contact" />
-          </div>
+
+      <div className="essay">
+        <FadeUp>
+          <p className="lede">
+            Which system you run on, and where the hours actually go. We read every enquiry and
+            reply within 24 hours.
+          </p>
+          <p>
+            If you would rather just email,{' '}
+            <a className="cta-link" href="mailto:jai@jdotai.com">jai@jdotai.com</a> reaches the
+            same place.
+          </p>
+        </FadeUp>
+        <div className="figure">
+          <EnquiryForm variant="contact" />
         </div>
-      </section>
+      </div>
     </main>
   )
 }

@@ -4,7 +4,7 @@
  * --border …). Rather than let its init write a stone-grey palette in here,
  * every one of them is mapped onto the three colours already declared in
  * tokens.css. No raw colour value appears in this file — a shadcn button
- * comes out wine, on paper, in Libre Franklin, because it can't come out
+ * comes out wine, on paper, in Geist, because it can't come out
  * any other way.
  *
  * If a shadcn component ever looks off-brand, the fix belongs in tokens.css.

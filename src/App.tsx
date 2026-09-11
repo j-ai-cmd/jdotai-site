@@ -1,8 +1,8 @@
 import { Suspense, useEffect } from 'react'
 import { Route, Routes, useLocation } from 'react-router-dom'
+import { ReadingProgress } from './components/amicro/reading-progress'
 import Footer from './components/Footer'
-import Frame from './components/Frame'
-import Pill from './components/Pill'
+import Nav from './components/Nav'
 import { initPageEffects } from './lib/effects'
 import Home from './routes/Home'
 // Home is in the main chunk — it is the landing page and must not wait on a
@@ -32,8 +32,8 @@ export default function App() {
   return (
     <>
       <a className="skip" href="#main">Skip to content</a>
-      <Frame />
-      <Pill />
+      <ReadingProgress />
+      <Nav />
       <Suspense fallback={<div className="route-wait" aria-hidden="true" />}>
         <Routes>
           <Route path="/" element={<Home />} />
