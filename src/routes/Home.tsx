@@ -2,7 +2,6 @@ import { useEffect, useRef } from 'react'
 import ConnectionMap from '@/components/ConnectionMap'
 import DemoVideo from '@/components/DemoVideo'
 import EnquiryForm from '@/components/EnquiryForm'
-import { CharacterEmphasis } from '@/components/amicro/character-emphasis'
 import { FadeUp } from '@/components/amicro/fade-up'
 import { FigureReveal } from '@/components/amicro/figure-reveal'
 import { Magnetic } from '@/components/amicro/magnetic'
@@ -42,6 +41,12 @@ const QUESTIONS = [
   'Which files are ready to close?',
 ]
 
+const PROBLEMS = [
+  { n: '01', title: 'Re-typing intake', body: 'Every new matter, copied by hand from an email into the practice management system.' },
+  { n: '02', title: 'Chasing documents', body: 'Follow-ups that exist only because the first request went unanswered.' },
+  { n: '03', title: 'Emails into tasks', body: 'Someone still has to read it, decide what it means, and open a task for it.' },
+]
+
 const STEPS = [
   { title: 'We map your intake', body: 'What your firm asks, in what order, for which matter types. We work from your existing forms.' },
   { title: 'We wire your system', body: 'donna connects to your practice management system and we confirm fields land where you expect.' },
@@ -75,9 +80,9 @@ export default function Home() {
 
   return (
     <main id="main">
-      {/* ── hero ─────────────────────────────────────────────────────── */}
-      <section className="hero section-in">
-        <div>
+      {/* ── hero · dark, studied from lex-ops.io ────────────────────── */}
+      <section className="hero-dark">
+        <div className="hero-dark__in">
           <TextReveal as="h1" text="Which part of your week shouldn’t need a lawyer?" />
           <FadeUp delay={0.15}>
             <p className="lede">
@@ -94,21 +99,25 @@ export default function Home() {
                   <a href="#enquire">Get donna for your firm</a>
                 </Button>
               </Magnetic>
-              <Button asChild variant="outline" size="lg">
+              <Button asChild variant="outline" size="lg" className="border-paper bg-transparent text-paper hover:bg-paper hover:text-ink">
                 <a href="#demo">Watch it work</a>
               </Button>
             </div>
           </FadeUp>
         </div>
-        <FigureReveal className="hero-media">
+      </section>
+
+      <div className="hero-clip">
+        <FigureReveal>
           <DemoVideo
+            className="figure"
             src="/assets/video/donna-hero-loop.mp4"
             poster="/assets/video/donna-hero-poster.jpg"
             caption="A client completes intake, and the matter lands in the practice management system."
             ambient
           />
         </FigureReveal>
-      </section>
+      </div>
 
       {/* ── trust bar — real integrations, not customer logos ───────── */}
       <section className="trust" id="donna">
@@ -125,27 +134,28 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── bento feature grid ───────────────────────────────────────── */}
+      {/* ── problems — the real pain points, numbered ───────────────── */}
+      <section className="section section--tint">
+        <div className="section-in">
+          <FigureReveal>
+            <div className="problems">
+              {PROBLEMS.map((p) => (
+                <div className="problem-card" key={p.n}>
+                  <span className="problem-card__n">{p.n}</span>
+                  <h3>{p.title}</h3>
+                  <p>{p.body}</p>
+                </div>
+              ))}
+            </div>
+          </FigureReveal>
+        </div>
+      </section>
+
+      {/* ── solution bento ───────────────────────────────────────────── */}
       <section className="section">
         <div className="section-in">
           <FigureReveal>
             <div className="bento">
-              <Card className="bento__tile border-0 shadow-none rounded-none">
-                <CardHeader className="p-0">
-                  <CardTitle asChild><h3>We find what drains you.</h3></CardTitle>
-                </CardHeader>
-                <CardContent className="p-0">
-                  <p>Timekeeping, matter updates, document management. We find what can be automated.</p>
-                </CardContent>
-              </Card>
-              <Card className="bento__tile border-0 shadow-none rounded-none">
-                <CardHeader className="p-0">
-                  <CardTitle asChild><h3>We build custom tools.</h3></CardTitle>
-                </CardHeader>
-                <CardContent className="p-0">
-                  <p>Wired into what you already use, built for how your team actually works.</p>
-                </CardContent>
-              </Card>
               <Card className="bento__tile border-0 shadow-none rounded-none">
                 <CardHeader className="p-0">
                   <CardTitle asChild><h3>Custom intake forms.</h3></CardTitle>
@@ -189,9 +199,16 @@ export default function Home() {
               <BrandGaugeRing value={24} unit="hours" label="to hear back — every time" />
             </div>
           </FigureReveal>
-          <FigureReveal>
-            <BrandStepFlow steps={STEPS} />
-          </FigureReveal>
+          <div className="step-row">
+            <FigureReveal className="step-row__flow">
+              <BrandStepFlow steps={STEPS} />
+            </FigureReveal>
+            <div className="diamond-stack" aria-hidden="true">
+              <div className="diamond" />
+              <div className="diamond" />
+              <div className="diamond" />
+            </div>
+          </div>
         </div>
       </section>
 
@@ -257,7 +274,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── closing cta band ─────────────────────────────────────────── */}
+      {/* ── closing cta band · dark, bookends the hero ──────────────── */}
       <section className="cta-band">
         <div className="section-in section-in--mid">
           <h2>Get <span className="donna">donna</span> for your firm.</h2>

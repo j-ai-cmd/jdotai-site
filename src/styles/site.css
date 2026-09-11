@@ -65,7 +65,7 @@ h3{font-size:var(--t-h3);letter-spacing:-.02em;line-height:1.2}
    third body font. */
 .donna{font-family:var(--fd-donna);font-weight:400;
   letter-spacing:-.01em;color:var(--wine);font-style:normal}
-.nav .donna,.foot-stmt .donna,.cta-band .donna{color:inherit}
+.nav .donna,.cta-band .donna,.hero-dark .donna{color:inherit}
 
 /* ─────────── reading progress ─────────── */
 .reading-progress{
@@ -74,13 +74,20 @@ h3{font-size:var(--t-h3);letter-spacing:-.02em;line-height:1.2}
 }
 
 /* ─────────── nav · N1b canonical SaaS three-section ─────────── */
+/* Default nav text is ink, for the pages (everything but Home) that open
+   directly on paper. Home opens on .hero-dark instead, so its nav starts
+   life over a dark surface — .nav--on-dark (set in Nav.tsx only while a
+   .hero-dark element is both present and unscrolled-past) flips it to
+   paper-toned until the scrim takes over. */
 .nav{
-  position:fixed;inset:0 0 auto;z-index:60;
+  position:fixed;inset:0 0 auto;z-index:60;color:var(--ink);
   background:transparent;border-bottom:1px solid transparent;
-  transition:background var(--dur) var(--ease),border-color var(--dur) var(--ease);
+  transition:background var(--dur) var(--ease),border-color var(--dur) var(--ease),
+             color var(--dur) var(--ease);
 }
+.nav.nav--on-dark{color:var(--paper)}
 .nav.is-scrolled{
-  background:var(--scrim);
+  background:var(--scrim);color:var(--ink);
   backdrop-filter:blur(14px);border-bottom-color:var(--rule);
 }
 .nav__inner{
@@ -89,16 +96,17 @@ h3{font-size:var(--t-h3);letter-spacing:-.02em;line-height:1.2}
 }
 .nav__brand{
   grid-column:1;justify-self:start;font-family:var(--fd);font-weight:700;font-size:1.0625rem;
-  letter-spacing:-.04em;text-decoration:none;white-space:nowrap;
+  letter-spacing:-.04em;text-decoration:none;white-space:nowrap;color:inherit;
 }
 .nav__brand i{font-style:normal;color:var(--wine)}
 .nav__center{
-  grid-column:2;justify-self:center;display:flex;gap:2rem;font-size:.9375rem;color:var(--ink-muted);
+  grid-column:2;justify-self:center;display:flex;gap:2rem;font-size:.9375rem;
+  color:inherit;opacity:.7;
 }
-.nav__link{text-decoration:none;padding:.3rem 0;white-space:nowrap;
+.nav__link{text-decoration:none;padding:.3rem 0;white-space:nowrap;color:inherit;
   transition:color var(--dur) var(--ease)}
-.nav__link:hover{color:var(--wine)}
-.nav__link[aria-current]{color:var(--ink);font-weight:600}
+.nav__link:hover{color:var(--wine);opacity:1}
+.nav__link[aria-current]{color:inherit;opacity:1;font-weight:600}
 /* explicit grid-column so removing .nav__center (display:none below 60rem)
    doesn't shift this into the now-empty middle track — CSS Grid auto-places
    remaining items into the next free explicit track in DOM order, which
@@ -178,22 +186,42 @@ h3{font-size:var(--t-h3);letter-spacing:-.02em;line-height:1.2}
 .section-head h2{max-width:20ch}
 .section-head.center h2{margin-inline:auto}
 
-/* hero — split diptych: statement + proof on one side, the product running
-   on the other. Harvey leads with a headline and a screenshot; this is the
-   same shape with donna's own real demo loop instead of a static capture. */
-.hero{
-  padding-block:clamp(6.5rem,13vw,9.5rem) var(--pad-loose);
-  display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);
-  gap:clamp(2rem,5vw,4rem);align-items:center;
+/* hero — dark, full-bleed, studied from lex-ops.io: a near-black band, not
+   another light section, is what actually reads as a different site rather
+   than a rearranged one. The wine glow is the same accent the rest of the
+   page uses, just used as light instead of ink — no new colour introduced.
+   The demo loop breaks out of the band's bottom edge into the light section
+   beneath it (lex-ops' console screenshot does the same against its hero). */
+.hero-dark{
+  position:relative;overflow:hidden;background:var(--ink);color:var(--paper);
+  padding-block:clamp(6.5rem,13vw,9rem) clamp(8rem,16vw,11rem);
+  text-align:center;
 }
-.hero h1{max-width:16ch}
-.hero .lede{margin-top:1.5rem}
-.hero .go{margin-top:2rem;display:flex;gap:.75rem;flex-wrap:wrap}
-.hero-media{position:relative}
-.hero-media video{border-radius:var(--r-lg)}
-@media (max-width:64rem){
-  .hero{grid-template-columns:minmax(0,1fr)}
+.hero-dark::before{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:
+    radial-gradient(ellipse 60% 50% at 15% 0%,color-mix(in oklab,var(--wine) 55%,transparent),transparent 60%),
+    radial-gradient(ellipse 50% 40% at 100% 100%,color-mix(in oklab,var(--wine) 35%,transparent),transparent 65%);
+  opacity:.55;
 }
+.hero-dark__in{position:relative;max-width:44rem;margin:0 auto;padding-inline:var(--gut)}
+.hero-dark h1{max-width:18ch;margin-inline:auto;color:var(--paper)}
+.hero-dark .lede{color:color-mix(in oklab,var(--paper) 74%,var(--ink));margin:1.25rem auto 0;max-width:46ch;text-align:center}
+.hero-dark .askline{margin-inline:auto;box-shadow:0 12px 32px -12px color-mix(in oklab,var(--ink) 60%,transparent)}
+.hero-dark .go{justify-content:center}
+
+/* the clip — pulled up over the dark band's bottom edge by design, framed
+   in paper so the seam between the two surfaces reads as intentional. */
+.hero-clip{
+  position:relative;margin-top:calc(-1 * clamp(5rem,11vw,7.5rem));
+  padding-inline:var(--gut);max-width:56rem;margin-inline:auto;
+}
+.hero-clip .figure{width:100%;margin:0}
+.hero-clip video{
+  border-radius:var(--r-lg);border:1px solid var(--rule);
+  box-shadow:0 24px 48px -20px color-mix(in oklab,var(--ink) 45%,transparent);
+}
+
 
 /* trust bar — what donna actually connects to, presented the way a logo
    wall would be. Real integration partners, not customers; nothing here is
@@ -206,6 +234,48 @@ h3{font-size:var(--t-h3);letter-spacing:-.02em;line-height:1.2}
 }
 .trust__row{display:flex;flex-wrap:wrap;gap:.6rem}
 .trust__row + .trust__row{margin-top:.6rem}
+
+/* the problem cards — lex-ops' numbered-chip pattern, on real pain points
+   already named elsewhere on the page, not a new claim. */
+.problems{display:grid;gap:1.25rem;grid-template-columns:minmax(0,1fr) minmax(0,1fr) minmax(0,1fr)}
+.problem-card{
+  background:var(--paper);border:1px solid var(--rule);border-radius:var(--r-lg);
+  padding:clamp(1.5rem,3vw,1.85rem);
+}
+.problem-card__n{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:2rem;height:2rem;border-radius:var(--r-md);
+  background:color-mix(in oklab,var(--wine) 12%,var(--paper));color:var(--wine);
+  font-family:var(--fd);font-weight:600;font-size:.8125rem;
+  font-variant-numeric:tabular-nums;margin-bottom:1rem;
+}
+.problem-card h3{font-size:1.0625rem}
+.problem-card p{margin-top:.5rem;color:var(--ink-body);font-size:.9375rem;line-height:1.6}
+@media (max-width:56rem){
+  .problems{grid-template-columns:minmax(0,1fr)}
+}
+
+/* the diamond — a rotated square, the one geometric motif borrowed whole
+   from lex-ops rather than adapted; it costs nothing to build in pure CSS
+   and reads as considered rather than decorative filler. */
+.diamond{
+  width:5.5rem;height:5.5rem;border-radius:var(--r-md);
+  background:var(--paper);border:1px solid var(--rule);
+  transform:rotate(45deg);
+  box-shadow:0 16px 32px -18px color-mix(in oklab,var(--ink) 35%,transparent);
+}
+.diamond-stack{position:relative;width:5.5rem;height:5.5rem;flex:none}
+.diamond-stack .diamond:nth-child(2){position:absolute;inset:0;transform:rotate(45deg) translate(6px,6px);z-index:-1;opacity:.6}
+.diamond-stack .diamond:nth-child(3){position:absolute;inset:0;transform:rotate(45deg) translate(12px,12px);z-index:-2;opacity:.35}
+
+.step-row{
+  margin-top:2.5rem;display:flex;align-items:center;gap:2.5rem;
+}
+.step-row__flow{flex:1;min-width:0}
+@media (max-width:56rem){
+  .step-row{flex-direction:column}
+  .diamond-stack{align-self:center;margin-top:1rem}
+}
 
 /* bento — mixed-span feature grid. Never three equal columns: the middle
    tile runs taller to hold the connection diagram, breaking the rhythm the
@@ -238,11 +308,21 @@ h3{font-size:var(--t-h3);letter-spacing:-.02em;line-height:1.2}
 }
 .demo-tabs figcaption{margin-top:.9rem;color:var(--ink-muted);font-size:var(--t-small);line-height:1.55}
 
-/* closing CTA band — full-bleed, the one place accent covers more than a
-   hairline. Harvey's footer-CTA pattern; the only wine-filled band on the
-   page, which is what makes it read as the close rather than a repeat. */
-.cta-band{background:var(--wine);color:var(--on-wine);text-align:center}
-.cta-band h2{color:var(--on-wine);max-width:18ch;margin-inline:auto;
+/* closing CTA band — dark, bookending the hero (lex-ops opens and closes on
+   the same near-black band). Reusing .hero-dark's atmosphere rather than a
+   second wine-filled band keeps the page's one loud accent moment at the
+   hero, not scattered across every closing section. */
+.cta-band{
+  position:relative;overflow:hidden;background:var(--ink);color:var(--paper);
+  text-align:center;padding-block:var(--pad-loose);
+}
+.cta-band::before{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(ellipse 55% 60% at 85% 100%,color-mix(in oklab,var(--wine) 45%,transparent),transparent 65%);
+  opacity:.6;
+}
+.cta-band .section-in{position:relative}
+.cta-band h2{color:var(--paper);max-width:18ch;margin-inline:auto;
   font-size:clamp(2rem,5vw,3.25rem)}
 .cta-band .go{justify-content:center;margin-top:2rem}
 
@@ -446,25 +526,24 @@ a.card-in:hover h3{color:var(--wine)}
 .more .dir{display:block;font-size:.75rem;letter-spacing:.06em;
   color:var(--ink-muted);margin-bottom:.3rem;font-weight:500}
 
-/* ─────────── footer · Ft5 statement ─────────── */
-.foot-stmt{
-  padding:var(--pad-loose) var(--gut) var(--pad-tight);
-  max-width:var(--w-mid);margin:0 auto;display:grid;gap:2rem;
-}
-.foot-stmt__line{
-  font-family:var(--fd);font-size:clamp(1.75rem,4.5vw,3rem);
-  line-height:1.05;letter-spacing:-.02em;max-width:24ch;margin:0;color:var(--wine);
-}
-.foot-stmt__meta{
-  display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:1rem;
-  padding-top:1.5rem;border-top:1px solid var(--rule);
+/* ─────────── footer · Ft1 mast-headed, plain ─────────── */
+.foot-simple{border-top:1px solid var(--rule);padding-block:var(--pad-tight) var(--pad-tight)}
+.foot-simple__grid{
+  display:grid;gap:2rem;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr) minmax(0,1fr);
   font-family:var(--fd);font-size:.9375rem;
 }
-.foot-stmt .wm{font-weight:700;letter-spacing:-.04em}
-.foot-stmt__links{display:flex;gap:1.5rem}
-.foot-stmt__links a{text-decoration:none;transition:color var(--dur) var(--ease)}
-.foot-stmt__links a:hover{color:var(--wine)}
-.foot-stmt .muted{color:var(--ink-muted);font-size:.8125rem}
+.foot-simple .wm{font-weight:700;letter-spacing:-.04em;font-size:1.0625rem}
+.foot-simple .muted{margin-top:.4rem;color:var(--ink-muted)}
+.foot-simple__grid nav,.foot-simple__grid > div:last-child{display:flex;flex-direction:column;gap:.6rem}
+.foot-simple a{text-decoration:none;color:var(--ink-body);transition:color var(--dur) var(--ease)}
+.foot-simple a:hover{color:var(--wine)}
+.foot-simple__cp{
+  max-width:var(--w-wide);margin:2.5rem auto 0;padding-inline:var(--gut);
+  color:var(--ink-muted);font-size:.8125rem;
+}
+@media (max-width:40rem){
+  .foot-simple__grid{grid-template-columns:minmax(0,1fr)}
+}
 
 /* ─────────── responsive ─────────── */
 @media (max-width:60rem){
@@ -479,7 +558,6 @@ a.card-in:hover h3{color:var(--wine)}
 }
 @media (max-width:36rem){
   .essay,.article{border-inline-width:1px;padding-inline:1rem}
-  .foot-stmt__meta{flex-direction:column;align-items:flex-start}
 }
 
 @media (prefers-reduced-motion:reduce){

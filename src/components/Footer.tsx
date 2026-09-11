@@ -1,22 +1,27 @@
-import { CharacterEmphasis } from '@/components/amicro/character-emphasis'
+import { Link } from 'react-router-dom'
 
-/** Ft5 Statement — a closing line rather than a sitemap. The one
- *  CharacterEmphasis moment on the page; it shows on every route, so it
- *  can't compete with a second use elsewhere. */
+/** Ft1 Mast-headed, simplified — studied from lex-ops.io's plain three-column
+ *  close: brand, a couple of real destinations, contact. Replaces the
+ *  earlier Ft5 Statement line, which read as filler once the rest of the
+ *  page's copy got cut down. */
 export default function Footer() {
   return (
-    <footer className="foot-stmt">
-      <p className="foot-stmt__line">
-        <CharacterEmphasis text="The week you went to law school for." />
-      </p>
-      <div className="foot-stmt__meta">
-        <span className="wm">jdot<i>ai</i></span>
-        <div className="foot-stmt__links">
+    <footer className="foot-simple">
+      <div className="section-in foot-simple__grid">
+        <div>
+          <span className="wm">jdot<i>ai</i></span>
+          <p className="muted">AI tools for legal firms.</p>
+        </div>
+        <nav aria-label="Footer">
+          <Link to="/blog">Blogs</Link>
+          <Link to="/contact">Contact</Link>
+        </nav>
+        <div>
           <a href="mailto:jai@jdotai.com">jai@jdotai.com</a>
           <a href="https://www.linkedin.com/in/jai-dhingra/" rel="noopener noreferrer" target="_blank">LinkedIn</a>
         </div>
-        <span className="muted">&copy; 2026 jdotai &mdash; Jai Dhingra</span>
       </div>
+      <p className="foot-simple__cp">&copy; 2026 jdotai &mdash; Jai Dhingra</p>
     </footer>
   )
 }
