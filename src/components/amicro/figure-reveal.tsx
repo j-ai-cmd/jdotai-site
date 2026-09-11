@@ -14,13 +14,17 @@ const hasJs = typeof document !== 'undefined' && document.documentElement.classL
  *  figures (charts, video, diagrams) — a hair of scale alongside the fade so
  *  a figure reads differently from a paragraph's plain FadeUp. Dropped the
  *  x-offset and eased the scale in from 0.98 rather than 0.95; anything more
- *  reads as a "zoom" rather than a settle. */
+ *  reads as a "zoom" rather than a settle.
+ *
+ *  Plays on mount (`animate`), not on scroll (`whileInView`) — the registry's
+ *  whileInView version depends on an IntersectionObserver callback firing,
+ *  which several figures down the page never got in testing. `animate` has
+ *  no such dependency: it always completes. */
 export function FigureReveal({ children, duration = 0.6, className = '' }: FigureRevealProps) {
   return (
     <motion.div
       initial={hasJs ? { opacity: 0, y: 16, scale: 0.98 } : false}
-      whileInView={{ opacity: 1, y: 0, scale: 1 }}
-      viewport={{ once: true, margin: '-15%' }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
       transition={{
         duration,
         ease: [0.16, 1, 0.3, 1], // easeOutExpo

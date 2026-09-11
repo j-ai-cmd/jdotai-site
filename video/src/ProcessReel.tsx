@@ -22,21 +22,25 @@ export const ProcessReel: React.FC<ProcessReelProps> = ({ steps }) => (
           style={{
             justifyContent: 'center',
             alignItems: 'center',
-            padding: 80,
+            padding: 40,
             textAlign: 'center',
             ['--font-geist-sans' as string]: BRAND.display,
           }}
         >
+          {/* Sized for how this actually ships — embedded at ~28rem wide on
+              the page, not viewed at the composition's native 1100px. Small
+              type here reads fine in the Remotion preview and as illegible
+              specks once scaled down on the page. */}
           {/* PerCharacterRise is position:absolute;inset:0 internally (same
               trap TitleCard.tsx documents) — the counter needs its own band
               above it, not a flex sibling, or the two fight for the centre. */}
-          <div style={{ position: 'relative', width: '100%', height: 40 }}>
-            <span style={{ fontSize: 28, color: BRAND.wine, fontFamily: BRAND.display, fontWeight: 600 }}>
+          <div style={{ position: 'relative', width: '100%', height: 64 }}>
+            <span style={{ fontSize: 44, color: BRAND.wine, fontFamily: BRAND.display, fontWeight: 600 }}>
               {i + 1} / {steps.length}
             </span>
           </div>
-          <div style={{ position: 'relative', width: '100%', height: 90 }}>
-            <PerCharacterRise text={step} fontSize={48} color={BRAND.ink} fontWeight={600} />
+          <div style={{ position: 'relative', width: '100%', height: 140 }}>
+            <PerCharacterRise text={step} fontSize={66} color={BRAND.ink} fontWeight={600} />
           </div>
         </AbsoluteFill>
       </Sequence>
