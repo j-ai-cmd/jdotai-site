@@ -172,7 +172,7 @@ export default function Home() {
       <section className="band band--mid band-tint">
         <div className="wrap wrap--narrow">
           <div className="head" data-rise><h2>Questions.</h2></div>
-          <Accordion type="single" collapsible>
+          <Accordion type="single" collapsible className="faq-accordion">
             {FAQ.map(([q, a]) => (
               <AccordionItem key={q} value={q}>
                 <AccordionTrigger>{q}</AccordionTrigger>

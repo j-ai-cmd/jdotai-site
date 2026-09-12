@@ -1,15 +1,15 @@
 {
   "schema": "agent-harness/plan.v1",
-  "goal": "Drive the jdotai-site build to a clean Hallmark audit: fix every finding the static gates and the runtime gates report, rebuild, and re-audit until both exit 0. Do not touch public/legacy, src/content, or the enquiry webhook.",
+  "goal": "Drive the jdotai-site build to a clean Hallmark audit: the static gates, the runtime gates and the visual baseline must all exit 0 against a fresh build. Do not touch public/legacy, src/content, or the enquiry webhook.",
   "domain": "jdotai-design",
-  "compiled_at": "2026-09-12T19:45:28Z",
+  "compiled_at": "2026-09-12T20:03:41Z",
   "skill_match_report": [
     {
       "skill": "hallmark",
-      "score": 13,
+      "score": 14,
       "matched": [
+        "against",
         "audit",
-        "both",
         "clean",
         "content",
         "drive",
@@ -18,7 +18,8 @@
         "jdotai",
         "runtime",
         "site",
-        "static"
+        "static",
+        "visual"
       ]
     }
   ],
@@ -27,10 +28,11 @@
       "id": "T1",
       "skill": "hallmark",
       "skill_path": "/Users/jaidhingra/.claude/skills/hallmark",
-      "objective": "Apply skill 'hallmark' toward goal: Drive the jdotai-site build to a clean Hallmark audit: fix every finding the static gates and the runtime gates report, rebuild, and re-audit until both exit 0. Do not touch public/legacy, src/content, or the enquiry webhook.",
+      "objective": "Apply skill 'hallmark' toward goal: Drive the jdotai-site build to a clean Hallmark audit: the static gates, the runtime gates and the visual baseline must all exit 0 against a fresh build. Do not touch public/legacy, src/content, or the enquiry webhook.",
       "suggested_tools": [
         "python3 tools/hallmark_check.py --help  # discover flags first",
-        "python3 tools/runtime_audit.mjs --help  # discover flags first"
+        "python3 tools/runtime_audit.mjs --help  # discover flags first",
+        "python3 tools/visual_diff.mjs --help  # discover flags first"
       ],
       "verification": [
         {
@@ -47,6 +49,11 @@
           "cmd": "node tools/runtime_audit.mjs --url=http://localhost:5199",
           "expect_exit": 0,
           "kind": "runtime-gates"
+        },
+        {
+          "cmd": "node tools/visual_diff.mjs",
+          "expect_exit": 0,
+          "kind": "visual-regression"
         }
       ],
       "done_when": "every verification check meets expect_exit AND the output is consistent with the task objective",

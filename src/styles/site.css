@@ -8,14 +8,30 @@
  */
 
 /* ─────────── base ─────────── */
-/* Tailwind's preflight is off (site.css carries its own reset), and one rule
-   from it is load-bearing. Both halves of it: `border-style: solid` so a
-   Tailwind `border` utility paints at all (CSS defaults the style to none,
-   which rendered every shadcn outline button and input borderless), and
-   `border-width: 0` so that solid style does not fall back to the initial
-   `medium` and draw a 3px box around every element on the page. Neither line
-   works without the other. */
-*,::before,::after{border-width:0;border-style:solid}
+/* ── the parts of Tailwind preflight the utilities depend on ──────────────
+   Preflight is off because site.css carries its own reset, but Tailwind's
+   utility classes assume a handful of its rules exist. Each of these was
+   found by looking at a rendered page, not by reading source:
+
+   · border-width/style — without `solid` the style defaults to `none` and
+     every `border` utility paints nothing (shadcn's outline buttons, inputs
+     and cards all shipped borderless). Restoring style alone then made
+     border-width fall back to the initial `medium`, boxing every element on
+     the page in 3px. Both lines or neither.
+   · border-color — Tailwind's `border-b` sets a width, not a colour, so it
+     inherited currentColor and drew the FAQ dividers in full ink.
+   · button background — the FAQ rows were striped grey because the browser
+     default `buttonface` was showing through; preflight is what normally
+     zeroes it.
+   · font/colour inheritance on form controls — otherwise inputs fall back
+     to the UA's 13px system font mid-page.
+   Anything beyond this list stays off, so site.css keeps its own reset. */
+*,::before,::after{border-width:0;border-style:solid;border-color:var(--line)}
+.band-dark *,.hero *,.close *,.foot *{border-color:var(--d-line)}
+button,[type="button"],[type="submit"],[type="reset"]{
+  -webkit-appearance:button;background-color:transparent;background-image:none;
+}
+button,input,optgroup,select,textarea{font:inherit;color:inherit;margin:0}
 *{box-sizing:border-box}
 html,body{overflow-x:clip}
 html{scroll-behavior:smooth;scroll-padding-top:5rem;-webkit-text-size-adjust:100%}
@@ -325,3 +341,31 @@ button:disabled,[aria-disabled="true"],[data-disabled]{opacity:.45;cursor:defaul
    phone, and these two are how the demos are switched. */
 [role="tablist"]{gap:.25rem}
 [role="tab"]{min-height:36px;padding-inline:1rem}
+
+/* ─────────── fields on a dark band ───────────
+   The enquiry form sits on the closing section. Painting it with the light
+   palette put five white slabs on near-black; the native <select> inherited
+   correctly and the rest did not, which is how the inconsistency showed. */
+.band-dark .enq input,.band-dark .enq select,.band-dark .enq textarea,
+.close .enq input,.close .enq select,.close .enq textarea,
+.hero .enq input,.hero .enq select,.hero .enq textarea{
+  background:var(--d-paper-2);color:var(--d-ink);border-color:var(--d-line-2);
+}
+.close .enq label,.band-dark .enq label{color:var(--d-ink-3)}
+.close .enq input:focus,.close .enq select:focus,.close .enq textarea:focus,
+.band-dark .enq input:focus,.band-dark .enq select:focus,.band-dark .enq textarea:focus{
+  border-color:var(--d-ink);
+}
+.close .enq input::placeholder,.band-dark .enq input::placeholder{color:var(--d-ink-3)}
+.close .enq-note,.band-dark .enq-note{color:var(--d-ink-2)}
+
+/* ─────────── steps ───────────
+   The numeral used to sit in a left margin with the heading beside it — the
+   hanging-header shape Hallmark bans outright. Stacked: numeral above,
+   heading directly under it in the same column. */
+.steps > div{grid-template-columns:minmax(0,1fr);gap:.35rem}
+.steps .n{padding-top:0}
+
+/* The FAQ triggers arrive as shadcn's 14px text-sm, which under a 40px
+   display heading reads as fine print rather than a question. */
+.faq-accordion [data-state]{font-size:var(--t-h4)}

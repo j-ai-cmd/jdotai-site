@@ -282,6 +282,38 @@ try {
     borders.silent.length === 0 && borders.shouting.length === 0,
     [...borders.silent.map((s) => `silent ${s}`), ...borders.shouting.map((s) => `3px+ ${s}`)].join(' | '))
 
+  /* ── no UA default styling leaking through ───────────────────────────── */
+  // Tailwind's preflight is disabled in this project, and the utilities
+  // assume parts of it exist. Every one of these shipped at some point and
+  // none was visible to source analysis: grey `buttonface` behind the FAQ
+  // rows, ink-black dividers from a colourless `border-b`, and form controls
+  // falling back to the UA's system font.
+  const ua = await page.evaluate(() => {
+    const OS_GREY = /rgb\(2[0-9][0-9], 2[0-9][0-9], 2[0-9][0-9]\)/
+    const out = { buttons: [], fonts: [], borders: [] }
+    for (const el of document.querySelectorAll('button')) {
+      const cs = getComputedStyle(el)
+      // A deliberate light fill is fine; the UA default is exactly #EFEFEF
+      // and always paired with a default border-image.
+      if (cs.backgroundColor === 'rgb(239, 239, 239)' && !String(el.className).includes('bg-')) {
+        out.buttons.push(String(el.className).split(' ')[0] || el.textContent?.trim().slice(0, 16))
+      }
+      void OS_GREY
+    }
+    const pageFont = getComputedStyle(document.body).fontFamily.split(',')[0]
+    for (const el of document.querySelectorAll('input, select, textarea, button')) {
+      const f = getComputedStyle(el).fontFamily.split(',')[0]
+      if (/system-ui|-apple-system|BlinkMac|Arial/i.test(f) && f !== pageFont) {
+        out.fonts.push(`${el.tagName.toLowerCase()} ${f}`)
+      }
+    }
+    return { buttons: [...new Set(out.buttons)].slice(0, 3), fonts: [...new Set(out.fonts)].slice(0, 3) }
+  })
+  gate('rt-ua-button', 'no browser-default button chrome showing', ua.buttons.length === 0,
+    ua.buttons.join(' | '))
+  gate('rt-ua-font', 'form controls inherit the page font', ua.fonts.length === 0,
+    ua.fonts.join(' | '))
+
   /* ── the interactive set actually mounted ─────────────────────────────── */
   await page.goto(`${URL_BASE}/`, { waitUntil: 'networkidle' })
   await page.evaluate(() => {

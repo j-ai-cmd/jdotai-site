@@ -1,17 +1,17 @@
 {
   "schema": "agent-harness/state.v1",
-  "goal": "Drive the jdotai-site build to a clean Hallmark audit: fix every finding the static gates and the runtime gates report, rebuild, and re-audit until both exit 0. Do not touch public/legacy, src/content, or the enquiry webhook.",
+  "goal": "Drive the jdotai-site build to a clean Hallmark audit: the static gates, the runtime gates and the visual baseline must all exit 0 against a fresh build. Do not touch public/legacy, src/content, or the enquiry webhook.",
   "domain": "jdotai-design",
   "plan_file": ".agent-harness/plan.json",
-  "created_at": "2026-09-12T19:46:23Z",
-  "iteration": 4,
+  "created_at": "2026-09-12T20:03:41Z",
+  "iteration": 2,
   "max_loop_iterations": 12,
   "status": "closed",
   "tasks": [
     {
       "id": "T1",
       "skill": "hallmark",
-      "objective": "Apply skill 'hallmark' toward goal: Drive the jdotai-site build to a clean Hallmark audit: fix every finding the static gates and the runtime gates report, rebuild, and re-audit until both exit 0. Do not touch public/legacy, src/content, or the enquiry webhook.",
+      "objective": "Apply skill 'hallmark' toward goal: Drive the jdotai-site build to a clean Hallmark audit: the static gates, the runtime gates and the visual baseline must all exit 0 against a fresh build. Do not touch public/legacy, src/content, or the enquiry webhook.",
       "verification": [
         {
           "cmd": "npm run build",
@@ -27,20 +27,25 @@
           "cmd": "node tools/runtime_audit.mjs --url=http://localhost:5199",
           "expect_exit": 0,
           "kind": "runtime-gates"
+        },
+        {
+          "cmd": "node tools/visual_diff.mjs",
+          "expect_exit": 0,
+          "kind": "visual-regression"
         }
       ],
       "max_attempts": 3,
-      "attempts": 1,
+      "attempts": 0,
       "status": "verified",
       "evidence": [
         {
-          "at": "2026-09-12T19:47:54Z",
+          "at": "2026-09-12T20:03:49Z",
           "phase": "execute",
           "exit_code": 0,
           "attempt": 1
         },
         {
-          "at": "2026-09-12T19:48:09Z",
+          "at": "2026-09-12T20:04:24Z",
           "phase": "verify-run",
           "checks": [
             {
@@ -48,49 +53,8 @@
               "exit": 0,
               "passed": true,
               "tail": [
-                "dist/server/entry-server.js                               131.92 kB",
-                "\u2713 built in 181ms",
-                "prerendered 35 routes, sitemap: 34 urls"
-              ]
-            },
-            {
-              "cmd": "python3 tools/hallmark_check.py",
-              "exit": 1,
-              "passed": false,
-              "tail": [
-                "FAIL  gate clean-tokens: no unused tokens  [['--z-500']]",
-                "",
-                "92 passed, 1 failed (93 mechanised gates)"
-              ]
-            },
-            {
-              "cmd": "node tools/runtime_audit.mjs --url=http://localhost:5199",
-              "exit": 0,
-              "passed": true,
-              "tail": [
-                "16 passed, 0 failed (16 runtime gates)"
-              ]
-            }
-          ],
-          "attempt": 1
-        },
-        {
-          "at": "2026-09-12T19:48:32Z",
-          "phase": "execute",
-          "exit_code": 0,
-          "attempt": 2
-        },
-        {
-          "at": "2026-09-12T19:48:47Z",
-          "phase": "verify-run",
-          "checks": [
-            {
-              "cmd": "npm run build",
-              "exit": 0,
-              "passed": true,
-              "tail": [
-                "dist/server/entry-server.js                               131.92 kB",
-                "\u2713 built in 186ms",
+                "dist/server/entry-server.js                               131.95 kB",
+                "\u2713 built in 236ms",
                 "prerendered 35 routes, sitemap: 34 urls"
               ]
             },
@@ -107,14 +71,22 @@
               "exit": 0,
               "passed": true,
               "tail": [
-                "16 passed, 0 failed (16 runtime gates)"
+                "19 passed, 0 failed (19 runtime gates)"
+              ]
+            },
+            {
+              "cmd": "node tools/visual_diff.mjs",
+              "exit": 0,
+              "passed": true,
+              "tail": [
+                "9 sections match the baseline"
               ]
             }
           ],
-          "attempt": 2
+          "attempt": 1
         }
       ]
     }
   ],
-  "closed_at": "2026-09-12T19:48:53Z"
+  "closed_at": "2026-09-12T20:04:32Z"
 }

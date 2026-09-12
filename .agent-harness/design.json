@@ -17,8 +17,16 @@
           "wired": true,
           "supports_sample": false,
           "verification": [
-            { "cmd": "npm run build", "expect_exit": 0, "kind": "build" },
-            { "cmd": "python3 tools/hallmark_check.py", "expect_exit": 0, "kind": "static-gates" }
+            {
+              "cmd": "npm run build",
+              "expect_exit": 0,
+              "kind": "build"
+            },
+            {
+              "cmd": "python3 tools/hallmark_check.py",
+              "expect_exit": 0,
+              "kind": "static-gates"
+            }
           ]
         },
         {
@@ -26,7 +34,23 @@
           "wired": true,
           "supports_sample": false,
           "verification": [
-            { "cmd": "node tools/runtime_audit.mjs --url=http://localhost:5199", "expect_exit": 0, "kind": "runtime-gates" }
+            {
+              "cmd": "node tools/runtime_audit.mjs --url=http://localhost:5199",
+              "expect_exit": 0,
+              "kind": "runtime-gates"
+            }
+          ]
+        },
+        {
+          "script": "tools/visual_diff.mjs",
+          "wired": true,
+          "supports_sample": false,
+          "verification": [
+            {
+              "cmd": "node tools/visual_diff.mjs",
+              "expect_exit": 0,
+              "kind": "visual-regression"
+            }
           ]
         }
       ]
