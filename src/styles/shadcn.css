@@ -1,13 +1,12 @@
-/* shadcn/ui variable bridge.
+/* shadcn/ui variable bridge — monochrome.
  *
  * shadcn components reference a fixed set of names (--background, --primary,
- * --border …). Rather than let its init write a stone-grey palette in here,
- * every one of them is mapped onto the three colours already declared in
- * tokens.css. No raw colour value appears in this file — a shadcn button
- * comes out wine, on paper, in Geist, because it can't come out
- * any other way.
+ * --border …). Every one is mapped onto the neutral scale in tokens.css, so a
+ * shadcn button comes out as a black block on white and a white block on
+ * black, because it cannot come out any other way.
  *
- * If a shadcn component ever looks off-brand, the fix belongs in tokens.css.
+ * No raw colour value appears in this file. If a component ever looks wrong,
+ * the fix belongs in tokens.css.
  */
 :root{
   --background:var(--paper);
@@ -18,26 +17,50 @@
   --popover:var(--paper);
   --popover-foreground:var(--ink);
 
-  --primary:var(--wine);
-  --primary-foreground:var(--on-wine);
+  /* Primary is ink on paper — the only "accent" a monochrome page has is
+     inversion. */
+  --primary:var(--ink);
+  --primary-foreground:var(--paper);
 
-  --secondary:var(--sunk);
+  --secondary:var(--paper-3);
   --secondary-foreground:var(--ink);
 
-  --muted:var(--sunk);
-  --muted-foreground:var(--ink-muted);
+  --muted:var(--paper-2);
+  --muted-foreground:var(--ink-3);
 
-  --accent:var(--sunk);
+  --accent:var(--paper-3);
   --accent-foreground:var(--ink);
 
-  /* No destructive colour exists in the three. Wine carries it — the system
-     has one accent and borrowing a red from outside would break gate 48. */
-  --destructive:var(--wine-hover);
-  --destructive-foreground:var(--on-wine);
+  /* There is no red in the system. Destructive reads as full-strength ink,
+     which on this page is the strongest thing available. */
+  --destructive:var(--ink);
+  --destructive-foreground:var(--paper);
 
-  --border:var(--rule);
-  --input:var(--rule);
-  --ring:var(--wine);
+  --border:var(--line);
+  --input:var(--line-2);
+  --ring:var(--ink);
 
   --radius:var(--r-md);
+}
+
+/* On the dark bands the same component set has to invert. Scoping by the
+   band class keeps that to one block rather than a variant per component. */
+.band-dark,.hero,.close,.foot{
+  --background:var(--d-paper);
+  --foreground:var(--d-ink);
+  --card:var(--d-paper-2);
+  --card-foreground:var(--d-ink);
+  --popover:var(--d-paper-2);
+  --popover-foreground:var(--d-ink);
+  --primary:var(--d-ink);
+  --primary-foreground:var(--d-paper);
+  --secondary:var(--d-paper-3);
+  --secondary-foreground:var(--d-ink);
+  --muted:var(--d-paper-2);
+  --muted-foreground:var(--d-ink-2);
+  --accent:var(--d-paper-3);
+  --accent-foreground:var(--d-ink);
+  --border:var(--d-line);
+  --input:var(--d-line-2);
+  --ring:var(--d-ink);
 }

@@ -1,574 +1,305 @@
-/* Hallmark · macrostructure: studied-DNA (source: url, harvey.ai) · genre: modern-minimal
- * theme: custom · paper #FBFAF8 · ink #171412 · accent wine #6E2434
- * type: Geist (single family) + Fraunces (donna outlier)
- * nav: N1b canonical SaaS three-section · footer: Ft5 Statement
- * studied DNA: dense SaaS sequence — split hero, trust bar of integration
- * badges, bento feature grid, full-width stat band, tabbed demo, process,
- * connection diagram, FAQ, closing CTA. Adapted honestly: Harvey's customer
- * logos become donna's real PMS/assistant integrations (nothing invented);
- * Harvey has no testimonials here because donna has none to show yet.
- * Second full pass on this project — was Long Document (continuous essay)
- * before that, Narrative Workflow before that. Replaced outright each time
- * at the user's explicit request: "one page, loads of elements."
- * No eyebrows, no section numbering, no uppercase micro-labels anywhere.
- * Motion: reading-progress · page-load reveals · a magnetic CTA · one
- * figure-reveal voice for charts/video · one character-emphasis moment.
- * pre-emit critique: P4 H4 E5 S4 R3 V4
+/* Hallmark · macrostructure: Instrument Panel · genre: modern-minimal · tone: austere
+ * theme: custom monochrome · paper #FFFFFF · ink #09090B · accent: none
+ * type: Inter Tight (display) + Inter (interface) + JetBrains Mono (data)
+ * nav: N10 scroll-morph · footer: Ft4 colophon
+ * enrichment: E1 scroll-scrubbed demo video + live Mono Charts instrument grid
+ * The page is built on the charts' own palette, so data is native to it.
+ * pre-emit critique: P5 H5 E4 S5 R5 V4
  */
 
 /* ─────────── base ─────────── */
 *{box-sizing:border-box}
 html,body{overflow-x:clip}
-html{scroll-behavior:smooth;scroll-padding-top:5rem}
+html{scroll-behavior:smooth;scroll-padding-top:5rem;-webkit-text-size-adjust:100%}
 body{
   margin:0;background:var(--paper);color:var(--ink);
-  font-family:var(--fb);font-size:var(--t-body);line-height:1.65;
+  font-family:var(--fb);font-size:var(--t-body);line-height:1.6;
   -webkit-font-smoothing:antialiased;font-synthesis-weight:none;
 }
 a{color:inherit}
 p{margin:0}
-img,video{max-width:100%;display:block}
-:focus-visible{outline:2px solid var(--wine);outline-offset:3px;border-radius:var(--r-sm)}
+img,video,canvas,svg{max-width:100%;display:block}
+:focus-visible{outline:2px solid currentColor;outline-offset:3px;border-radius:2px}
 
-/* A single sheet of grain over the whole page — felt, not seen, at 3%. Fixed,
-   so it does not travel with the scroll. */
-body::before{
-  content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
-  opacity:.035;mix-blend-mode:multiply;
-  background-image:var(--grain);background-size:180px 180px;
-}
-body > *{position:relative;z-index:1}
-
-h1,h2,h3{
-  font-family:var(--fd);font-weight:500;font-style:normal;margin:0;
-  letter-spacing:-.03em;line-height:1.05;
+h1,h2,h3,h4{
+  font-family:var(--fd);font-weight:600;font-style:normal;margin:0;
+  letter-spacing:-.035em;line-height:1.02;
   text-wrap:balance;overflow-wrap:anywhere;
 }
-h1{font-size:var(--t-display)}
-h2{font-size:var(--t-h2)}
+h1{font-size:var(--t-hero);letter-spacing:-.045em}
+h2{font-size:var(--t-display)}
 h3{font-size:var(--t-h3);letter-spacing:-.02em;line-height:1.2}
+h4{font-size:var(--t-h4);letter-spacing:-.015em;line-height:1.25}
 
-.narrow{max-width:var(--w-narrow);margin:0 auto;padding-inline:var(--gut)}
-.mid{max-width:var(--w-mid);margin:0 auto;padding-inline:var(--gut)}
-
-.lede{color:var(--ink-body);font-size:var(--t-lede);line-height:1.6;max-width:65ch}
-
-.skip{position:absolute;left:-9999px}
-.skip:focus{
-  left:var(--gut);top:.75rem;z-index:99;
-  background:var(--wine);color:var(--on-wine);
-  padding:.6rem 1rem;border-radius:999px;font-size:var(--t-small);
+.skip{
+  position:absolute;left:-9999px;top:0;z-index:200;
+  background:var(--ink);color:var(--paper);padding:.75rem 1.25rem;
 }
+.skip:focus{left:0}
 
-/* the donna wordmark — set, never drawn. Fraunces is the one outlier and
-   appears nowhere else, which is what keeps it an outlier rather than a
-   third body font. */
-.donna{font-family:var(--fd-donna);font-weight:400;
-  letter-spacing:-.01em;color:var(--wine);font-style:normal}
-.nav .donna,.cta-band .donna,.hero-dark .donna{color:inherit}
+/* every numeral on the page is mono and tabular — the charts set the rule */
+.band-dark .tag{color:var(--d-ink-3)}
+.mono{font-family:var(--fm);font-variant-numeric:tabular-nums;letter-spacing:-.02em}
 
-/* ─────────── reading progress ─────────── */
-.reading-progress{
-  position:fixed;top:0;left:0;right:0;height:2px;transform-origin:0%;
-  background:var(--wine);z-index:70;
+/* The page's one label voice: small mono caps. Declared once here and reused
+   by the marquee, the composer's field labels and the enquiry form, rather
+   than each of them re-declaring text-transform for itself. */
+.tag,.marq__row span,.comp__row label,.enq label{
+  font-family:var(--fm);font-size:var(--t-micro);font-weight:500;
+  letter-spacing:.14em;text-transform:uppercase;
 }
+.tag{color:var(--ink-3)}
 
-/* ─────────── nav · N1b canonical SaaS three-section ─────────── */
-/* Default nav text is ink, for the pages (everything but Home) that open
-   directly on paper. Home opens on .hero-dark instead, so its nav starts
-   life over a dark surface — .nav--on-dark (set in Nav.tsx only while a
-   .hero-dark element is both present and unscrolled-past) flips it to
-   paper-toned until the scrim takes over. */
+/* ─────────── shell ─────────── */
+.wrap{max-width:var(--w-wide);margin:0 auto;padding-inline:var(--gut)}
+.wrap--mid{max-width:var(--w-mid)}
+.wrap--narrow{max-width:var(--w-narrow)}
+
+.band{padding-block:var(--pad-mid)}
+.band--loose{padding-block:var(--pad-loose)}
+.band-dark{background:var(--d-paper);color:var(--d-ink)}
+.band-tint{background:var(--paper-2)}
+
+.head{display:flex;flex-direction:column;gap:.9rem;margin-bottom:2.75rem;max-width:38rem}
+.head p{color:var(--ink-3);font-size:var(--t-lede);line-height:1.5}
+.band-dark .head p{color:var(--d-ink-2)}
+
+/* ─────────── nav · N10 scroll-morph ─────────── */
 .nav{
-  position:fixed;inset:0 0 auto;z-index:60;color:var(--ink);
-  background:transparent;border-bottom:1px solid transparent;
-  transition:background var(--dur) var(--ease),border-color var(--dur) var(--ease),
-             color var(--dur) var(--ease);
+  position:fixed;inset:0 0 auto;z-index:100;
+  display:flex;align-items:center;gap:1.5rem;
+  padding:1.1rem var(--gut);
+  color:var(--d-ink);
+  /* Only paint properties. Transitioning padding relayouts the page on
+     every scroll frame, which is what gate 14 exists to catch. */
+  transition:background var(--dur) var(--ease),color var(--dur) var(--ease),
+             border-color var(--dur) var(--ease);
+  border-bottom:1px solid transparent;
 }
-.nav.nav--on-dark{color:var(--paper)}
-.nav.is-scrolled{
-  background:var(--scrim);color:var(--ink);
-  backdrop-filter:blur(14px);border-bottom-color:var(--rule);
+.nav[data-solid="true"]{
+  background:color-mix(in oklab,var(--paper) 86%,transparent);
+  backdrop-filter:saturate(180%) blur(14px);
+  color:var(--ink);border-bottom-color:var(--line);
 }
-.nav__inner{
-  max-width:var(--w-wide);margin:0 auto;padding-inline:var(--gut);
-  height:4.25rem;display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:center;
+.nav__wm{
+  font-family:var(--fd);font-weight:700;font-size:1.0625rem;letter-spacing:-.05em;
+  text-decoration:none;white-space:nowrap;
 }
-.nav__brand{
-  grid-column:1;justify-self:start;font-family:var(--fd);font-weight:700;font-size:1.0625rem;
-  letter-spacing:-.04em;text-decoration:none;white-space:nowrap;color:inherit;
+.nav__wm i{font-style:normal;opacity:.5}
+.nav__links{display:flex;gap:1.75rem;margin-inline:auto;font-size:var(--t-small)}
+.nav__links a{
+  text-decoration:none;white-space:nowrap;opacity:.7;
+  transition:opacity var(--dur-fast) var(--ease);
 }
-.nav__brand i{font-style:normal;color:var(--wine)}
-.nav__center{
-  grid-column:2;justify-self:center;display:flex;gap:2rem;font-size:.9375rem;
-  color:inherit;opacity:.7;
-}
-.nav__link{text-decoration:none;padding:.3rem 0;white-space:nowrap;color:inherit;
-  transition:color var(--dur) var(--ease)}
-.nav__link:hover{color:var(--wine);opacity:1}
-.nav__link[aria-current]{color:inherit;opacity:1;font-weight:600}
-/* explicit grid-column so removing .nav__center (display:none below 60rem)
-   doesn't shift this into the now-empty middle track — CSS Grid auto-places
-   remaining items into the next free explicit track in DOM order, which
-   would otherwise land the CTA in the middle instead of the right edge */
-.nav__right{grid-column:3;justify-self:end}
+.nav__links a:hover,.nav__links a[aria-current]{opacity:1}
+@media (max-width:46rem){ .nav__links{display:none} }
 
-/* ─────────── buttons ─────────── */
-.btn{
-  display:inline-flex;align-items:center;justify-content:center;
-  min-height:2.5rem;padding:.6rem 1.25rem;border-radius:999px;
-  border:1px solid var(--wine);background:var(--wine);color:var(--on-wine);
-  font-family:var(--fb);font-size:.9375rem;font-weight:500;
-  text-decoration:none;white-space:nowrap;cursor:pointer;
-  transition:background var(--dur) var(--ease),border-color var(--dur) var(--ease),
-             opacity var(--dur) var(--ease);
-}
-.btn:hover{background:var(--wine-hover);border-color:transparent}
-.btn:active{transform:translateY(1px)}
-.btn[disabled],.btn[aria-busy="true"]{opacity:.55;cursor:default;pointer-events:none}
-.btn--line{background:transparent;color:var(--ink);border-color:var(--ink)}
-.btn--line:hover{background:var(--ink);color:var(--paper);border-color:var(--ink)}
-
-/* an inline typographic CTA — the Long Document voice for a call to action
-   that lives inside a sentence, not a separate block. */
-.cta-link{
-  color:var(--wine);text-decoration:underline;text-underline-offset:.2em;
-  text-decoration-thickness:1px;font-weight:500;white-space:nowrap;
-  transition:text-decoration-thickness var(--dur) var(--ease);
-}
-.cta-link:hover{text-decoration-thickness:2px}
-
-/* ─────────── opener · the headline only ─────────── */
-.open{padding-block:clamp(6rem,11vw,8.5rem) 0}
-.open h1{max-width:20ch}
-
-/* the donna page's typed question-line — a real, functioning demo of the
-   product sitting directly under the headline, not decoration. Lost its
-   styling in the redesign pass; restored here rather than as bare text. */
-.askline{
-  margin-top:2rem;max-width:34rem;display:flex;align-items:center;gap:.75rem;
-  border:1px solid var(--rule);border-radius:999px;padding:.85rem 1.15rem;
-  background:var(--paper);
-  box-shadow:0 1px 3px color-mix(in oklab,var(--ink) 7%,transparent);
-}
-.askline .q{
-  flex:1;min-width:0;font-family:var(--fd);font-size:.9375rem;
-  color:var(--ink-body);white-space:nowrap;overflow:hidden;
-}
-.askline .caret{
-  display:inline-block;width:2px;height:1em;vertical-align:-.15em;
-  background:var(--wine);margin-left:1px;animation:caret 1.1s step-end infinite;
-}
-@keyframes caret{50%{opacity:0}}
-.askline .go{
-  flex:none;background:var(--wine);color:var(--on-wine);border-radius:999px;
-  padding:.4rem .95rem;font-family:var(--fd);font-size:.8125rem;font-weight:500;
-}
-@media (max-width:34rem){
-  .askline{border-radius:var(--r-lg);flex-wrap:wrap}
-  .askline .q{white-space:normal}
-}
-@media (prefers-reduced-motion:reduce){
-  .askline .caret{animation:none}
+/* the read-progress hairline, drawn on the nav's own bottom edge */
+.nav__read{
+  position:absolute;left:0;bottom:-1px;height:1px;background:currentColor;
+  transform-origin:left;transform:scaleX(var(--read,0));opacity:.55;
 }
 
-/* ─────────── one-page sections (Home) ───────────
-   Studied from harvey.ai: a real SaaS sequence, not a single essay. Each
-   section owns its own width and padding on purpose — the rhythm is meant
-   to feel dense and varied, the opposite of the previous pass. */
-.section{padding-block:var(--pad-loose)}
-.section--tint{background:var(--sunk)}
-.section--top{border-top:1px solid var(--rule)}
-.section-in{max-width:var(--w-wide);margin:0 auto;padding-inline:var(--gut)}
-.section-in--mid{max-width:var(--w-mid)}
-.section-head{max-width:36rem;margin:0 0 2.5rem}
-.section-head.center{margin-inline:auto;text-align:center}
-.section-head h2{max-width:20ch}
-.section-head.center h2{margin-inline:auto}
+/* ─────────── hero ─────────── */
+.hero{
+  position:relative;background:var(--d-paper);color:var(--d-ink);
+  padding-block:clamp(9rem,17vw,13rem) clamp(3rem,6vw,4.5rem);
+  overflow:hidden;
+}
+.hero h1{max-width:14ch}
+.hero__lede{
+  margin-top:1.75rem;max-width:44ch;color:var(--d-ink-2);
+  font-size:var(--t-lede);line-height:1.5;
+}
+.hero__go{display:flex;flex-wrap:wrap;gap:.75rem;margin-top:2.5rem}
+.hero__meta{
+  display:flex;flex-wrap:wrap;gap:1.5rem 2.5rem;margin-top:3.5rem;
+  padding-top:1.75rem;border-top:1px solid var(--d-line);
+}
+.hero__meta div{display:flex;flex-direction:column;gap:.3rem}
+.hero__meta .n{font-family:var(--fm);font-size:1.5rem;font-weight:500;letter-spacing:-.04em}
+.hero__meta .l{font-size:var(--t-meta);color:var(--d-ink-3)}
 
-/* hero — dark, full-bleed, studied from lex-ops.io: a near-black band, not
-   another light section, is what actually reads as a different site rather
-   than a rearranged one. The wine glow is the same accent the rest of the
-   page uses, just used as light instead of ink — no new colour introduced.
-   The demo loop breaks out of the band's bottom edge into the light section
-   beneath it (lex-ops' console screenshot does the same against its hero). */
-.hero-dark{
-  position:relative;overflow:hidden;background:var(--ink);color:var(--paper);
-  padding-block:clamp(6.5rem,13vw,9rem) clamp(8rem,16vw,11rem);
-  text-align:center;
+/* ─────────── scroll-scrubbed film ─────────── */
+.film{position:relative;background:var(--d-paper)}
+.film__sticky{position:sticky;top:0;height:100svh;display:grid;place-items:center;overflow:hidden}
+.film__inner{width:min(92vw,72rem);padding-inline:var(--gut)}
+.film video{
+  width:100%;height:auto;border-radius:var(--r-lg);
+  border:1px solid var(--d-line);background:var(--d-paper-2);
 }
-.hero-dark::before{
-  content:"";position:absolute;inset:0;pointer-events:none;
-  background:
-    radial-gradient(ellipse 60% 50% at 15% 0%,color-mix(in oklab,var(--wine) 55%,transparent),transparent 60%),
-    radial-gradient(ellipse 50% 40% at 100% 100%,color-mix(in oklab,var(--wine) 35%,transparent),transparent 65%);
-  opacity:.55;
+.film__cap{
+  display:flex;justify-content:space-between;gap:1rem;
+  margin-top:1rem;font-family:var(--fm);font-size:var(--t-meta);color:var(--d-ink-3);
 }
-.hero-dark__in{position:relative;max-width:44rem;margin:0 auto;padding-inline:var(--gut)}
-.hero-dark h1{max-width:18ch;margin-inline:auto;color:var(--paper)}
-.hero-dark .lede{color:color-mix(in oklab,var(--paper) 74%,var(--ink));margin:1.25rem auto 0;max-width:46ch;text-align:center}
-.hero-dark .askline{margin-inline:auto;box-shadow:0 12px 32px -12px color-mix(in oklab,var(--ink) 60%,transparent)}
-.hero-dark .go{justify-content:center}
-
-/* the clip — pulled up over the dark band's bottom edge by design, framed
-   in paper so the seam between the two surfaces reads as intentional. */
-.hero-clip{
-  position:relative;margin-top:calc(-1 * clamp(5rem,11vw,7.5rem));
-  padding-inline:var(--gut);max-width:56rem;margin-inline:auto;
-}
-.hero-clip .figure{width:100%;margin:0}
-.hero-clip video{
-  border-radius:var(--r-lg);border:1px solid var(--rule);
-  box-shadow:0 24px 48px -20px color-mix(in oklab,var(--ink) 45%,transparent);
+.film__bar{height:1px;background:var(--d-line);margin-top:.75rem;position:relative}
+.film__bar i{
+  position:absolute;inset:0;background:var(--d-ink);
+  transform-origin:left;transform:scaleX(var(--p,0));
+  transition:transform .12s var(--ease-io);
 }
 
+/* ─────────── marquee ─────────── */
+.marq{overflow:hidden;border-block:1px solid var(--line);background:var(--paper)}
+.marq + .band{padding-top:var(--pad-tight)}
+.marq__row{display:flex;gap:3.5rem;padding-block:1.15rem;width:max-content;animation:marq 38s linear infinite}
+.marq__row span{font-size:var(--t-meta);letter-spacing:.1em;color:var(--ink-3);white-space:nowrap}
+.marq:hover .marq__row{animation-play-state:paused}
+@keyframes marq{to{transform:translateX(-50%)}}
 
-/* trust bar — what donna actually connects to, presented the way a logo
-   wall would be. Real integration partners, not customers; nothing here is
-   a claim, just an inventory. */
-.trust{
-  padding-block:var(--pad-tight);border-block:1px solid var(--rule);background:var(--sunk);
+/* ─────────── instrument grid — the Mono Charts ─────────── */
+.rig{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line)}
+.rig > *{background:var(--paper);padding:clamp(1.1rem,2vw,1.6rem)}
+.rig__wide{grid-column:span 8}
+.rig__half{grid-column:span 6}
+.rig__third{grid-column:span 4}
+@media (max-width:64rem){
+  .rig__wide,.rig__half,.rig__third{grid-column:span 12}
 }
-.trust__caption{
-  font-family:var(--fd);font-size:.875rem;color:var(--ink-muted);margin:0 0 1.25rem;
-}
-.trust__row{display:flex;flex-wrap:wrap;gap:.6rem}
-.trust__row + .trust__row{margin-top:.6rem}
+.rig__head{display:flex;align-items:baseline;justify-content:space-between;gap:1rem;margin-bottom:1rem}
+.rig__head h4{letter-spacing:-.01em}
+.rig__n{font-family:var(--fm);font-size:var(--t-meta);color:var(--ink-3)}
+.rig__chart{margin-inline:-.35rem}
 
-/* the problem cards — lex-ops' numbered-chip pattern, on real pain points
-   already named elsewhere on the page, not a new claim. */
-.problems{display:grid;gap:1.25rem;grid-template-columns:minmax(0,1fr) minmax(0,1fr) minmax(0,1fr)}
-.problem-card{
-  background:var(--paper);border:1px solid var(--rule);border-radius:var(--r-lg);
-  padding:clamp(1.5rem,3vw,1.85rem);
+/* ─────────── composer (Diffusion Studio) ─────────── */
+.comp{display:grid;grid-template-columns:minmax(0,1fr) 19rem;gap:1px;background:var(--d-line);border:1px solid var(--d-line);border-radius:var(--r-xl);overflow:hidden}
+@media (max-width:58rem){ .comp{grid-template-columns:minmax(0,1fr)} }
+.comp__stage{background:var(--d-paper-2);display:grid;place-items:center;padding:1.25rem;min-height:19rem}
+.comp__stage canvas,.comp__stage video{width:100%;height:auto;border-radius:var(--r-md);background:var(--d-paper)}
+.comp__side{background:var(--d-paper-3);padding:1.25rem;display:flex;flex-direction:column;gap:1rem}
+.comp__row{display:flex;flex-direction:column;gap:.45rem}
+.comp__row label{color:var(--d-ink-3)}
+.comp__status{
+  font-family:var(--fm);font-size:var(--t-meta);color:var(--d-ink-2);
+  border-top:1px solid var(--d-line);padding-top:.85rem;margin-top:auto;
+  min-height:2.4rem;line-height:1.45;
 }
-.problem-card__n{
-  display:inline-flex;align-items:center;justify-content:center;
-  width:2rem;height:2rem;border-radius:var(--r-md);
-  background:color-mix(in oklab,var(--wine) 12%,var(--paper));color:var(--wine);
-  font-family:var(--fd);font-weight:600;font-size:.8125rem;
-  font-variant-numeric:tabular-nums;margin-bottom:1rem;
-}
-.problem-card h3{font-size:1.0625rem}
-.problem-card p{margin-top:.5rem;color:var(--ink-body);font-size:.9375rem;line-height:1.6}
-@media (max-width:56rem){
-  .problems{grid-template-columns:minmax(0,1fr)}
-}
+.comp__track{height:2px;background:var(--d-line);position:relative;margin-top:.5rem}
+.comp__track i{position:absolute;inset:0;background:var(--d-ink);transform-origin:left;transform:scaleX(var(--p,0));transition:transform .15s linear}
 
-/* the diamond — a rotated square, the one geometric motif borrowed whole
-   from lex-ops rather than adapted; it costs nothing to build in pure CSS
-   and reads as considered rather than decorative filler. */
-.diamond{
-  width:5.5rem;height:5.5rem;border-radius:var(--r-md);
-  background:var(--paper);border:1px solid var(--rule);
-  transform:rotate(45deg);
-  box-shadow:0 16px 32px -18px color-mix(in oklab,var(--ink) 35%,transparent);
+/* ─────────── steps ─────────── */
+.steps{border-top:1px solid var(--line)}
+.steps > div{
+  display:grid;grid-template-columns:4rem minmax(0,1fr);gap:0 1.5rem;
+  padding-block:1.75rem;border-bottom:1px solid var(--line);
+  transition:background var(--dur-fast) var(--ease);
 }
-.diamond-stack{position:relative;width:5.5rem;height:5.5rem;flex:none}
-.diamond-stack .diamond:nth-child(2){position:absolute;inset:0;transform:rotate(45deg) translate(6px,6px);z-index:-1;opacity:.6}
-.diamond-stack .diamond:nth-child(3){position:absolute;inset:0;transform:rotate(45deg) translate(12px,12px);z-index:-2;opacity:.35}
-
-.step-row{
-  margin-top:2.5rem;display:flex;align-items:center;gap:2.5rem;
-}
-.step-row__flow{flex:1;min-width:0}
-@media (max-width:56rem){
-  .step-row{flex-direction:column}
-  .diamond-stack{align-self:center;margin-top:1rem}
-}
-
-/* bento — mixed-span feature grid. Never three equal columns: the middle
-   tile runs taller to hold the connection diagram, breaking the rhythm the
-   way layout-and-space.md asks for. */
-.bento{
-  display:grid;gap:1px;background:var(--rule);border:1px solid var(--rule);
-  border-radius:var(--r-lg);overflow:hidden;
-  grid-template-columns:repeat(6,minmax(0,1fr));
-}
-.bento__tile{
-  background:var(--paper);padding:clamp(1.5rem,3vw,2.25rem);
-  grid-column:span 3;display:flex;flex-direction:column;gap:.75rem;
-}
-.bento__tile--wide{grid-column:span 6}
-.bento__tile h3{font-size:1.1875rem;letter-spacing:-.015em}
-.bento__tile p{color:var(--ink-body);font-size:.9375rem;line-height:1.6}
-.bento__tile .cmap{margin-top:auto}
-@media (max-width:56rem){
-  .bento{grid-template-columns:repeat(2,minmax(0,1fr))}
-  .bento__tile{grid-column:span 2}
-}
-
-/* the tabbed demo — shadcn Tabs switching between the two real product
-   loops, Harvey's "feature deep-dive" pattern with donna's own footage. */
-.demo-tabs{margin-top:2rem}
-.demo-tabs figure{margin:0}
-.demo-tabs video{
-  width:100%;height:auto;aspect-ratio:16/10;object-fit:cover;
-  border:1px solid var(--rule);border-radius:var(--r-lg);background:var(--sunk);
-}
-.demo-tabs figcaption{margin-top:.9rem;color:var(--ink-muted);font-size:var(--t-small);line-height:1.55}
-
-/* closing CTA band — dark, bookending the hero (lex-ops opens and closes on
-   the same near-black band). Reusing .hero-dark's atmosphere rather than a
-   second wine-filled band keeps the page's one loud accent moment at the
-   hero, not scattered across every closing section. */
-.cta-band{
-  position:relative;overflow:hidden;background:var(--ink);color:var(--paper);
-  text-align:center;padding-block:var(--pad-loose);
-}
-.cta-band::before{
-  content:"";position:absolute;inset:0;pointer-events:none;
-  background:radial-gradient(ellipse 55% 60% at 85% 100%,color-mix(in oklab,var(--wine) 45%,transparent),transparent 65%);
-  opacity:.6;
-}
-.cta-band .section-in{position:relative}
-.cta-band h2{color:var(--paper);max-width:18ch;margin-inline:auto;
-  font-size:clamp(2rem,5vw,3.25rem)}
-.cta-band .go{justify-content:center;margin-top:2rem}
-
-/* ─────────── essay · the continuous read ───────────
-   One column, one measure, no marketing sections. Section heads emerge from
-   the body flow — bold, in the same rhythm as a paragraph, never a hanging
-   label. A hairline wine rule down each side is the only frame the reading
-   column gets. */
-.essay{
-  max-width:44rem;margin:0 auto;padding-inline:var(--gut);
-  padding-block:var(--pad-mid) var(--pad-loose);
-  border-inline:2px solid var(--wine);
-}
-.essay > .lede{margin-top:0}
-.essay > p{color:var(--ink-body);max-width:65ch;margin-top:1.15rem}
-.essay > p:first-child{margin-top:0}
-.essay h2{
-  font-size:var(--t-h3);font-weight:600;letter-spacing:-.01em;
-  margin-top:3rem;margin-bottom:.9rem;max-width:28ch;
-}
-.essay ul,.essay ol{margin:1.15rem 0 0;padding-left:1.25rem;color:var(--ink-body);max-width:65ch}
-.essay li{margin-top:.4rem;line-height:1.6}
-.essay li:first-child{margin-top:0}
-.essay blockquote{
-  margin:1.75rem 0 0;padding-left:1.25rem;border-left:2px solid var(--rule);
-  color:var(--ink);font-size:var(--t-lede);line-height:1.55;max-width:60ch;
-}
-
-/* a figure — chart, video, diagram — deliberately wider than the prose
-   column. The one break in an otherwise single-column grid. */
-.figure{
-  width:calc(100% + clamp(0px,6vw,4rem));
-  margin:2rem calc(clamp(0px,6vw,4rem) / -2) 0;
-}
-.figure figcaption{
-  margin-top:.9rem;color:var(--ink-muted);font-size:var(--t-small);
-  line-height:1.55;max-width:65ch;
-}
-.figure video{
-  width:100%;height:auto;border:1px solid var(--rule);border-radius:var(--r-lg);
-  background:var(--sunk);
-}
-
-/* the process-reel bumper is compact and sits inline, unlike the full-width
-   demo — a smaller, quieter figure inside the same rhythm */
-.figure--reel{max-width:30rem;margin-inline:auto}
-.figure--reel video{aspect-ratio:1100/619}
-
-/* ─────────── mono-chart tiles ───────────
-   Reskinned from the mono-charts registry: real numbers, three token
-   colours, no dev-dashboard chrome. */
-.mono-chart{margin:0;background:var(--sunk);border:1px solid var(--rule);
-  border-radius:var(--r-lg);padding:clamp(1.25rem,3vw,1.75rem)}
-.mono-chart figcaption{margin-top:1rem;color:var(--ink-muted);font-size:var(--t-small);line-height:1.5}
-
-/* two mono-chart figures side by side — each is already its own bordered
-   figure, so this only owns the gap between them */
-.chart-pair{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,16rem),1fr));gap:1rem}
-
-.stat-tiles{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));
-  background:var(--sunk);border:1px solid var(--rule);border-radius:var(--r-lg);overflow:hidden}
-.stat-tile{
-  padding:clamp(1.25rem,3vw,1.75rem) clamp(1rem,2vw,1.25rem);
-  display:flex;flex-direction:column;align-items:flex-start;gap:.75rem;
-}
-.stat-tile + .stat-tile{border-left:1px solid var(--rule)}
-.stat-tile-ring{position:relative;width:64px;height:64px;flex:none}
-.stat-tile-ring--wide{width:88px;height:58px}
-.stat-tile-n{
-  position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
-  font-family:var(--fd);font-weight:600;font-size:1.25rem;letter-spacing:-.03em;
-  color:var(--ink);font-variant-numeric:tabular-nums;
-}
-.stat-tile-n--gauge{align-items:flex-end;padding-bottom:2px;font-size:var(--t-h3)}
-.stat-tile-caption{font-size:.9375rem;color:var(--ink-body);line-height:1.5}
-.stat-tile-caption-sub{display:block;color:var(--ink-muted);font-size:.8125rem}
-
-.stat-tile--bullet{width:100%}
-.stat-tile-bullet-head{display:flex;align-items:baseline;gap:.4rem;align-self:stretch}
-.stat-tile-bullet-head .stat-tile-n{
-  position:static;font-family:var(--fd);font-weight:600;font-size:var(--t-figure);
-  line-height:1;letter-spacing:-.04em;color:var(--wine);
-}
-.stat-tile-unit{font-size:.9375rem;color:var(--ink-muted)}
-.stat-tile-bullet-track{
-  align-self:stretch;height:6px;border-radius:99px;background:var(--rule);overflow:hidden;
-}
-.stat-tile-bullet-fill{height:100%;width:100%;border-radius:99px}
-.stat-tile-bullet-ends{
-  align-self:stretch;display:flex;justify-content:space-between;
-  font-size:.8125rem;color:var(--ink-muted);
-}
-
-/* treemap — real category counts, sized by opacity rather than invented
-   percentages, so no number appears that wasn't just counted */
-.treemap{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,7rem),1fr));gap:.5rem}
-.treemap__tile{
-  background:var(--wine);color:var(--on-wine);border-radius:var(--r-md);
-  padding:.9rem 1rem;display:flex;flex-direction:column;justify-content:space-between;
-  min-height:5.5rem;gap:1.5rem;
-}
-.treemap__name{font-size:.8125rem;font-weight:600;line-height:1.25}
-.treemap__n{font-family:var(--fd);font-size:1.375rem;font-weight:600;
-  color:var(--on-wine-muted);font-variant-numeric:tabular-nums;letter-spacing:-.02em}
-
-/* step flow — a real 3-stage process, connected by a line, not a metric */
-.step-flow{list-style:none;margin:0;padding:0;display:grid;gap:1px;
-  background:var(--rule);border:1px solid var(--rule);border-radius:var(--r-lg);overflow:hidden}
-.step-flow__step{background:var(--paper);padding:1.25rem 1.5rem;display:flex;gap:1rem;align-items:flex-start}
-.step-flow__n{
-  flex:none;width:1.75rem;height:1.75rem;border-radius:50%;background:var(--wine);color:var(--on-wine);
-  display:flex;align-items:center;justify-content:center;font-family:var(--fd);
-  font-weight:600;font-size:.8125rem;font-variant-numeric:tabular-nums;
-}
-.step-flow__body{color:var(--ink-body);font-size:.9375rem;line-height:1.6}
-.step-flow__body b{display:block;color:var(--ink);font-weight:600;margin-bottom:.15rem}
-
-/* ─────────── connection map ───────────
-   A structural diagram, not a chart. */
-.cmap{margin:0}
-.cmap svg{width:100%;height:auto;display:block;overflow:visible}
-.cmap-wire path{
-  fill:none;stroke:var(--wine);stroke-width:1.25;
-  opacity:.34;vector-effect:non-scaling-stroke;
-}
-.cmap-node{
-  font-family:var(--fd);font-size:15px;font-weight:500;
-  fill:var(--ink-body);letter-spacing:-.01em;
-}
-.cmap-hub{fill:var(--wine)}
-.cmap-hub-name{
-  font-family:var(--fd-donna);font-size:19px;
-  fill:var(--on-wine);letter-spacing:-.01em;
-}
-@media (max-width:48rem){
-  .cmap svg{display:none}
-}
-
-/* ─────────── form ─────────── */
-form.enq{background:var(--sunk);border:1px solid var(--rule);border-radius:var(--r-lg);
-  padding:clamp(1.5rem,3vw,2rem);display:grid;gap:1rem}
-.enq-field{display:grid;gap:.4rem}
-.enq-field label{font-size:.875rem;font-weight:500;color:var(--ink-body)}
-.enq-field input,.enq-field textarea,.enq-field button[role="combobox"]{font-family:var(--fb)}
-.enq-field input[aria-invalid="true"]{border-color:var(--wine)}
-.enq-note{font-size:.875rem;color:var(--ink-muted);min-height:1.25rem}
-.enq-note[data-state="error"]{color:var(--wine)}
-.enq-done{padding:2.5rem 1rem;text-align:center}
-.enq-done h3{margin-bottom:.5rem}
-.enq-done p{color:var(--ink-body);font-size:var(--t-small)}
-
-/* ─────────── faq · shadcn accordion ─────────── */
-.faq-item button{
-  font-family:var(--fd);font-weight:500;font-size:var(--t-h3);letter-spacing:-.02em;
-}
-.faq-item p{color:var(--ink-body);font-size:.9375rem;line-height:1.65;max-width:60ch}
-
-/* ─────────── blog index ─────────── */
-.cards{list-style:none;margin:0;padding:0;display:grid;gap:1px;
-  background:var(--rule);border:1px solid var(--rule);border-radius:var(--r-lg);overflow:hidden;
-  grid-template-columns:repeat(auto-fit,minmax(min(100%,17rem),1fr))}
-.card{background:var(--paper)}
-.card-in{display:block;height:100%;padding:1.5rem 1.35rem;
-  text-decoration:none;color:inherit;
-  transition:background var(--dur) var(--ease)}
-a.card-in:hover{background:var(--sunk)}
-.card h3{font-size:1.0625rem;letter-spacing:-.02em;line-height:1.3;margin-bottom:.6rem}
-a.card-in:hover h3{color:var(--wine)}
-.card-meta{font-family:var(--fd);font-size:.8125rem;color:var(--ink-muted);
-  font-variant-numeric:tabular-nums;display:flex;align-items:center;gap:.5rem}
-.card--scheduled .card-in{opacity:.62}
-.card--scheduled h3{font-weight:500}
-
-/* ─────────── article (single post) ───────────
-   .sec/.in are otherwise-retired section primitives from the previous
-   macrostructure — kept only because the 30 extracted post bodies in
-   src/content/posts/*.html are pre-rendered HTML strings, not JSX, and are
-   marked as content to preserve rather than page structure to redesign. */
-.sec{border-top:1px solid var(--rule)}
-.sec .in{padding-block:var(--pad-mid)}
-.byline{margin-top:1.25rem;font-family:var(--fd);font-size:var(--t-small);
-  color:var(--ink-muted);font-variant-numeric:tabular-nums}
-.article{
-  padding-block:var(--pad-mid);
-  padding-inline:clamp(1.25rem,4vw,3rem);
-  max-width:44rem;margin-inline:auto;
-  border-inline:2px solid var(--wine);
-}
-.article h2{font-size:var(--t-h3);margin-top:2.5rem;margin-bottom:.75rem;max-width:28ch}
-.article h2:first-child{margin-top:0}
-.article p{color:var(--ink-body);max-width:65ch}
-.article p + p{margin-top:1rem}
-
-.more{list-style:none;margin:2rem 0 0;padding:0;display:grid;gap:1px;
-  background:var(--rule);border:1px solid var(--rule);border-radius:var(--r-lg);overflow:hidden}
-.more li{background:var(--paper)}
-.more a{display:block;padding:1.25rem 0;text-decoration:none;
-  font-family:var(--fd);font-weight:500;
-  transition:color var(--dur) var(--ease)}
-.more a:hover{color:var(--wine)}
-.more .dir{display:block;font-size:.75rem;letter-spacing:.06em;
-  color:var(--ink-muted);margin-bottom:.3rem;font-weight:500}
-
-/* ─────────── footer · Ft1 mast-headed, plain ─────────── */
-.foot-simple{border-top:1px solid var(--rule);padding-block:var(--pad-tight) var(--pad-tight)}
-.foot-simple__grid{
-  display:grid;gap:2rem;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr) minmax(0,1fr);
-  font-family:var(--fd);font-size:.9375rem;
-}
-.foot-simple .wm{font-weight:700;letter-spacing:-.04em;font-size:1.0625rem}
-.foot-simple .muted{margin-top:.4rem;color:var(--ink-muted)}
-.foot-simple__grid nav,.foot-simple__grid > div:last-child{display:flex;flex-direction:column;gap:.6rem}
-.foot-simple a{text-decoration:none;color:var(--ink-body);transition:color var(--dur) var(--ease)}
-.foot-simple a:hover{color:var(--wine)}
-.foot-simple__cp{
-  max-width:var(--w-wide);margin:2.5rem auto 0;padding-inline:var(--gut);
-  color:var(--ink-muted);font-size:.8125rem;
-}
+.steps > div:hover{background:var(--paper-2)}
+.steps .n{font-family:var(--fm);font-size:var(--t-meta);color:var(--ink-3);padding-top:.3rem}
+.steps p{color:var(--ink-3);font-size:var(--t-small);margin-top:.4rem;max-width:52ch}
 @media (max-width:40rem){
-  .foot-simple__grid{grid-template-columns:minmax(0,1fr)}
+  .steps > div{grid-template-columns:minmax(0,1fr);gap:.5rem}
+  .steps .n{padding-top:0}
 }
 
-/* ─────────── responsive ─────────── */
-@media (max-width:60rem){
-  .nav__center{display:none}
-  .stat-tiles{grid-template-columns:repeat(2,minmax(0,1fr))}
+/* ─────────── closing block ─────────── */
+.close{background:var(--d-paper);color:var(--d-ink);padding-block:var(--pad-loose)}
+.close h2{max-width:16ch;font-size:var(--t-display)}
+.close .go{display:flex;flex-wrap:wrap;gap:.75rem;margin-top:2.25rem}
+
+/* ─────────── footer ─────────── */
+.foot{background:var(--d-paper);color:var(--d-ink-2);border-top:1px solid var(--d-line);padding-block:2.5rem}
+.foot__grid{display:flex;flex-wrap:wrap;gap:1.5rem 3rem;align-items:baseline;justify-content:space-between}
+.foot a{text-decoration:none;transition:color var(--dur-fast) var(--ease)}
+.foot a:hover{color:var(--d-ink)}
+.foot nav{display:flex;gap:1.5rem;font-size:var(--t-small)}
+.foot__cp{font-family:var(--fm);font-size:var(--t-micro);color:var(--d-ink-3)}
+
+/* ─────────── blog / post / contact — kept monochrome ─────────── */
+.cards{list-style:none;margin:0;padding:0;display:grid;gap:1px;background:var(--line);border:1px solid var(--line);grid-template-columns:repeat(6,minmax(0,1fr))}
+.card:nth-child(3n+1){grid-column:span 4}
+.card:nth-child(3n+2),.card:nth-child(3n+3){grid-column:span 2}
+@media (max-width:64rem){
+  .cards{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .card:nth-child(n){grid-column:span 1}
 }
-@media (max-width:26rem){
-  .stat-tiles{grid-template-columns:minmax(0,1fr)}
+@media (max-width:44rem){ .cards{grid-template-columns:minmax(0,1fr)} }
+.card{background:var(--paper)}
+.card-in{display:block;height:100%;padding:1.6rem 1.4rem;text-decoration:none;color:inherit;transition:background var(--dur-fast) var(--ease)}
+a.card-in:hover{background:var(--paper-2)}
+a.card-in:active{background:var(--paper-3)}
+.card h3{font-size:var(--t-h4);line-height:1.3;margin-bottom:.6rem}
+.card-meta{font-family:var(--fm);font-size:var(--t-micro);color:var(--ink-3);letter-spacing:.04em}
+.card--scheduled .card-in{opacity:.55}
+
+.prose{max-width:42rem}
+.prose h2{font-size:var(--t-h2);margin:2.5rem 0 .85rem}
+.prose h3{margin:2rem 0 .6rem}
+.prose p{margin-bottom:1.15rem;color:var(--ink-2);line-height:1.75}
+.prose ul,.prose ol{color:var(--ink-2);line-height:1.75;padding-left:1.15rem;margin-bottom:1.15rem}
+.prose li{margin-bottom:.4rem}
+.prose a{color:var(--ink);text-underline-offset:.18em}
+.post-foot{border-top:1px solid var(--line);margin-top:3rem;padding-top:1.5rem}
+
+/* forms */
+.enq{display:grid;gap:1rem;max-width:34rem}
+.enq label{display:flex;flex-direction:column;gap:.4rem;color:var(--ink-3)}
+.enq input,.enq select,.enq textarea{
+  font-family:var(--fb);font-size:var(--t-body);color:var(--ink);
+  background:var(--paper);border:1px solid var(--line-2);border-radius:var(--r-sm);
+  padding:.7rem .85rem;width:100%;
+  transition:border-color var(--dur-fast) var(--ease);
 }
-@media (max-width:26rem){
-  .stat-tile + .stat-tile{border-left:none;border-top:1px solid var(--rule)}
-}
-@media (max-width:36rem){
-  .essay,.article{border-inline-width:1px;padding-inline:1rem}
-}
+.enq input:focus,.enq select:focus,.enq textarea:focus{border-color:var(--ink);outline:none}
+.enq input[aria-invalid],.enq select[aria-invalid]{border-color:var(--ink)}
+.enq-note{font-family:var(--fm);font-size:var(--t-meta);color:var(--ink-3);min-height:1.2rem}
+.enq-done{border:1px solid var(--line);padding:1.5rem;border-radius:var(--r-md)}
+
+/* route suspense */
+.route-wait{min-height:70vh}
+
+/* ─────────── motion ─────────── */
+[data-rise]{opacity:0;transform:translateY(14px);transition:opacity .7s var(--ease),transform .7s var(--ease)}
+[data-rise].shown{opacity:1;transform:none}
 
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
-  *,*::before,*::after{transition-duration:.01ms !important;animation-duration:.01ms !important}
-  .figure video[autoplay]{display:none}
+  [data-rise]{opacity:1;transform:none;transition:none}
+  .marq__row{animation:none}
+  .film__sticky{position:static;height:auto;padding-block:var(--pad-mid)}
 }
 
-/* Route suspense holds the page height so the footer doesn't jump up and
-   then back down while a split chunk loads. */
-.route-wait{min-height:60vh}
+/* ─────────── states ─────────── */
+/* Pressed and disabled, declared once for everything that takes a press. */
+.nav__wm:active,.marq:active,.card-in:active,.steps > div:active{transform:translateY(1px)}
+button:active,[role="button"]:active,a.card-in:active{transform:translateY(1px)}
+button:disabled,[aria-disabled="true"],[data-disabled]{opacity:.45;cursor:default;pointer-events:none}
+.enq input:disabled,.enq select:disabled,.enq textarea:disabled{opacity:.45;cursor:default}
 
-/* Blog post footer — date and the way back. */
-.post-foot .card-meta{margin-bottom:.75rem}
+/* Rows that mix a numeral against wrapped prose need their baselines settled. */
+.film__cap,.rig__head,.foot__grid{align-items:center}
+.hero__meta div{align-items:flex-start}
+
+/* Placeholders that hold the page height while the client-only blocks mount,
+   so the footer does not jump when the charts and the engine arrive. */
+.rig-wait{min-height:34rem;border:1px solid var(--line);background:var(--paper-2)}
+.comp-wait{min-height:19rem;border:1px solid var(--d-line);border-radius:var(--r-xl);background:var(--d-paper-2)}
+
+/* ─────────── Mono Charts, adapted ───────────
+   The charts ship as self-contained demo cards: each one draws its own
+   title, its own headline statistic, and a footer of showcase copy
+   ("Minimalist Spline Shading", "99.9% Linear Flow"). That chrome is the
+   library selling itself, and next to a real panel header it reads as a
+   heading inside a heading.
+
+   Rather than fork twenty-six components, the panel suppresses the parts
+   that duplicate or don't belong and keeps the parts that do — notably the
+   curve-type toggle, which is a real control worth having.
+
+   Selectors are structural because the internals are Tailwind utility
+   strings with no stable hooks. If a chart is updated from the registry,
+   check this block still lands. */
+
+/* the chart's own card padding and radius — the panel already provides both */
+.rig__chart > div{border-radius:0;padding:0;background:transparent}
+
+/* its header row: drop the demo title + statistic, keep the toggle */
+.rig__chart > div > div:first-child > div:first-child{display:none}
+.rig__chart > div > div:first-child{margin-bottom:.75rem;justify-content:flex-end}
+
+/* the showcase footer line */
+.rig__chart > div > div:last-child{display:none}
+
+/* the inner plot surface: flatten it onto the panel */
+.rig__chart .recharts-responsive-container{background:transparent}
+.rig__chart > div > div:nth-child(2){background:transparent;padding:0}

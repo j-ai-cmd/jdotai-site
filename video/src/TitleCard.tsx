@@ -42,7 +42,7 @@ export const TitleCard: React.FC<TitleCardProps> = ({ line, accent }) => (
     </Band>
     {accent ? (
       <Band height={86}>
-        <SoftBlurIn text={accent} fontSize={62} color={BRAND.wine} fontWeight={600} speed={0.85} />
+        <SoftBlurIn text={accent} fontSize={62} color={BRAND.g400} fontWeight={600} speed={0.85} />
       </Band>
     ) : null}
   </AbsoluteFill>

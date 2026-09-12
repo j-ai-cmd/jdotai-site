@@ -1,3 +1,5 @@
+"use client"
+
 import * as React from "react"
 import * as AccordionPrimitive from "@radix-ui/react-accordion"
 import { ChevronDown } from "lucide-react"
@@ -32,6 +34,9 @@ const AccordionTrigger = React.forwardRef<
       {...props}
     >
       {children}
+      {/* Decoration: the trigger's own text is the accessible name, so the
+          chevron must not be announced as a second thing. shadcn ships it
+          unmarked; the icon is ours once it lands in the repo. */}
       <ChevronDown aria-hidden="true" className="h-4 w-4 shrink-0 text-muted-foreground transition-transform duration-200" />
     </AccordionPrimitive.Trigger>
   </AccordionPrimitive.Header>

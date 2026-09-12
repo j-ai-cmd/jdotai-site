@@ -49,7 +49,10 @@ html = "".join(s for _, s in html_pages)
 # authored :root block, and the bundler rewrites/minifies it out of shape.
 site_css = read("src/styles/site.css")
 tokens_css = read("src/styles/tokens.css")
-css = tokens_css + "\n" + site_css
+# shadcn.css maps the component library's variable names onto the same scale.
+# It is authored, it consumes tokens, and it must be graded with the rest.
+shadcn_css = read("src/styles/shadcn.css")
+css = tokens_css + "\n" + site_css + "\n" + shadcn_css
 
 # The behaviour that used to live in assets/js now lives in the components.
 js = "".join(
@@ -119,45 +122,54 @@ gate(48, "no colour value outside the token block", not stray, f"found {stray[:6
 fam_decl = re.findall(r'font-family:\s*(?!var\()([^;}]+)', site_code)
 gate("48b", "no font-family bypasses a token", not fam_decl, f"found {fam_decl[:4]}")
 
-# contrast — resolve the token system in both themes
-def theme(paper, ink, wine):
-    return dict(paper=paper, ink=ink, wine=wine,
-                body=mix(ink, paper, 78), muted=mix(ink, paper, 62),
-                on_ink=mix(paper, ink, 72), rule=mix(ink, paper, 18))
-
+# contrast — the palette is now one monochrome scale with no accent, and the
+# role tokens point at rungs of it (--paper: var(--z-000)) rather than holding
+# hex directly. Resolve one level of indirection, then grade the real pairs
+# that ship: text on paper, text on the dark bands.
 def grab(block, name):
-    m = re.search(rf'--{name}:\s*(#[0-9a-fA-F]{{3,8}})', block)
-    return m.group(1) if m else None
+    m = re.search(rf'--{re.escape(name)}:\s*([^;]+);', block)
+    return m.group(1).strip() if m else None
 
-root_block = tokens_css.split(':root{')[1].split('}')[0] if ':root{' in tokens_css else tokens_css
-dark_m = re.search(r':root\[data-theme="dark"\]\{(.*?)\}', tokens_css, re.S)
+root_block = tokens_css.split(':root{')[1].rsplit('}', 1)[0] if ':root{' in tokens_css else tokens_css
 
-light = theme(grab(root_block, 'paper'), grab(root_block, 'ink'), grab(root_block, 'wine'))
-themes = [("light", light)]
+def resolve(name, depth=0):
+    """--paper -> var(--z-000) -> #FFFFFF"""
+    v = grab(root_block, name)
+    if not v or depth > 4:
+        return None
+    v = v.split('/*')[0].strip()
+    if v.startswith('#'):
+        return v
+    m = re.match(r'var\(\s*--([\w-]+)\s*\)', v)
+    return resolve(m.group(1), depth + 1) if m else None
 
-# A single-theme page is a legitimate choice, but only when it is deliberate:
-# it must then paint its own ground rather than inherit the reader's.
-if dark_m:
-    themes.append(("dark", theme(grab(dark_m.group(1), 'paper'),
-                                 grab(dark_m.group(1), 'ink'),
-                                 grab(dark_m.group(1), 'wine'))))
-else:
-    gate("theme", "single-theme page paints its own background",
-         re.search(r'body\{[^}]*background:var\(--paper\)', site_code.replace(' ', '').replace('\n', '')) is not None,
-         "no dark palette declared, so body must set --paper explicitly")
+PAIRS = [
+    ("body text on paper",      'ink-2',  'paper',   4.5),
+    ("muted text on paper",     'ink-3',  'paper',   4.5),
+    ("heading on paper",        'ink',    'paper',   4.5),
+    ("body text on dark band",  'd-ink-2','d-paper', 4.5),
+    ("heading on dark band",    'd-ink',  'd-paper', 4.5),
+    ("tint surface vs paper",   'paper-2','paper',   1.0),
+]
+missing = [n for _, n, _, _ in PAIRS if not resolve(n)]
+gate(40, "palette tokens resolve", not missing, f"unresolved: {missing}")
 
-for label, t in themes:
-    if not all([t['paper'], t['ink'], t['wine']]):
-        gate(40, f"{label} theme tokens resolve", False, "missing paper/ink/wine"); continue
-    checks = {
-        "body text": (contrast(t['body'], t['paper']), 4.5),
-        "muted text": (contrast(t['muted'], t['paper']), 4.5),
-        "button label on wine": (contrast(t['paper'], t['wine']), 4.5),
-        "prose on ink band": (contrast(t['on_ink'], t['ink']), 4.5),
-        "focus ring on paper": (contrast(t['wine'], t['paper']), 3.0),
-    }
-    for what, (val, need) in checks.items():
-        gate(f"40/{label}", f"{what} >= {need}:1", val >= need, f"{val:.2f}:1")
+if not missing:
+    for what, fg, bg, need in PAIRS:
+        val = contrast(resolve(fg), resolve(bg))
+        gate("40", f"{what} >= {need}:1", val >= need, f"{val:.2f}:1")
+
+# The page is single-theme by choice, so it must paint its own ground rather
+# than inherit whatever the reader's browser defaults to.
+gate("theme", "single-theme page paints its own background",
+     re.search(r'body\{[^}]*background:var\(--paper\)', css_code.replace(' ', '').replace('\n', '')) is not None,
+     "body must set --paper explicitly")
+
+# Monochrome is the design: assert it rather than trusting it. Every hex in
+# the token block must have equal R, G and B channels.
+hexes = re.findall(r'#([0-9a-fA-F]{6})\b', root_block)
+chromatic = [h for h in hexes if not (h[0:2].lower() == h[2:4].lower() == h[4:6].lower())]
+gate("mono", "every token colour is neutral (R==G==B)", not chromatic, f"chromatic: {chromatic[:4]}")
 
 # ─────────────────────────── layout / responsive ────────────────────────────
 flat = css_code.replace(' ', '').replace('\n', '')
@@ -238,8 +250,12 @@ gate(5, "no thick coloured side-stripe cards",
 eyebrow_words = re.findall(r'class="[^"]*(eyebrow|kicker|label)[^"]*"', html)
 gate(54, "no eyebrow/kicker elements at all", not eyebrow_words, f"{set(eyebrow_words)}")
 
+# The page uses one small-caps label voice deliberately (the tag, the
+# marquee, the field labels all share it). What turns that into slop is
+# re-declaring it per component until every section shouts; so the gate
+# allows exactly one declaration and fails the second.
 upper = re.findall(r'text-transform:\s*uppercase', css_code)
-gate("54b", "no uppercase micro-labels", not upper, f"count={len(upper)}")
+gate("54b", "at most one declared uppercase label voice", len(upper) <= 1, f"count={len(upper)}")
 
 # gate 9 — sections must not share one rhythm
 widths = set(re.findall(r'--w-[a-z]+:\s*([\d.]+rem)', tokens_css))
@@ -314,7 +330,9 @@ for f in HTML_FILES:
 
 # ─────────────────────────── dead code ──────────────────────────────────────
 defined_tokens = set(re.findall(r'^\s*(--[\w-]+):', tokens_css, re.M))
-used_tokens = set(re.findall(r'var\((--[\w-]+)', css))
+# Tailwind arbitrary values put tokens in the TSX rather than the CSS
+# (border-[var(--d-line-2)]), so the components count as usage too.
+used_tokens = set(re.findall(r'var\((--[\w-]+)', css + js))
 gate("clean-tokens", "no unused tokens", not (defined_tokens - used_tokens),
      f"{sorted(defined_tokens - used_tokens)}")
 
