@@ -8,6 +8,14 @@
  */
 
 /* ─────────── base ─────────── */
+/* Tailwind's preflight is off (site.css carries its own reset), and one rule
+   from it is load-bearing. Both halves of it: `border-style: solid` so a
+   Tailwind `border` utility paints at all (CSS defaults the style to none,
+   which rendered every shadcn outline button and input borderless), and
+   `border-width: 0` so that solid style does not fall back to the initial
+   `medium` and draw a 3px box around every element on the page. Neither line
+   works without the other. */
+*,::before,::after{border-width:0;border-style:solid}
 *{box-sizing:border-box}
 html,body{overflow-x:clip}
 html{scroll-behavior:smooth;scroll-padding-top:5rem;-webkit-text-size-adjust:100%}
@@ -303,3 +311,17 @@ button:disabled,[aria-disabled="true"],[data-disabled]{opacity:.45;cursor:defaul
 /* the inner plot surface: flatten it onto the panel */
 .rig__chart .recharts-responsive-container{background:transparent}
 .rig__chart > div > div:nth-child(2){background:transparent;padding:0}
+
+/* ─────────── hit areas ───────────
+   Measured at 375px: the wordmark was a 27px target, the footer links 24px
+   and the charts' own curve-type toggles 20px. All of them are things a
+   thumb has to find, so they get a real box rather than just their text. */
+.nav__wm{display:inline-flex;align-items:center;min-height:44px}
+.foot__grid .nav__wm{min-height:0}
+.rig__chart button{min-height:32px;padding-inline:.75rem}
+.foot a{display:inline-flex;align-items:center;min-height:36px}
+.foot nav{gap:1.25rem}
+/* shadcn's TabsTrigger is 28px by default — under a thumb's reach on a
+   phone, and these two are how the demos are switched. */
+[role="tablist"]{gap:.25rem}
+[role="tab"]{min-height:36px;padding-inline:1rem}
