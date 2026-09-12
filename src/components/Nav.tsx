@@ -1,62 +1,68 @@
 import { useEffect, useRef } from 'react'
-import { Link, NavLink, useLocation } from 'react-router-dom'
-import { Magnetic } from '@/components/amicro/magnetic'
+import { Link, NavLink } from 'react-router-dom'
 import { Button } from '@/components/ui/button'
 
 const LINKS = [
-  { to: '/#donna', label: 'donna', end: true },
-  { to: '/blog', label: 'Blogs', end: false },
+  { to: '/', label: 'Product', end: true },
+  { to: '/blog', label: 'Writing', end: false },
 ]
 
-/** N1b canonical SaaS three-section — brand hard-left, a real <nav> holding
- *  only the two link destinations, sign-in/CTA hard-right outside the <nav>
- *  element (so hallmark_check.py gate 42's <nav>-scoped link count stays at
- *  2, not 4). Frosts past a small scroll threshold; transparent at rest. */
+/** N10 scroll-morph. Transparent over the dark hero, then it takes on the
+ *  paper background and inverts its text the moment the hero leaves. The
+ *  read-progress hairline is drawn on the nav's own bottom edge rather than
+ *  as a separate bar, so the page has one fixed element, not two. */
 export default function Nav() {
   const ref = useRef<HTMLElement>(null)
-  const { pathname } = useLocation()
 
   useEffect(() => {
-    const header = ref.current
-    if (!header) return
+    const nav = ref.current
+    if (!nav) return
     let frame = 0
+
     const read = () => {
       frame = 0
-      const scrolled = scrollY > 24
-      header.classList.toggle('is-scrolled', scrolled)
-      // Only Home opens on a dark hero; re-queried per route since Nav
-      // persists across client-side navigation rather than remounting.
-      const onDark = !scrolled && !!document.querySelector('.hero-dark')
-      header.classList.toggle('nav--on-dark', onDark)
+      const doc = document.documentElement
+      const max = doc.scrollHeight - doc.clientHeight
+      nav.style.setProperty('--read', String(max > 0 ? Math.min(1, doc.scrollTop / max) : 0))
+
+      // Solid once the dark hero is behind us. Measured against the hero's
+      // real height rather than a magic number, so it stays right when the
+      // hero copy changes length.
+      const hero = document.querySelector('.hero')
+      const cut = hero ? hero.getBoundingClientRect().bottom : 0
+      nav.dataset.solid = String(cut <= nav.offsetHeight)
     }
+
     const onScroll = () => { if (!frame) frame = requestAnimationFrame(read) }
     read()
     addEventListener('scroll', onScroll, { passive: true })
-    return () => removeEventListener('scroll', onScroll)
-  }, [pathname])
-
-  // SSR/no-JS fallback: guess from the route before the effect above can
-  // measure the real DOM (prerendering never runs effects at all, and a
-  // slow JS visitor would otherwise see one dark-on-dark frame first).
-  const initialClass = pathname === '/' ? 'nav nav--on-dark' : 'nav'
+    addEventListener('resize', onScroll)
+    return () => {
+      removeEventListener('scroll', onScroll)
+      removeEventListener('resize', onScroll)
+      if (frame) cancelAnimationFrame(frame)
+    }
+  }, [])
 
   return (
-    <header className={initialClass} id="nav" ref={ref}>
-      <div className="nav__inner">
-        <Link className="nav__brand" to="/">jdot<i>ai</i></Link>
-        <nav className="nav__center" aria-label="Primary">
-          {LINKS.map((l) => (
-            <NavLink key={l.to} className="nav__link" to={l.to} end={l.end}>{l.label}</NavLink>
-          ))}
-        </nav>
-        <div className="nav__right">
-          <Magnetic range={60} strength={0.25}>
-            <Button asChild size="sm">
-              <Link to="/contact">Contact us</Link>
-            </Button>
-          </Magnetic>
-        </div>
-      </div>
+    <header className="nav" ref={ref} data-solid="false">
+      <Link className="nav__wm" to="/">jdot<i>ai</i></Link>
+      <nav className="nav__links" aria-label="Primary">
+        {LINKS.map((l) => (
+          <NavLink key={l.to} to={l.to} end={l.end}>{l.label}</NavLink>
+        ))}
+      </nav>
+      {/* Outline, so it inherits the nav's currentColor and flips with it
+          instead of needing a second set of colours for the dark state. */}
+      <Button
+        asChild
+        size="sm"
+        variant="outline"
+        className="border-current bg-transparent text-current"
+      >
+        <a href="#start">Book a walkthrough</a>
+      </Button>
+      <i className="nav__read" aria-hidden="true" />
     </header>
   )
 }

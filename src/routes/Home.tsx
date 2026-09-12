@@ -1,302 +1,195 @@
-import { useEffect, useRef } from 'react'
-import ConnectionMap from '@/components/ConnectionMap'
-import DemoVideo from '@/components/DemoVideo'
+import { lazy, Suspense } from 'react'
+import ClientOnly from '@/components/ClientOnly'
 import EnquiryForm from '@/components/EnquiryForm'
+import Rig from '@/components/Rig'
+import ScrollFilm from '@/components/ScrollFilm'
 import { FadeUp } from '@/components/amicro/fade-up'
-import { FigureReveal } from '@/components/amicro/figure-reveal'
-import { Magnetic } from '@/components/amicro/magnetic'
 import { TextReveal } from '@/components/amicro/text-reveal'
-import { BrandBulletChart } from '@/components/mono-charts/BrandBulletChart'
-import { BrandGaugeRing } from '@/components/mono-charts/BrandGaugeRing'
-import { BrandStatTile } from '@/components/mono-charts/BrandStatTile'
-import { BrandStepFlow } from '@/components/mono-charts/BrandStepFlow'
 import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
+  Accordion, AccordionContent, AccordionItem, AccordionTrigger,
 } from '@/components/ui/accordion'
-import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { initAskLine } from '@/lib/effects'
 import { useSeo } from '@/lib/seo'
 
+// The WebCodecs engine is a megabyte; it loads when the reader reaches it.
+const Composer = lazy(() => import('@/components/Composer'))
+
 const META = {
-  title: 'jdotai — donna, an AI intake and PMS connector for law firms',
+  title: 'jdotai — donna',
   description:
-    'donna connects Clio, Smokeball, Actionstep, myCase and LEAP to Claude and ChatGPT, and gives your firm a custom intake form that syncs straight to your practice management system.',
+    'donna connects your practice management system to Claude and ChatGPT, and takes intake off your desk.',
   path: '/',
 } as const
 
-const PMS = ['Clio', 'Smokeball', 'Actionstep', 'myCase', 'LEAP']
-const ASSISTANTS = ['Claude', 'ChatGPT', 'Kimi']
-const CONNECTS = { pms: 5, assistants: 3 }
-
-const QUESTIONS = [
-  'Which estate planning matters are missing a signed will?',
-  'What documents are still outstanding on my open matters?',
-  'Which intakes came in this week?',
-  'Which files are ready to close?',
+// The film is a Remotion title (rendered from remocn primitives) spliced in
+// front of the product recording, so the first quarter of the scrub is the
+// title and the rest is the tool.
+const CHAPTERS = [
+  { at: 0, label: '' },
+  { at: 0.27, label: 'Client opens the link' },
+  { at: 0.48, label: 'Answers at their own pace' },
+  { at: 0.7, label: 'Fields map to your system' },
+  { at: 0.88, label: 'Matter exists' },
 ]
 
-const PROBLEMS = [
-  { n: '01', title: 'Re-typing intake', body: 'Every new matter, copied by hand from an email into the practice management system.' },
-  { n: '02', title: 'Chasing documents', body: 'Follow-ups that exist only because the first request went unanswered.' },
-  { n: '03', title: 'Emails into tasks', body: 'Someone still has to read it, decide what it means, and open a task for it.' },
+const STACK = ['Clio', 'Smokeball', 'Actionstep', 'myCase', 'LEAP', 'Claude', 'ChatGPT', 'Kimi', 'MCP']
+
+const STEPS: [string, string, string][] = [
+  ['01', 'Map', 'Your existing forms, your field names, your matter types.'],
+  ['02', 'Wire', 'donna connects. We confirm every field lands where you expect.'],
+  ['03', 'Live', 'You send a link. Matters arrive structured.'],
 ]
 
-const STEPS = [
-  { title: 'We map your intake', body: 'What your firm asks, in what order, for which matter types. We work from your existing forms.' },
-  { title: 'We wire your system', body: 'donna connects to your practice management system and we confirm fields land where you expect.' },
-  { title: 'You go live', body: 'You send clients a link. Matters arrive structured, and you stay in control of every field.' },
-]
-
-const FAQ = [
-  {
-    q: 'What practice management systems does donna connect to?',
-    a: 'Clio, Smokeball, Actionstep, myCase and LEAP. We’re actively expanding the list — if yours isn’t there yet, get in touch.',
-  },
-  { q: 'How long does it take to get set up?', a: 'You are live in two weeks.' },
-  {
-    q: 'Do my clients need to create an account?',
-    a: 'No. Clients receive a link to the intake form and fill it at their leisure. Progress is saved as they go.',
-  },
-  {
-    q: 'How does the MCP connector work?',
-    a: 'donna lets you talk to your practice management system in plain English, right inside Claude or ChatGPT.',
-  },
+const FAQ: [string, string][] = [
+  ['Which systems?', 'Clio, Smokeball, Actionstep, myCase and LEAP. Ask if yours is missing.'],
+  ['How long?', 'Two weeks from signing.'],
+  ['Client accounts?', 'None. They get a link and their progress saves.'],
+  ['Where does the AI run?', 'Inside your own Claude or ChatGPT account, over MCP.'],
 ]
 
 export default function Home() {
   useSeo(META)
-  const askRef = useRef<HTMLSpanElement>(null)
-
-  useEffect(() => {
-    if (!askRef.current) return
-    return initAskLine(askRef.current, QUESTIONS)
-  }, [])
 
   return (
     <main id="main">
-      {/* ── hero · dark, studied from lex-ops.io ────────────────────── */}
-      <section className="hero-dark">
-        <div className="hero-dark__in">
-          <TextReveal as="h1" text="Which part of your week shouldn’t need a lawyer?" />
-          <FadeUp delay={0.15}>
-            <p className="lede">
-              <span className="donna">donna</span> handles intake and connects your practice
-              management system to Claude and ChatGPT. Live in two weeks.
+      {/* ── hero ─────────────────────────────────────────────── */}
+      <section className="hero">
+        <div className="wrap">
+          <TextReveal as="h1" text={'Ask your\npractice system\nanything.'} />
+          <FadeUp delay={0.2}>
+            <p className="hero__lede">
+              donna takes intake off your desk and puts your matters inside Claude.
             </p>
-            <div className="askline">
-              <span className="q" id="askq" ref={askRef} aria-live="off" />
-              <span className="go" aria-hidden="true">Ask</span>
-            </div>
-            <div className="go">
-              <Magnetic>
-                <Button asChild size="lg">
-                  <a href="#enquire">Get donna for your firm</a>
-                </Button>
-              </Magnetic>
-              <Button asChild variant="outline" size="lg" className="border-paper bg-transparent text-paper hover:bg-paper hover:text-ink">
-                <a href="#demo">Watch it work</a>
+            <div className="hero__go">
+              <Button asChild size="lg"><a href="#start">Book a walkthrough</a></Button>
+              <Button asChild size="lg" variant="outline">
+                <a href="#rig">See the data</a>
               </Button>
             </div>
+            <div className="hero__meta">
+              <div><span className="n">5</span><span className="l">practice systems</span></div>
+              <div><span className="n">3</span><span className="l">assistants</span></div>
+              <div><span className="n">2</span><span className="l">weeks to live</span></div>
+            </div>
           </FadeUp>
         </div>
       </section>
 
-      <div className="hero-clip">
-        <FigureReveal>
-          <DemoVideo
-            className="figure"
-            src="/assets/video/donna-hero-loop.mp4"
-            poster="/assets/video/donna-hero-poster.jpg"
-            caption="A client completes intake, and the matter lands in the practice management system."
-            ambient
-          />
-        </FigureReveal>
+      {/* ── scroll-scrubbed film ─────────────────────────────── */}
+      <ScrollFilm
+        src="/assets/video/film.mp4"
+        poster="/assets/video/film-poster.jpg"
+        chapters={CHAPTERS}
+        scrollLength={4}
+      />
+
+      {/* ── marquee ──────────────────────────────────────────── */}
+      <div className="marq" aria-label="Connects to">
+        <div className="marq__row">
+          {[...STACK, ...STACK].map((s, i) => <span key={`${s}-${i}`}>{s}</span>)}
+        </div>
       </div>
 
-      {/* ── trust bar — real integrations, not customer logos ───────── */}
-      <section className="trust" id="donna">
-        <div className="section-in">
-          <FadeUp>
-            <p className="trust__caption">Connects to</p>
-            <div className="trust__row">
-              {PMS.map((p) => <Badge key={p} variant="outline">{p}</Badge>)}
-            </div>
-            <div className="trust__row">
-              {ASSISTANTS.map((a) => <Badge key={a} variant="secondary">{a}</Badge>)}
-            </div>
-          </FadeUp>
-        </div>
-      </section>
-
-      {/* ── problems — the real pain points, numbered ───────────────── */}
-      <section className="section section--tint section--mid">
-        <div className="section-in">
-          <FigureReveal>
-            <div className="problems">
-              {PROBLEMS.map((p) => (
-                <div className="problem-card" key={p.n}>
-                  <span className="problem-card__n">{p.n}</span>
-                  <h3>{p.title}</h3>
-                  <p>{p.body}</p>
-                </div>
-              ))}
-            </div>
-          </FigureReveal>
-        </div>
-      </section>
-
-      {/* ── solution bento ───────────────────────────────────────────── */}
-      <section className="section">
-        <div className="section-in">
-          <FigureReveal>
-            <div className="bento">
-              <Card className="bento__tile border-0 shadow-none rounded-none">
-                <CardHeader className="p-0">
-                  <CardTitle asChild><h3>Custom intake forms.</h3></CardTitle>
-                </CardHeader>
-                <CardContent className="p-0">
-                  <p><span className="donna">donna</span> collects exactly what your firm needs. No account required.</p>
-                </CardContent>
-              </Card>
-              <Card className="bento__tile border-0 shadow-none rounded-none">
-                <CardHeader className="p-0">
-                  <CardTitle asChild><h3>An MCP connector.</h3></CardTitle>
-                </CardHeader>
-                <CardContent className="p-0">
-                  <p>Ask for matters, documents, records — right inside Claude or ChatGPT.</p>
-                </CardContent>
-              </Card>
-              <Card className="bento__tile bento__tile--wide border-0 shadow-none rounded-none">
-                <CardHeader className="p-0">
-                  <CardTitle asChild><h3>Five systems, three assistants, one connector.</h3></CardTitle>
-                </CardHeader>
-                <CardContent className="p-0">
-                  <ConnectionMap />
-                </CardContent>
-              </Card>
-            </div>
-          </FigureReveal>
-        </div>
-      </section>
-
-      {/* ── stats band ───────────────────────────────────────────────── */}
-      <section className="section section--tint section--top section--mid">
-        <div className="section-in section-in--mid">
-          <div className="section-head">
-            <h2><span className="donna">donna</span>, by the numbers.</h2>
+      {/* ── the instrument grid ──────────────────────────────── */}
+      <section className="band band--loose" id="rig">
+        <div className="wrap">
+          <div className="head" data-rise>
+            <span className="tag">The dashboard</span>
+            <h2>Every submission, as a number.</h2>
+            <p>Shape shown on sample data — your figures replace it on day one.</p>
           </div>
-          <FigureReveal>
-            <div className="stat-tiles">
-              <BrandStatTile value={CONNECTS.pms} outOf={CONNECTS.pms} label="Practice management systems" />
-              <BrandStatTile value={CONNECTS.assistants} outOf={CONNECTS.assistants} label="AI assistants" />
-              <BrandBulletChart weeks={2} fromLabel="Signing" toLabel="Live" />
-              <BrandGaugeRing value={24} unit="hours" label="to hear back — every time" />
-            </div>
-          </FigureReveal>
-          <div className="step-row">
-            <FigureReveal className="step-row__flow">
-              <BrandStepFlow steps={STEPS} />
-            </FigureReveal>
-            <div className="diamond-stack" aria-hidden="true">
-              <div className="diamond" />
-              <div className="diamond" />
-              <div className="diamond" />
-            </div>
-          </div>
+          <ClientOnly fallback={<div className="rig-wait" aria-hidden="true" />}>
+            <Rig />
+          </ClientOnly>
         </div>
       </section>
 
-      {/* ── demo tabs ────────────────────────────────────────────────── */}
-      <section className="section section--tight" id="demo">
-        <div className="section-in section-in--mid">
-          <div className="section-head">
-            <h2>See it work.</h2>
+      {/* ── in-browser composer ──────────────────────────────── */}
+      <section className="band band--loose band-dark">
+        <div className="wrap">
+          <div className="head" data-rise>
+            <span className="tag">Runs on your machine</span>
+            <h2>Type. Watch it recompose.</h2>
+            <p>WebCodecs and your GPU. Nothing uploads.</p>
           </div>
-          <FigureReveal>
-            <Tabs defaultValue="intake" className="demo-tabs">
-              <TabsList>
-                <TabsTrigger value="intake">Intake</TabsTrigger>
-                <TabsTrigger value="mcp">MCP</TabsTrigger>
-              </TabsList>
-              <TabsContent value="intake">
-                <DemoVideo
-                  src="/assets/video/donna-intake.mp4"
-                  poster="/assets/video/donna-intake-poster.jpg"
-                  caption="A client completes intake; the matter lands in the PMS."
-                />
-              </TabsContent>
-              <TabsContent value="mcp">
-                <DemoVideo
-                  src="/assets/video/donna-mcp.mp4"
-                  poster="/assets/video/donna-mcp-poster.jpg"
-                  caption="Asking a practice management system questions in plain English."
-                />
-              </TabsContent>
-            </Tabs>
-          </FigureReveal>
-          <FigureReveal>
-            <figure className="figure figure--reel">
+          <ClientOnly fallback={<div className="comp-wait" aria-hidden="true" />}>
+            <Suspense fallback={<div className="comp-wait" aria-hidden="true" />}>
+              <Composer />
+            </Suspense>
+          </ClientOnly>
+        </div>
+      </section>
+
+      {/* ── demos ────────────────────────────────────────────── */}
+      <section className="band band--loose band-tint" id="demo">
+        <div className="wrap wrap--mid">
+          <div className="head" data-rise>
+            <span className="tag">Recorded</span>
+            <h2>Both halves, working.</h2>
+          </div>
+          <Tabs defaultValue="intake">
+            <TabsList>
+              <TabsTrigger value="intake">Intake</TabsTrigger>
+              <TabsTrigger value="mcp">Connector</TabsTrigger>
+            </TabsList>
+            <TabsContent value="intake">
               <video
-                src="/assets/video/process-reel.mp4"
-                poster="/assets/video/process-reel-poster.png"
-                muted
-                playsInline
-                autoPlay
-                loop
-                preload="metadata"
-                aria-label="Client, donna, and your practice management system, in sequence"
+                src="/assets/video/donna-intake-mono.mp4"
+                poster="/assets/video/donna-intake-mono-poster.jpg"
+                controls preload="metadata" playsInline
+                style={{ borderRadius: 'var(--r-md)', border: '1px solid var(--line)' }}
               />
-            </figure>
-          </FigureReveal>
+            </TabsContent>
+            <TabsContent value="mcp">
+              <video
+                src="/assets/video/donna-mcp-mono.mp4"
+                poster="/assets/video/donna-mcp-mono-poster.jpg"
+                controls preload="metadata" playsInline
+                style={{ borderRadius: 'var(--r-md)', border: '1px solid var(--line)' }}
+              />
+            </TabsContent>
+          </Tabs>
         </div>
       </section>
 
-      {/* ── faq ──────────────────────────────────────────────────────── */}
-      <section className="section section--mid">
-        <div className="section-in section-in--mid">
-          <div className="section-head">
-            <h2>Questions.</h2>
+      {/* ── steps ────────────────────────────────────────────── */}
+      <section className="band band--loose">
+        <div className="wrap wrap--mid">
+          <div className="head" data-rise><h2>Three moves.</h2></div>
+          <div className="steps">
+            {STEPS.map(([n, t, b]) => (
+              <div key={n} data-rise>
+                <span className="n">{n}</span>
+                <div><h3>{t}</h3><p>{b}</p></div>
+              </div>
+            ))}
           </div>
+        </div>
+      </section>
+
+      {/* ── faq ──────────────────────────────────────────────── */}
+      <section className="band band--mid band-tint">
+        <div className="wrap wrap--narrow">
+          <div className="head" data-rise><h2>Questions.</h2></div>
           <Accordion type="single" collapsible>
-            {FAQ.map((f) => (
-              <AccordionItem value={f.q} key={f.q} className="faq-item">
-                <AccordionTrigger>{f.q}</AccordionTrigger>
-                <AccordionContent>{f.a}</AccordionContent>
+            {FAQ.map(([q, a]) => (
+              <AccordionItem key={q} value={q}>
+                <AccordionTrigger>{q}</AccordionTrigger>
+                <AccordionContent>{a}</AccordionContent>
               </AccordionItem>
             ))}
           </Accordion>
         </div>
       </section>
 
-      {/* ── closing cta band · dark, bookends the hero ──────────────── */}
-      <section className="cta-band">
-        <div className="section-in section-in--mid">
-          <h2>Get <span className="donna">donna</span> for your firm.</h2>
-          <div className="go">
-            <Magnetic>
-              <Button asChild size="lg" variant="secondary">
-                <a href="#enquire">Send an enquiry</a>
-              </Button>
-            </Magnetic>
+      {/* ── close ────────────────────────────────────────────── */}
+      <section className="close" id="start">
+        <div className="wrap wrap--mid">
+          <h2 data-rise>Two weeks. Then it runs.</h2>
+          <div style={{ marginTop: '2.5rem', maxWidth: '34rem' }}>
+            <EnquiryForm variant="contact" />
           </div>
-        </div>
-      </section>
-
-      {/* ── enquiry form ─────────────────────────────────────────────── */}
-      <section className="section" id="enquire">
-        <div className="section-in section-in--mid">
-          <div className="section-head">
-            <h2>Tell us about your firm.</h2>
-          </div>
-          <FigureReveal>
-            <EnquiryForm />
-          </FigureReveal>
         </div>
       </section>
     </main>

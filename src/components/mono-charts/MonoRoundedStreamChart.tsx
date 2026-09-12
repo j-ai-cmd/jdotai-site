@@ -64,7 +64,7 @@ export function MonoRoundedStreamChart({ theme = 'dark', compact = false }: Mono
       <div className={`relative w-full flex-1 rounded-[14px] overflow-hidden p-2 transition-colors duration-300 ${
         isDark ? 'bg-[#131313]' : 'bg-[#f4f4f6]'
       }`}>
-        <svg className="absolute w-0 h-0 pointer-events-none">
+        <svg aria-hidden="true" className="absolute w-0 h-0 pointer-events-none">
           <defs>
             <linearGradient id={`${idPrefix}stream-g1`} x1="0" y1="0" x2="0" y2="1">
               <stop offset="0%" stopColor={isDark ? "#FFFFFF" : "#09090B"} stopOpacity="0.4" />
