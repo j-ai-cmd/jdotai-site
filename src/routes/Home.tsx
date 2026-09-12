@@ -80,28 +80,32 @@ export default function Home() {
 
   return (
     <main id="main">
-      {/* ── hero · dark, studied from lex-ops.io ────────────────────── */}
-      <section className="hero-dark">
-        <div className="hero-dark__in">
+      {/* ── hero · the broadsheet front page ────────────────────────── */}
+      <section className="hero">
+        <div className="hero__in">
           <TextReveal as="h1" text="Which part of your week shouldn’t need a lawyer?" />
           <FadeUp delay={0.15}>
-            <p className="lede">
-              <span className="donna">donna</span> handles intake and connects your practice
-              management system to Claude and ChatGPT. Live in two weeks.
-            </p>
-            <div className="askline">
-              <span className="q" id="askq" ref={askRef} aria-live="off" />
-              <span className="go" aria-hidden="true">Ask</span>
-            </div>
-            <div className="go">
-              <Magnetic>
-                <Button asChild size="lg">
-                  <a href="#enquire">Get donna for your firm</a>
+            <div className="hero__dek">
+              <div>
+                <p className="lede">
+                  <span className="donna">donna</span> handles intake and connects your practice
+                  management system to Claude and ChatGPT. Live in two weeks.
+                </p>
+                <div className="askline">
+                  <span className="q" id="askq" ref={askRef} aria-live="off" />
+                  <span className="go" aria-hidden="true">Ask</span>
+                </div>
+              </div>
+              <div className="go">
+                <Magnetic>
+                  <Button asChild size="lg">
+                    <a href="#enquire">Get donna for your firm</a>
+                  </Button>
+                </Magnetic>
+                <Button asChild variant="outline" size="lg">
+                  <a href="#demo">Watch it work</a>
                 </Button>
-              </Magnetic>
-              <Button asChild variant="outline" size="lg" className="border-paper bg-transparent text-paper hover:bg-paper hover:text-ink">
-                <a href="#demo">Watch it work</a>
-              </Button>
+              </div>
             </div>
           </FadeUp>
         </div>
@@ -203,11 +207,6 @@ export default function Home() {
             <FigureReveal className="step-row__flow">
               <BrandStepFlow steps={STEPS} />
             </FigureReveal>
-            <div className="diamond-stack" aria-hidden="true">
-              <div className="diamond" />
-              <div className="diamond" />
-              <div className="diamond" />
-            </div>
           </div>
         </div>
       </section>
