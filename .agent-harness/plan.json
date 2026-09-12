@@ -1,25 +1,75 @@
 {
-  "goal": "The jdotai two-page site passes every mechanised hallmark slop-test gate",
-  "max_loop_iterations": 12,
-  "max_attempts_per_task": 3,
+  "schema": "agent-harness/plan.v1",
+  "goal": "Drive the jdotai-site build to a clean Hallmark audit: the static gates, the runtime gates and the visual baseline must all exit 0 against a fresh build. Do not touch public/legacy, src/content, or the enquiry webhook.",
+  "domain": "jdotai-design",
+  "compiled_at": "2026-09-12T20:03:41Z",
+  "skill_match_report": [
+    {
+      "skill": "hallmark",
+      "score": 14,
+      "matched": [
+        "against",
+        "audit",
+        "clean",
+        "content",
+        "drive",
+        "gates",
+        "hallmark",
+        "jdotai",
+        "runtime",
+        "site",
+        "static",
+        "visual"
+      ]
+    }
+  ],
   "tasks": [
     {
       "id": "T1",
-      "objective": "Site passes every mechanised hallmark gate (tools/hallmark_check.py exits 0)",
-      "done_when": "tools/hallmark_check.py exits 0 against the working tree",
+      "skill": "hallmark",
+      "skill_path": "/Users/jaidhingra/.claude/skills/hallmark",
+      "objective": "Apply skill 'hallmark' toward goal: Drive the jdotai-site build to a clean Hallmark audit: the static gates, the runtime gates and the visual baseline must all exit 0 against a fresh build. Do not touch public/legacy, src/content, or the enquiry webhook.",
+      "suggested_tools": [
+        "python3 tools/hallmark_check.py --help  # discover flags first",
+        "python3 tools/runtime_audit.mjs --help  # discover flags first",
+        "python3 tools/visual_diff.mjs --help  # discover flags first"
+      ],
       "verification": [
-        { "cmd": "python3 tools/hallmark_check.py", "expect_exit": 0, "kind": "gate" }
-      ]
-    },
-    {
-      "id": "T2",
-      "objective": "Both pages are well-formed HTML and free of dead CSS/tokens",
-      "done_when": "structural checks inside the gate script pass",
-      "verification": [
-        { "cmd": "python3 tools/hallmark_check.py", "expect_exit": 0, "kind": "gate" },
-        { "cmd": "node --check assets/js/site.js", "expect_exit": 0, "kind": "syntax" },
-        { "cmd": "node --check assets/js/enquiry.js", "expect_exit": 0, "kind": "syntax" }
-      ]
+        {
+          "cmd": "npm run build",
+          "expect_exit": 0,
+          "kind": "build"
+        },
+        {
+          "cmd": "python3 tools/hallmark_check.py",
+          "expect_exit": 0,
+          "kind": "static-gates"
+        },
+        {
+          "cmd": "node tools/runtime_audit.mjs --url=http://localhost:5199",
+          "expect_exit": 0,
+          "kind": "runtime-gates"
+        },
+        {
+          "cmd": "node tools/visual_diff.mjs",
+          "expect_exit": 0,
+          "kind": "visual-regression"
+        }
+      ],
+      "done_when": "every verification check meets expect_exit AND the output is consistent with the task objective",
+      "max_attempts": 3,
+      "status": "pending"
     }
-  ]
+  ],
+  "loop": {
+    "order": "sequential",
+    "max_loop_iterations": 12,
+    "escalate_on": [
+      "attempts_exhausted"
+    ]
+  },
+  "close": {
+    "requires": "all tasks verified (or explicitly waived with a reason)",
+    "handoff": "loop_controller.py close emits the evidence log + summary"
+  }
 }

@@ -1,0 +1,59 @@
+{
+  "schema": "agent-harness/manifest@1",
+  "domain": "jdotai-design",
+  "skill_count": 1,
+  "loop_defaults": {
+    "max_attempts_per_task": 3,
+    "max_loop_iterations": 12
+  },
+  "skills": [
+    {
+      "name": "hallmark",
+      "path": "/Users/jaidhingra/.claude/skills/hallmark",
+      "description": "Anti-AI-slop design skill. Audits a built site against named anti-patterns and returns a ranked punch list; redesigns the visual layer without bulldozing routes or content. Used here to drive jdotai-site to a clean audit across both the static gates and the runtime gates.",
+      "tools": [
+        {
+          "script": "tools/hallmark_check.py",
+          "wired": true,
+          "supports_sample": false,
+          "verification": [
+            {
+              "cmd": "npm run build",
+              "expect_exit": 0,
+              "kind": "build"
+            },
+            {
+              "cmd": "python3 tools/hallmark_check.py",
+              "expect_exit": 0,
+              "kind": "static-gates"
+            }
+          ]
+        },
+        {
+          "script": "tools/runtime_audit.mjs",
+          "wired": true,
+          "supports_sample": false,
+          "verification": [
+            {
+              "cmd": "node tools/runtime_audit.mjs --url=http://localhost:5199",
+              "expect_exit": 0,
+              "kind": "runtime-gates"
+            }
+          ]
+        },
+        {
+          "script": "tools/visual_diff.mjs",
+          "wired": true,
+          "supports_sample": false,
+          "verification": [
+            {
+              "cmd": "node tools/visual_diff.mjs",
+              "expect_exit": 0,
+              "kind": "visual-regression"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

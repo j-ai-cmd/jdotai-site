@@ -35,7 +35,7 @@ export const ProcessReel: React.FC<ProcessReelProps> = ({ steps }) => (
               trap TitleCard.tsx documents) — the counter needs its own band
               above it, not a flex sibling, or the two fight for the centre. */}
           <div style={{ position: 'relative', width: '100%', height: 64 }}>
-            <span style={{ fontSize: 44, color: BRAND.wine, fontFamily: BRAND.display, fontWeight: 600 }}>
+            <span style={{ fontSize: 44, color: BRAND.g400, fontFamily: BRAND.display, fontWeight: 600 }}>
               {i + 1} / {steps.length}
             </span>
           </div>

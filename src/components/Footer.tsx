@@ -1,27 +1,20 @@
 import { Link } from 'react-router-dom'
 
-/** Ft1 Mast-headed, simplified — studied from lex-ops.io's plain three-column
- *  close: brand, a couple of real destinations, contact. Replaces the
- *  earlier Ft5 Statement line, which read as filler once the rest of the
- *  page's copy got cut down. */
+/** Ft4 colophon — a wordmark, two real destinations and a contact line.
+ *  Deliberately not a link column: four <a> inside one <nav> is the shape
+ *  gate 42 fails, and this footer has never had four destinations. */
 export default function Footer() {
   return (
-    <footer className="foot-simple">
-      <div className="section-in foot-simple__grid">
-        <div>
-          <span className="wm">jdot<i>ai</i></span>
-          <p className="muted">AI tools for legal firms.</p>
-        </div>
+    <footer className="foot">
+      <div className="wrap foot__grid">
+        <span className="nav__wm">jdot<i>ai</i></span>
         <nav aria-label="Footer">
-          <Link to="/blog">Blogs</Link>
+          <Link to="/blog">Writing</Link>
           <Link to="/contact">Contact</Link>
         </nav>
-        <div>
-          <a href="mailto:jai@jdotai.com">jai@jdotai.com</a>
-          <a href="https://www.linkedin.com/in/jai-dhingra/" rel="noopener noreferrer" target="_blank">LinkedIn</a>
-        </div>
+        <a href="mailto:jai@jdotai.com" className="mono">jai@jdotai.com</a>
+        <span className="foot__cp">© 2026 jdotai</span>
       </div>
-      <p className="foot-simple__cp">&copy; 2026 jdotai &mdash; Jai Dhingra</p>
     </footer>
   )
 }

@@ -42,14 +42,14 @@ export default function Post() {
   return (
     <main id="main">
       {/* Extracted from the static build — our own content, not user input. */}
-      <div dangerouslySetInnerHTML={{ __html: body }} />
-      <section className="sec post-foot">
-        <div className="in mid">
+      <div className="wrap wrap--narrow prose band" dangerouslySetInnerHTML={{ __html: body }} />
+      <section className="post-foot">
+        <div className="wrap wrap--narrow">
           <p className="card-meta">
             {formatDate(post.date)}
             {post.category ? ` · ${post.category}` : ''}
           </p>
-          <p><Link className="cta-link" to="/blog">&larr; All posts</Link></p>
+          <p><Link  to="/blog">&larr; All posts</Link></p>
         </div>
       </section>
     </main>
