@@ -1,19 +1,24 @@
-/* Hallmark · macrostructure: studied-DNA (source: url, harvey.ai) · genre: modern-minimal
- * theme: custom · paper #FBFAF8 · ink #171412 · accent wine #6E2434
- * type: Geist (single family) + Fraunces (donna outlier)
- * nav: N1b canonical SaaS three-section · footer: Ft5 Statement
- * studied DNA: dense SaaS sequence — split hero, trust bar of integration
- * badges, bento feature grid, full-width stat band, tabbed demo, process,
- * connection diagram, FAQ, closing CTA. Adapted honestly: Harvey's customer
- * logos become donna's real PMS/assistant integrations (nothing invented);
- * Harvey has no testimonials here because donna has none to show yet.
- * Second full pass on this project — was Long Document (continuous essay)
- * before that, Narrative Workflow before that. Replaced outright each time
- * at the user's explicit request: "one page, loads of elements."
+/* Hallmark · macrostructure: studied-DNA (source: url, harvey.ai) · genre: editorial-broadsheet
+ * theme: custom · paper #F7F4EE (warm bone) · ink #16130F · accent burgundy #7A2E3B
+ * type: Playfair Display (display) + Source Serif 4 (reading) + JetBrains Mono (figures)
+ * nav: N1b canonical SaaS three-section · footer: Ft1 mast-headed, plain
+ * studied DNA: the dense SaaS sequence is kept — split hero, integration bar,
+ * bento, stat band, tabbed demo, process, FAQ, closing CTA — but re-set as a
+ * broadsheet rather than a product page. Third full pass on this project.
+ * The previous pass was warm-cream with a wine accent and was replaced at the
+ * user's request: it read as generic, its type was too even to carry a page,
+ * and it carried motifs (rotated diamonds) that meant nothing. Every element
+ * that survived here names something real.
+ * The premise is warm paper and ink with one rationed accent. Hierarchy comes
+ * from size, weight and rule-work — display runs to 5.75rem against 1.125rem
+ * prose, a 5x step — and the brand burgundy is spent on four jobs only:
+ * things you can press, the marks in the margin, the donna wordmark, and the
+ * data series that goes the right way. Nothing decorative is burgundy, no
+ * section is tinted, no rule is drawn in it. See tokens.css.
  * No eyebrows, no section numbering, no uppercase micro-labels anywhere.
  * Motion: reading-progress · page-load reveals · a magnetic CTA · one
  * figure-reveal voice for charts/video · one character-emphasis moment.
- * pre-emit critique: P4 H4 E5 S4 R3 V4
+ * pre-emit critique: P4 H5 E5 S4 R3 V4
  */
 
 /* ─────────── base ─────────── */
@@ -22,50 +27,41 @@ html,body{overflow-x:clip}
 html{scroll-behavior:smooth;scroll-padding-top:5rem}
 body{
   margin:0;background:var(--paper);color:var(--ink);
-  font-family:var(--fb);font-size:var(--t-body);line-height:1.65;
+  font-family:var(--fb);font-size:var(--t-body);line-height:1.62;
   -webkit-font-smoothing:antialiased;font-synthesis-weight:none;
 }
 a{color:inherit}
 p{margin:0}
-img,video{max-width:100%;display:block}
+img{max-width:100%;display:block}
 :focus-visible{outline:2px solid var(--wine);outline-offset:3px;border-radius:var(--r-sm)}
 
-/* A single sheet of grain over the whole page — felt, not seen, at 3%. Fixed,
-   so it does not travel with the scroll. */
-body::before{
-  content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
-  opacity:.035;mix-blend-mode:multiply;
-  background-image:var(--grain);background-size:180px 180px;
-}
-body > *{position:relative;z-index:1}
-
 h1,h2,h3{
-  font-family:var(--fd);font-weight:500;font-style:normal;margin:0;
-  letter-spacing:-.03em;line-height:1.05;
+  font-family:var(--fd);font-weight:700;font-style:normal;margin:0;
+  letter-spacing:-.035em;line-height:1.02;
   text-wrap:balance;overflow-wrap:anywhere;
 }
-h1{font-size:var(--t-display)}
+h1{font-size:var(--t-display);font-weight:900;letter-spacing:-.045em;line-height:.93}
 h2{font-size:var(--t-h2)}
-h3{font-size:var(--t-h3);letter-spacing:-.02em;line-height:1.2}
+h3{font-size:var(--t-h3);letter-spacing:-.025em;line-height:1.16}
 
 .narrow{max-width:var(--w-narrow);margin:0 auto;padding-inline:var(--gut)}
 .mid{max-width:var(--w-mid);margin:0 auto;padding-inline:var(--gut)}
 
-.lede{color:var(--ink-body);font-size:var(--t-lede);line-height:1.6;max-width:65ch}
+.lede{color:var(--ink-body);font-size:var(--t-lede);line-height:1.56;max-width:62ch}
 
 .skip{position:absolute;left:-9999px}
 .skip:focus{
   left:var(--gut);top:.75rem;z-index:99;
-  background:var(--wine);color:var(--on-wine);
+  background:var(--ink-raised);color:var(--on-wine);
   padding:.6rem 1rem;border-radius:999px;font-size:var(--t-small);
 }
 
-/* the donna wordmark — set, never drawn. Fraunces is the one outlier and
-   appears nowhere else, which is what keeps it an outlier rather than a
-   third body font. */
-.donna{font-family:var(--fd-donna);font-weight:400;
-  letter-spacing:-.01em;color:var(--wine);font-style:normal}
-.nav .donna,.cta-band .donna,.hero-dark .donna{color:inherit}
+
+/* the donna wordmark — set in the display face's italic, never drawn */
+.donna{font-family:var(--fd-donna);font-weight:400;font-style:italic;
+  letter-spacing:-.01em;color:var(--wine)}
+/* on an ink band burgundy goes muddy; the brand guide's own pairing is rose */
+.cta-band .donna{color:var(--rose)}
 
 /* ─────────── reading progress ─────────── */
 .reading-progress{
@@ -74,472 +70,641 @@ h3{font-size:var(--t-h3);letter-spacing:-.02em;line-height:1.2}
 }
 
 /* ─────────── nav · N1b canonical SaaS three-section ─────────── */
-/* Default nav text is ink, for the pages (everything but Home) that open
-   directly on paper. Home opens on .hero-dark instead, so its nav starts
-   life over a dark surface — .nav--on-dark (set in Nav.tsx only while a
-   .hero-dark element is both present and unscrolled-past) flips it to
-   paper-toned until the scrim takes over. */
 .nav{
   position:fixed;inset:0 0 auto;z-index:60;color:var(--ink);
   background:transparent;border-bottom:1px solid transparent;
-  transition:background var(--dur) var(--ease),border-color var(--dur) var(--ease),
-             color var(--dur) var(--ease);
+  transition:background var(--dur) var(--ease),border-color var(--dur) var(--ease);
 }
-.nav.nav--on-dark{color:var(--paper)}
 .nav.is-scrolled{
-  background:var(--scrim);color:var(--ink);
-  backdrop-filter:blur(14px);border-bottom-color:var(--rule);
+  background:var(--scrim);
+  backdrop-filter:blur(14px);border-bottom-color:var(--rule-strong);
 }
 .nav__inner{
   max-width:var(--w-wide);margin:0 auto;padding-inline:var(--gut);
   height:4.25rem;display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:center;
 }
 .nav__brand{
-  grid-column:1;justify-self:start;font-family:var(--fd);font-weight:700;font-size:1.0625rem;
-  letter-spacing:-.04em;text-decoration:none;white-space:nowrap;color:inherit;
+  grid-column:1;justify-self:start;font-family:var(--fd);font-weight:900;font-size:1.375rem;
+  letter-spacing:-.05em;text-decoration:none;white-space:nowrap;color:inherit;
 }
-.nav__brand i{font-style:normal;color:var(--wine)}
+.nav__brand i{font-style:normal}
 .nav__center{
-  grid-column:2;justify-self:center;display:flex;gap:2rem;font-size:.9375rem;
-  color:inherit;opacity:.7;
+  grid-column:2;justify-self:center;display:flex;gap:2rem;
+  font-family:var(--fm);font-size:var(--t-meta);font-weight:500;
+  letter-spacing:.16em;text-transform:uppercase;color:var(--ink-muted);
 }
 .nav__link{text-decoration:none;padding:.3rem 0;white-space:nowrap;color:inherit;
   transition:color var(--dur) var(--ease)}
-.nav__link:hover{color:var(--wine);opacity:1}
-.nav__link[aria-current]{color:inherit;opacity:1;font-weight:600}
+.nav__link:hover{color:var(--wine)}
+.nav__link[aria-current]{color:var(--ink);font-weight:600}
 /* explicit grid-column so removing .nav__center (display:none below 60rem)
-   doesn't shift this into the now-empty middle track — CSS Grid auto-places
-   remaining items into the next free explicit track in DOM order, which
-   would otherwise land the CTA in the middle instead of the right edge */
+   doesn't shift this into the now-empty middle track */
 .nav__right{grid-column:3;justify-self:end}
 
 /* ─────────── buttons ─────────── */
 .btn{
   display:inline-flex;align-items:center;justify-content:center;
-  min-height:2.5rem;padding:.6rem 1.25rem;border-radius:999px;
+  min-height:2.75rem;padding:.75rem 1.5rem;border-radius:0;
   border:1px solid var(--wine);background:var(--wine);color:var(--on-wine);
-  font-family:var(--fb);font-size:.9375rem;font-weight:500;
+  font-family:var(--fm);font-size:var(--t-meta);font-weight:500;
+  letter-spacing:.16em;text-transform:uppercase;
   text-decoration:none;white-space:nowrap;cursor:pointer;
-  transition:background var(--dur) var(--ease),border-color var(--dur) var(--ease),
-             opacity var(--dur) var(--ease);
+  transition:background var(--dur) var(--ease),color var(--dur) var(--ease),
+             border-color var(--dur) var(--ease),opacity var(--dur) var(--ease);
 }
-.btn:hover{background:var(--wine-hover);border-color:transparent}
+.btn:hover{background:var(--paper);color:var(--wine);border-color:var(--wine)}
 .btn:active{transform:translateY(1px)}
 .btn[disabled],.btn[aria-busy="true"]{opacity:.55;cursor:default;pointer-events:none}
-.btn--line{background:transparent;color:var(--ink);border-color:var(--ink)}
-.btn--line:hover{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.btn--line{background:transparent;color:var(--ink);border-color:var(--rule-strong)}
+.btn--line:hover{background:var(--ink);color:var(--on-wine);border-color:var(--ink)}
 
-/* an inline typographic CTA — the Long Document voice for a call to action
-   that lives inside a sentence, not a separate block. */
+/* an inline typographic CTA — a call to action inside a sentence */
 .cta-link{
   color:var(--wine);text-decoration:underline;text-underline-offset:.2em;
-  text-decoration-thickness:1px;font-weight:500;white-space:nowrap;
+  text-decoration-thickness:1px;font-weight:600;white-space:nowrap;
   transition:text-decoration-thickness var(--dur) var(--ease);
 }
-.cta-link:hover{text-decoration-thickness:2px}
+.cta-link:hover{text-decoration-thickness:3px}
+
+.go{display:flex;flex-wrap:wrap;gap:.75rem;margin-top:2rem}
+
+/* ─────────── the uppercase run ───────────
+   Mono, letterspaced, uppercase. It is never a label announcing a heading —
+   gate 54 still forbids that, by class name. It is the column rule of a
+   ruled table: a nav destination, a button, a table header, a finding code.
+   Set, not staged. */
+.ucase{
+  font-family:var(--fm);font-size:var(--t-meta);font-weight:500;
+  letter-spacing:.18em;text-transform:uppercase;
+}
+
+/* the honesty flag that rides beside any figure we did not measure */
+.flag{
+  display:inline-block;border:1px solid var(--rule-strong);
+  padding:.4rem .7rem;color:var(--ink-muted);
+  font-family:var(--fm);font-size:var(--t-meta);font-weight:500;
+  letter-spacing:.16em;text-transform:uppercase;
+}
+.flag-row{display:flex;align-items:baseline;justify-content:space-between;gap:1rem;flex-wrap:wrap;margin-bottom:2rem}
+
+/* ─────────── the hero figure row ───────────
+   Four true counts, set at display size. This is the page's second-loudest
+   typographic event after the headline, which is what a number deserves when
+   it is the whole argument. */
+.figures{
+  display:grid;grid-template-columns:repeat(4,minmax(0,1fr));
+  border-top:1px solid var(--ink);margin-top:clamp(3rem,6vw,4.5rem);
+}
+.figure-cell{
+  padding:1.5rem clamp(.75rem,2vw,1.5rem) .5rem 0;
+}
+.figure-cell + .figure-cell{border-left:1px solid var(--rule);padding-left:clamp(.75rem,2vw,1.5rem)}
+.figure-cell__n{
+  font-family:var(--fd);font-weight:900;font-size:var(--t-figure);
+  line-height:.88;letter-spacing:-.05em;color:var(--ink);
+  font-variant-numeric:tabular-nums;
+}
+.figure-cell__u{
+  font-family:var(--fm);font-size:1rem;font-weight:400;
+  letter-spacing:.02em;margin-left:.2em;color:var(--ink-muted);
+}
+.figure-cell__c{
+  margin-top:.85rem;color:var(--ink-muted);
+  font-family:var(--fm);font-size:var(--t-meta);
+  letter-spacing:.14em;text-transform:uppercase;line-height:1.45;
+}
+@media (max-width:56rem){
+  .figures{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .figure-cell:nth-child(3){border-left:none;padding-left:0}
+  .figure-cell:nth-child(n+3){border-top:1px solid var(--rule);margin-top:.5rem}
+}
+@media (max-width:26rem){
+  .figures{grid-template-columns:minmax(0,1fr)}
+  .figure-cell + .figure-cell{border-left:none;padding-left:0;border-top:1px solid var(--rule);margin-top:.5rem}
+}
+
+/* charts. The plot needs an explicit height: recharts' responsive container
+   measures its parent, and a grid parent with no height collapses it. */
+.mono-chart{margin:0;background:var(--sunk);border:1px solid var(--ink);
+  padding:clamp(1.25rem,3vw,1.75rem)}
+.mono-chart figcaption{margin-top:1rem;color:var(--ink-muted);font-size:var(--t-small);line-height:1.5}
+.mono-chart__plot{height:clamp(15rem,26vw,19rem)}
+.chart-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,20rem),1fr));gap:1.25rem;align-items:start}
 
 /* ─────────── opener · the headline only ─────────── */
 .open{padding-block:clamp(6rem,11vw,8.5rem) 0}
-.open h1{max-width:20ch}
-
-/* the donna page's typed question-line — a real, functioning demo of the
-   product sitting directly under the headline, not decoration. Lost its
-   styling in the redesign pass; restored here rather than as bare text. */
-.askline{
-  margin-top:2rem;max-width:34rem;display:flex;align-items:center;gap:.75rem;
-  border:1px solid var(--rule);border-radius:999px;padding:.85rem 1.15rem;
-  background:var(--paper);
-  box-shadow:0 1px 3px color-mix(in oklab,var(--ink) 7%,transparent);
-}
-.askline .q{
-  flex:1;min-width:0;font-family:var(--fd);font-size:.9375rem;
-  color:var(--ink-body);white-space:nowrap;overflow:hidden;
-}
-.askline .caret{
-  display:inline-block;width:2px;height:1em;vertical-align:-.15em;
-  background:var(--wine);margin-left:1px;animation:caret 1.1s step-end infinite;
-}
-@keyframes caret{50%{opacity:0}}
-.askline .go{
-  flex:none;background:var(--wine);color:var(--on-wine);border-radius:999px;
-  padding:.4rem .95rem;font-family:var(--fd);font-size:.8125rem;font-weight:500;
-}
-@media (max-width:34rem){
-  .askline{border-radius:var(--r-lg);flex-wrap:wrap}
-  .askline .q{white-space:normal}
-}
-@media (prefers-reduced-motion:reduce){
-  .askline .caret{animation:none}
-}
+.open h1{max-width:17ch}
 
 /* ─────────── one-page sections (Home) ───────────
-   Studied from harvey.ai: a real SaaS sequence, not a single essay. Each
-   section owns its own width and padding on purpose — the rhythm is meant
-   to feel dense and varied, the opposite of the previous pass. */
+   Each section owns its own width and padding on purpose — the rhythm is
+   meant to feel dense and varied. */
 .section{padding-block:var(--pad-loose)}
 .section--tint{background:var(--sunk)}
-.section--top{border-top:1px solid var(--rule)}
+.section--top{border-top:1px solid var(--ink)}
 .section-in{max-width:var(--w-wide);margin:0 auto;padding-inline:var(--gut)}
 .section-in--mid{max-width:var(--w-mid)}
 .section-head{max-width:36rem;margin:0 0 2.5rem}
-.section-head.center{margin-inline:auto;text-align:center}
-.section-head h2{max-width:20ch}
-.section-head.center h2{margin-inline:auto}
+.section-head h2{max-width:19ch}
 
-/* hero — dark, full-bleed, studied from lex-ops.io: a near-black band, not
-   another light section, is what actually reads as a different site rather
-   than a rearranged one. The wine glow is the same accent the rest of the
-   page uses, just used as light instead of ink — no new colour introduced.
-   The demo loop breaks out of the band's bottom edge into the light section
-   beneath it (lex-ops' console screenshot does the same against its hero). */
-.hero-dark{
-  position:relative;overflow:hidden;background:var(--ink);color:var(--paper);
-  padding-block:clamp(6.5rem,13vw,9rem) clamp(8rem,16vw,11rem);
-  text-align:center;
+/* hero — the broadsheet front page. Light, ruled hard top and bottom, with
+   the headline set as large as the measure will carry. The previous pass
+   opened on a dark band with a coloured glow; with no hue left to glow, the
+   honest move is to let the type be the event. */
+.hero{
+  border-bottom:1px solid var(--ink);
+  padding-block:clamp(7rem,13vw,10rem) clamp(3rem,6vw,4.5rem);
 }
-.hero-dark::before{
-  content:"";position:absolute;inset:0;pointer-events:none;
-  background:
-    radial-gradient(ellipse 60% 50% at 15% 0%,color-mix(in oklab,var(--wine) 55%,transparent),transparent 60%),
-    radial-gradient(ellipse 50% 40% at 100% 100%,color-mix(in oklab,var(--wine) 35%,transparent),transparent 65%);
-  opacity:.55;
+.hero__in{max-width:var(--w-wide);margin:0 auto;padding-inline:var(--gut)}
+.hero h1{max-width:14ch}
+.hero__dek{
+  margin-top:clamp(2rem,4vw,3rem);
+  display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);
+  gap:clamp(1.5rem,5vw,4rem);align-items:end;
 }
-.hero-dark__in{position:relative;max-width:44rem;margin:0 auto;padding-inline:var(--gut)}
-.hero-dark h1{max-width:18ch;margin-inline:auto;color:var(--paper)}
-.hero-dark .lede{color:color-mix(in oklab,var(--paper) 74%,var(--ink));margin:1.25rem auto 0;max-width:46ch;text-align:center}
-.hero-dark .askline{margin-inline:auto;box-shadow:0 12px 32px -12px color-mix(in oklab,var(--ink) 60%,transparent)}
-.hero-dark .go{justify-content:center}
-
-/* the clip — pulled up over the dark band's bottom edge by design, framed
-   in paper so the seam between the two surfaces reads as intentional. */
-.hero-clip{
-  position:relative;margin-top:calc(-1 * clamp(5rem,11vw,7.5rem));
-  padding-inline:var(--gut);max-width:56rem;margin-inline:auto;
-}
-.hero-clip .figure{width:100%;margin:0}
-.hero-clip video{
-  border-radius:var(--r-lg);border:1px solid var(--rule);
-  box-shadow:0 24px 48px -20px color-mix(in oklab,var(--ink) 45%,transparent);
-}
-
-
-/* trust bar — what donna actually connects to, presented the way a logo
-   wall would be. Real integration partners, not customers; nothing here is
-   a claim, just an inventory. */
-.trust{
-  padding-block:var(--pad-tight);border-block:1px solid var(--rule);background:var(--sunk);
-}
-.trust__caption{
-  font-family:var(--fd);font-size:.875rem;color:var(--ink-muted);margin:0 0 1.25rem;
-}
-.trust__row{display:flex;flex-wrap:wrap;gap:.6rem}
-.trust__row + .trust__row{margin-top:.6rem}
-
-/* the problem cards — lex-ops' numbered-chip pattern, on real pain points
-   already named elsewhere on the page, not a new claim. */
-.problems{display:grid;gap:1.25rem;grid-template-columns:minmax(0,1fr) minmax(0,1fr) minmax(0,1fr)}
-.problem-card{
-  background:var(--paper);border:1px solid var(--rule);border-radius:var(--r-lg);
-  padding:clamp(1.5rem,3vw,1.85rem);
-}
-.problem-card__n{
-  display:inline-flex;align-items:center;justify-content:center;
-  width:2rem;height:2rem;border-radius:var(--r-md);
-  background:color-mix(in oklab,var(--wine) 12%,var(--paper));color:var(--wine);
-  font-family:var(--fd);font-weight:600;font-size:.8125rem;
-  font-variant-numeric:tabular-nums;margin-bottom:1rem;
-}
-.problem-card h3{font-size:1.0625rem}
-.problem-card p{margin-top:.5rem;color:var(--ink-body);font-size:.9375rem;line-height:1.6}
+.hero__dek .lede{max-width:48ch}
+.hero__dek .go{margin-top:0}
 @media (max-width:56rem){
-  .problems{grid-template-columns:minmax(0,1fr)}
+  .hero__dek{grid-template-columns:minmax(0,1fr)}
+  .hero__dek .go{margin-top:.5rem}
 }
 
-/* the diamond — a rotated square, the one geometric motif borrowed whole
-   from lex-ops rather than adapted; it costs nothing to build in pure CSS
-   and reads as considered rather than decorative filler. */
-.diamond{
-  width:5.5rem;height:5.5rem;border-radius:var(--r-md);
-  background:var(--paper);border:1px solid var(--rule);
-  transform:rotate(45deg);
-  box-shadow:0 16px 32px -18px color-mix(in oklab,var(--ink) 35%,transparent);
+/* ─────────── the uppercase run ───────────
+   Mono, letterspaced, uppercase. It is never a label announcing a heading —
+   gate 54 still forbids that, by class name. It is the column rule of a
+   ruled table: a nav destination, a button, a table header, a finding code.
+   Set, not staged. */
+.ucase{
+  font-family:var(--fm);font-size:var(--t-meta);font-weight:500;
+  letter-spacing:.18em;text-transform:uppercase;
 }
-.diamond-stack{position:relative;width:5.5rem;height:5.5rem;flex:none}
-.diamond-stack .diamond:nth-child(2){position:absolute;inset:0;transform:rotate(45deg) translate(6px,6px);z-index:-1;opacity:.6}
-.diamond-stack .diamond:nth-child(3){position:absolute;inset:0;transform:rotate(45deg) translate(12px,12px);z-index:-2;opacity:.35}
 
-.step-row{
-  margin-top:2.5rem;display:flex;align-items:center;gap:2.5rem;
+/* the honesty flag that rides beside any figure we did not measure */
+.flag{
+  display:inline-block;border:1px solid var(--rule-strong);
+  padding:.4rem .7rem;color:var(--ink-muted);
+  font-family:var(--fm);font-size:var(--t-meta);font-weight:500;
+  letter-spacing:.16em;text-transform:uppercase;
 }
-.step-row__flow{flex:1;min-width:0}
+.flag-row{display:flex;align-items:baseline;justify-content:space-between;gap:1rem;flex-wrap:wrap;margin-bottom:2rem}
+
+/* ─────────── the hero figure row ───────────
+   Four true counts, set at display size. This is the page's second-loudest
+   typographic event after the headline, which is what a number deserves when
+   it is the whole argument. */
+.figures{
+  display:grid;grid-template-columns:repeat(4,minmax(0,1fr));
+  border-top:1px solid var(--ink);margin-top:clamp(3rem,6vw,4.5rem);
+}
+.figure-cell{
+  padding:1.5rem clamp(.75rem,2vw,1.5rem) .5rem 0;
+}
+.figure-cell + .figure-cell{border-left:1px solid var(--rule);padding-left:clamp(.75rem,2vw,1.5rem)}
+.figure-cell__n{
+  font-family:var(--fd);font-weight:900;font-size:var(--t-figure);
+  line-height:.88;letter-spacing:-.05em;color:var(--ink);
+  font-variant-numeric:tabular-nums;
+}
+.figure-cell__u{
+  font-family:var(--fm);font-size:1rem;font-weight:400;
+  letter-spacing:.02em;margin-left:.2em;color:var(--ink-muted);
+}
+.figure-cell__c{
+  margin-top:.85rem;color:var(--ink-muted);
+  font-family:var(--fm);font-size:var(--t-meta);
+  letter-spacing:.14em;text-transform:uppercase;line-height:1.45;
+}
 @media (max-width:56rem){
-  .step-row{flex-direction:column}
-  .diamond-stack{align-self:center;margin-top:1rem}
+  .figures{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .figure-cell:nth-child(3){border-left:none;padding-left:0}
+  .figure-cell:nth-child(n+3){border-top:1px solid var(--rule);margin-top:.5rem}
+}
+@media (max-width:26rem){
+  .figures{grid-template-columns:minmax(0,1fr)}
+  .figure-cell + .figure-cell{border-left:none;padding-left:0;border-top:1px solid var(--rule);margin-top:.5rem}
 }
 
-/* bento — mixed-span feature grid. Never three equal columns: the middle
-   tile runs taller to hold the connection diagram, breaking the rhythm the
-   way layout-and-space.md asks for. */
-.bento{
-  display:grid;gap:1px;background:var(--rule);border:1px solid var(--rule);
-  border-radius:var(--r-lg);overflow:hidden;
-  grid-template-columns:repeat(6,minmax(0,1fr));
+/* charts. The plot needs an explicit height: recharts' responsive container
+   measures its parent, and a grid parent with no height collapses it. */
+.mono-chart{margin:0;background:var(--sunk);border:1px solid var(--ink);
+  padding:clamp(1.25rem,3vw,1.75rem)}
+.mono-chart figcaption{margin-top:1rem;color:var(--ink-muted);font-size:var(--t-small);line-height:1.5}
+.mono-chart__plot{height:clamp(15rem,26vw,19rem)}
+.chart-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,20rem),1fr));gap:1.25rem;align-items:start}
+
+/* ─────────── opener · the headline only ─────────── */
+.open{padding-block:clamp(6rem,11vw,8.5rem) 0}
+.open h1{max-width:17ch}
+
+/* ─────────── one-page sections (Home) ───────────
+   Each section owns its own width and padding on purpose — the rhythm is
+   meant to feel dense and varied. */
+.section{padding-block:var(--pad-loose)}
+.section--tint{background:var(--sunk)}
+.section--top{border-top:1px solid var(--ink)}
+.section-in{max-width:var(--w-wide);margin:0 auto;padding-inline:var(--gut)}
+.section-in--mid{max-width:var(--w-mid)}
+.section-head{max-width:36rem;margin:0 0 2.5rem}
+.section-head h2{max-width:19ch}
+
+/* hero — the broadsheet front page. Light, ruled hard top and bottom, with
+   the headline set as large as the measure will carry. The previous pass
+   opened on a dark band with a coloured glow; with no hue left to glow, the
+   honest move is to let the type be the event. */
+.hero{
+  border-bottom:1px solid var(--ink);
+  padding-block:clamp(7rem,13vw,10rem) clamp(3rem,6vw,4.5rem);
 }
-.bento__tile{
-  background:var(--paper);padding:clamp(1.5rem,3vw,2.25rem);
-  grid-column:span 3;display:flex;flex-direction:column;gap:.75rem;
+.hero__in{max-width:var(--w-wide);margin:0 auto;padding-inline:var(--gut)}
+.hero h1{max-width:14ch}
+.hero__dek{
+  margin-top:clamp(2rem,4vw,3rem);
+  display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);
+  gap:clamp(1.5rem,5vw,4rem);align-items:end;
 }
-.bento__tile--wide{grid-column:span 6}
-.bento__tile h3{font-size:1.1875rem;letter-spacing:-.015em}
-.bento__tile p{color:var(--ink-body);font-size:.9375rem;line-height:1.6}
-.bento__tile .cmap{margin-top:auto}
+.hero__dek .lede{max-width:48ch}
+.hero__dek .go{margin-top:0}
 @media (max-width:56rem){
-  .bento{grid-template-columns:repeat(2,minmax(0,1fr))}
-  .bento__tile{grid-column:span 2}
+  .hero__dek{grid-template-columns:minmax(0,1fr)}
+  .hero__dek .go{margin-top:.5rem}
 }
 
-/* the tabbed demo — shadcn Tabs switching between the two real product
-   loops, Harvey's "feature deep-dive" pattern with donna's own footage. */
-.demo-tabs{margin-top:2rem}
-.demo-tabs figure{margin:0}
-.demo-tabs video{
-  width:100%;height:auto;aspect-ratio:16/10;object-fit:cover;
-  border:1px solid var(--rule);border-radius:var(--r-lg);background:var(--sunk);
+/* ─────────── the pair ───────────
+   The page's one recurring split: something said on the left, something
+   shown on the right. Every section that has both uses it, which is what
+   holds a long page together once the sections stop sharing a rhythm. */
+.pair{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(2rem,5vw,4.5rem);align-items:start}
+.pair--head{grid-template-columns:minmax(0,4fr) minmax(0,8fr)}
+.pair .lede{margin-top:1.25rem}
+@media (max-width:60rem){
+  .pair,.pair--head{grid-template-columns:minmax(0,1fr);gap:2rem}
 }
-.demo-tabs figcaption{margin-top:.9rem;color:var(--ink-muted);font-size:var(--t-small);line-height:1.55}
 
-/* closing CTA band — dark, bookending the hero (lex-ops opens and closes on
-   the same near-black band). Reusing .hero-dark's atmosphere rather than a
-   second wine-filled band keeps the page's one loud accent moment at the
-   hero, not scattered across every closing section. */
+/* a ruled checklist — no bullets, no icons, just rules */
+.ticks{list-style:none;margin:2rem 0 0;padding:0;border-top:1px solid var(--rule)}
+.ticks li{padding-block:.85rem;border-bottom:1px solid var(--rule);font-size:1.0625rem}
+
+/* ─────────── the register ───────────
+   Six named pain points as a ruled index. Nothing counts anything here, so
+   nothing here can be wrong about a number. */
+.register{border-top:1px solid var(--ink)}
+.register__row{
+  display:grid;grid-template-columns:auto minmax(0,1fr) minmax(0,1.6fr);
+  gap:.5rem clamp(1rem,3vw,3rem);align-items:baseline;
+  padding-block:clamp(1.1rem,2.2vw,1.5rem);border-bottom:1px solid var(--rule);
+  transition:background var(--dur) var(--ease);
+}
+.register__row:hover{background:var(--paper)}
+.register__n{color:var(--wine);font-variant-numeric:tabular-nums}
+.register h3{font-size:1.1875rem}
+.register p{color:var(--ink-body);font-size:1.0625rem;line-height:1.56;max-width:56ch}
+@media (max-width:56rem){
+  .register__row{grid-template-columns:auto minmax(0,1fr)}
+  .register p{grid-column:2}
+}
+
+/* ─────────── the marquee ───────────
+   What donna connects to, running as a strip. An inventory, not a customer
+   wall: every name here is a system it actually speaks to. */
+.marquee{overflow:hidden;border-block:1px solid var(--ink);padding-block:1.15rem;background:var(--sunk)}
+.marquee__run{display:flex;width:max-content;animation:marquee 38s linear infinite}
+.marquee__item{
+  font-family:var(--fm);font-size:var(--t-meta);font-weight:500;
+  letter-spacing:.2em;text-transform:uppercase;color:var(--ink-muted);
+  padding-inline:clamp(1.5rem,4vw,3rem);white-space:nowrap;
+}
+@keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@media (prefers-reduced-motion:reduce){
+  .marquee__run{animation:none;width:100%;flex-wrap:wrap;justify-content:center;row-gap:.5rem}
+}
+
+/* ─────────── the console ───────────
+   donna's interface, drawn rather than filmed. The recorded demos were shot
+   in the previous brand's colour and read as a foreign object here; this
+   also stays legible on a phone, which a 16:9 screen capture does not. */
+.console{border:1px solid var(--ink);background:var(--paper)}
+.console__bar{display:flex;align-items:center;gap:.5rem;padding:.85rem 1rem;border-bottom:1px solid var(--ink)}
+.console__dot{width:7px;height:7px;border-radius:50%;background:var(--rule-strong)}
+.console__name{color:var(--ink-muted);margin-left:.65rem}
+.console__flag{margin-left:auto}
+.console__tabs{display:flex;gap:0;border-bottom:1px solid var(--rule);background:transparent;padding:0}
+.console__tabs button{
+  background:transparent;border:0;border-bottom:2px solid transparent;
+  padding:.85rem 1.15rem;color:var(--ink-muted);cursor:pointer;
+  transition:color var(--dur) var(--ease),border-color var(--dur) var(--ease);
+}
+.console__tabs button[data-state="active"]{color:var(--ink);border-bottom-color:var(--wine)}
+/* On a phone the four columns cannot fit 335px, and html/body carry
+   overflow-x:clip, so without this the rightmost column is silently cut off
+   rather than reachable. The table scrolls inside its own frame instead. */
+.console__scroll{overflow-x:auto}
+.console__table{width:100%;min-width:25rem;border-collapse:collapse;text-align:left}
+.console__table th{
+  padding:.65rem 1rem;border-bottom:1px solid var(--rule);
+  color:var(--ink-muted);font-weight:500;
+}
+.console__table td{padding:.85rem 1rem;border-bottom:1px solid var(--rule);font-size:1rem}
+.console__table tr{transition:background var(--dur) var(--ease)}
+.console__table tbody tr:hover{background:var(--sunk)}
+.console__ref{font-family:var(--fm);font-size:var(--t-meta);color:var(--ink-muted)}
+.console__dim{color:var(--ink-muted)}
+.console__state{
+  display:inline-block;border:1px solid var(--rule-strong);padding:.25rem .5rem;
+  font-family:var(--fm);font-size:var(--t-meta);letter-spacing:.1em;text-transform:uppercase;
+}
+.console__body{padding:1.25rem}
+.console__fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem}
+.console__k{color:var(--ink-muted);margin-bottom:.35rem}
+.console__v{border:1px solid var(--rule-strong);padding:.6rem .75rem;font-size:1rem}
+.console__foot{display:flex;align-items:center;justify-content:space-between;gap:1rem;
+  margin-top:1.25rem;padding-top:1rem;border-top:1px solid var(--rule);color:var(--ink-muted)}
+.console__track{width:9rem;height:3px;background:var(--rule);flex:none}
+.console__fill{display:block;width:50%;height:100%;background:var(--wine)}
+.console__ask p{font-family:var(--fm);font-size:.9375rem;line-height:1.6}
+.console__q{color:var(--ink-muted)}
+.console__a{border-left:2px solid var(--ink);padding-left:.85rem;margin-block:.75rem;color:var(--ink)}
+.console__typing{display:flex;align-items:center;gap:.5rem;color:var(--ink-muted)}
+.console__caret{display:inline-block;width:7px;height:1em;background:var(--wine);
+  animation:caret 1.1s step-end infinite}
+@keyframes caret{50%{opacity:0}}
+@media (max-width:34rem){
+  .console__fields{grid-template-columns:minmax(0,1fr)}
+}
+
+/* ─────────── the ledger ───────────
+   The same five rows, twice. With no colour to mark better and worse, the
+   argument has to be made by the two columns sitting at the same baseline
+   and simply not saying the same thing. */
+.ledger{border-top:1px solid var(--ink)}
+.ledger__head,.ledger__row{
+  display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr) minmax(0,1.15fr);
+  gap:clamp(1rem,3vw,2.5rem);align-items:baseline;
+}
+.ledger__head{padding-block:.85rem;border-bottom:1px solid var(--rule);color:var(--ink-muted)}
+.ledger__row{padding-block:clamp(1rem,2.2vw,1.4rem);border-bottom:1px solid var(--rule);
+  transition:background var(--dur) var(--ease)}
+.ledger__row:hover{background:var(--paper)}
+.ledger__what{font-family:var(--fd);font-weight:700;font-size:1.125rem;letter-spacing:-.025em}
+.ledger__hand{color:var(--ink-muted);font-size:1.0625rem}
+.ledger__sys{color:var(--ink);font-size:1.0625rem}
+@media (max-width:56rem){
+  .ledger__head{display:none}
+  .ledger__row{grid-template-columns:minmax(0,1fr);gap:.35rem}
+  .ledger__hand::before{content:"By hand: ";color:var(--ink-muted)}
+  .ledger__sys::before{content:"On a system: ";color:var(--ink-muted)}
+}
+
+/* ─────────── the calculator ───────────
+   Inputs left, arithmetic right. Every printed figure is derived from the
+   four numbers the reader typed, which is why the note at the bottom can
+   say so plainly. */
+.calc{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);
+  gap:1px;background:var(--rule-strong);border:1px solid var(--ink)}
+.calc__in,.calc__out{background:var(--paper);padding:clamp(1.5rem,3vw,2.25rem)}
+.calc__out{background:var(--sunk)}
+.calc__field{margin-bottom:1.35rem}
+.calc__field label{display:block;font-size:1.0625rem;font-weight:600;margin-bottom:.45rem}
+.calc__field input{
+  width:100%;font-family:var(--fm);font-size:1.25rem;
+  background:var(--paper);border:1px solid var(--rule-strong);border-radius:0;
+  padding:.6rem .75rem;color:var(--ink);font-variant-numeric:tabular-nums;
+}
+.calc__field input:focus-visible{border-color:var(--ink)}
+.calc__hint{margin-top:.4rem;color:var(--ink-muted);font-size:var(--t-meta);line-height:1.45}
+.calc__headline{display:flex;align-items:baseline;gap:.5rem}
+.calc__n{font-family:var(--fd);font-weight:900;font-size:var(--t-figure);line-height:.88;
+  letter-spacing:-.05em;font-variant-numeric:tabular-nums}
+.calc__u{font-family:var(--fm);font-size:1rem;color:var(--ink-muted)}
+.calc__sub{margin-top:.75rem;color:var(--ink-body);font-size:1.0625rem}
+.calc__bars{margin-top:1.75rem;border-top:1px solid var(--rule)}
+.calc__bar{display:grid;grid-template-columns:minmax(0,9rem) minmax(0,1fr) auto;
+  gap:.75rem;align-items:center;padding-block:.7rem;border-bottom:1px solid var(--rule)}
+.calc__bar-name{font-size:1rem;color:var(--ink-body)}
+.calc__bar-track{height:8px;background:var(--rule)}
+/* scaleX rather than width: animating width lays the row out again on every
+   keystroke, and hallmark_check gate 14 rightly refuses it. */
+.calc__bar-fill{display:block;height:100%;width:100%;background:var(--wine);
+  transform-origin:left center;transition:transform var(--dur) var(--ease)}
+.calc__bar-n{font-family:var(--fm);font-size:var(--t-meta);color:var(--ink-muted);
+  font-variant-numeric:tabular-nums}
+.calc__note{margin-top:1.5rem;color:var(--ink-muted);font-size:1rem;line-height:1.55;max-width:52ch}
+@media (max-width:60rem){ .calc{grid-template-columns:minmax(0,1fr)} }
+@media (max-width:34rem){
+  .calc__bar{grid-template-columns:minmax(0,1fr) auto;gap:.4rem}
+  .calc__bar-track{grid-column:1 / -1;order:3}
+}
+
+/* ─────────── case studies ───────────
+   The redaction bar is the loudest thing on each card by design. The work is
+   real and the firms are real; the names are withheld, and that belongs at
+   the top of the card rather than in a footnote nobody reads. */
+.cases{border-top:1px solid var(--ink)}
+.case{padding-block:clamp(2rem,4vw,3rem);border-bottom:1px solid var(--rule-strong)}
+.case__head{display:grid;grid-template-columns:auto minmax(0,1fr);gap:.4rem 1.25rem;align-items:baseline}
+.case__id{color:var(--wine);font-variant-numeric:tabular-nums}
+.case__head h3{font-size:clamp(1.375rem,2.4vw,1.875rem);letter-spacing:-.03em}
+.case__tags{grid-column:2;display:flex;flex-wrap:wrap;gap:.5rem;margin-top:.35rem}
+.case__tag{border:1px solid var(--rule-strong);padding:.25rem .55rem;color:var(--ink-muted);line-height:1}
+.case__redact{display:flex;align-items:center;gap:.65rem;margin:1.25rem 0 1.5rem;color:var(--ink-muted)}
+.case__bar{display:block;width:5.5rem;height:1rem;background:var(--ink);flex:none}
+.case__body{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(1.5rem,4vw,3.5rem);align-items:start}
+.case__problem{color:var(--ink-body);font-size:1.0625rem;line-height:1.62;max-width:52ch}
+.case__steps{margin:1.5rem 0 0;padding:0;list-style:none;counter-reset:step;border-top:1px solid var(--rule)}
+.case__steps li{
+  counter-increment:step;display:grid;grid-template-columns:1.75rem minmax(0,1fr);
+  gap:.5rem;padding-block:.7rem;border-bottom:1px solid var(--rule);
+  font-size:1rem;line-height:1.5;
+}
+.case__steps li::before{
+  content:counter(step);font-family:var(--fm);font-size:var(--t-meta);
+  color:var(--ink-muted);font-variant-numeric:tabular-nums;
+}
+.case__rail{padding-top:.5rem}
+.rail{width:100%;height:auto;display:block;overflow:visible}
+.rail__line{stroke:var(--rule-strong);stroke-width:2}
+.rail__node{fill:var(--paper);stroke:var(--ink);stroke-width:2}
+.rail__node--end{fill:var(--wine)}
+.rail__n{font-family:var(--fm);font-size:13px;fill:var(--ink)}
+.rail__n--end{fill:var(--paper)}
+.rail__cap{font-family:var(--fb);font-size:12px;fill:var(--ink-muted)}
+@media (max-width:60rem){
+  .case__body{grid-template-columns:minmax(0,1fr)}
+}
+
+/* ─────────── engagements ───────────
+   Two, side by side, sharing a hairline. Not three, and not a card with a
+   shadow: the border is the whole frame. */
+.offers{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1px;
+  background:var(--rule-strong);border:1px solid var(--ink)}
+.offer{background:var(--paper);padding:clamp(1.5rem,3.5vw,2.5rem);height:100%}
+.offer__n{color:var(--wine);font-variant-numeric:tabular-nums}
+.offer h3{margin-top:1rem;font-size:clamp(1.5rem,2.6vw,2rem);letter-spacing:-.035em}
+.offer p{margin-top:.85rem;color:var(--ink-body);font-size:1.0625rem;line-height:1.58;max-width:46ch}
+.offer .ticks{margin-top:1.75rem}
+@media (max-width:56rem){ .offers{grid-template-columns:minmax(0,1fr)} }
+
+/* ─────────── method ─────────── */
+.belief{
+  font-family:var(--fd);font-style:italic;font-weight:400;
+  font-size:clamp(1.75rem,4vw,3rem);line-height:1.12;letter-spacing:-.03em;
+  max-width:22ch;margin-bottom:clamp(2.5rem,5vw,4rem);
+}
+/* Deliberately unequal: step one carries the longest body and does the most
+   explaining, so it gets the room. Three equal columns would also trip
+   hallmark_check gate 3, which exists to stop exactly that default. */
+.method{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr) minmax(0,1fr);
+  gap:clamp(1.5rem,3vw,2.5rem)}
+.method__step{border-top:1px solid var(--ink);padding-top:1.25rem}
+.method__n{color:var(--wine);font-variant-numeric:tabular-nums}
+.method__step h3{margin-top:.85rem;font-size:1.375rem}
+.method__step p{margin-top:.6rem;color:var(--ink-body);font-size:1.0625rem;line-height:1.56}
+@media (max-width:56rem){ .method{grid-template-columns:minmax(0,1fr)} }
+
+/* treemap — real category counts, sized by area, so no number appears that
+   wasn't just counted */
+.treemap{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,7rem),1fr));gap:1px;
+  background:var(--rule-strong);border:1px solid var(--ink)}
+.treemap__tile{
+  background:var(--ink);color:var(--on-ink);
+  padding:.9rem 1rem;display:flex;flex-direction:column;justify-content:space-between;
+  min-height:5.5rem;gap:1.5rem;
+}
+.treemap__name{font-size:.9375rem;font-weight:600;line-height:1.25;color:var(--paper)}
+.treemap__n{font-family:var(--fm);font-size:1.25rem;
+  font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+
+/* closing CTA band — a full inversion. With no accent colour available, the
+   page's one loud moment is the ground itself flipping to ink. */
 .cta-band{
-  position:relative;overflow:hidden;background:var(--ink);color:var(--paper);
+  background:var(--ink);color:var(--on-ink);
   text-align:center;padding-block:var(--pad-loose);
 }
-.cta-band::before{
-  content:"";position:absolute;inset:0;pointer-events:none;
-  background:radial-gradient(ellipse 55% 60% at 85% 100%,color-mix(in oklab,var(--wine) 45%,transparent),transparent 65%);
-  opacity:.6;
-}
-.cta-band .section-in{position:relative}
-.cta-band h2{color:var(--paper);max-width:18ch;margin-inline:auto;
-  font-size:clamp(2rem,5vw,3.25rem)}
-.cta-band .go{justify-content:center;margin-top:2rem}
+.cta-band h2{color:var(--paper);max-width:15ch;margin-inline:auto;
+  font-size:clamp(2.25rem,6vw,4.5rem);font-weight:900;letter-spacing:-.045em;line-height:.96}
+.cta-band .go{justify-content:center;margin-top:2.5rem}
+.cta-band .btn{background:var(--paper);color:var(--ink);border-color:var(--paper)}
+.cta-band .btn:focus-visible{outline-color:var(--rose)}
+.cta-band .btn:hover{background:transparent;color:var(--paper);border-color:var(--paper)}
 
-/* ─────────── essay · the continuous read ───────────
-   One column, one measure, no marketing sections. Section heads emerge from
-   the body flow — bold, in the same rhythm as a paragraph, never a hanging
-   label. A hairline wine rule down each side is the only frame the reading
-   column gets. */
+/* ─────────── essay · the continuous read ─────────── */
 .essay{
   max-width:44rem;margin:0 auto;padding-inline:var(--gut);
   padding-block:var(--pad-mid) var(--pad-loose);
-  border-inline:2px solid var(--wine);
 }
-.essay > .lede{margin-top:0}
-.essay > p{color:var(--ink-body);max-width:65ch;margin-top:1.15rem}
+.essay > .lede{margin-top:0;max-width:60ch}
+.essay > p{color:var(--ink-body);max-width:68ch;margin-top:1.15rem}
 .essay > p:first-child{margin-top:0}
 .essay h2{
-  font-size:var(--t-h3);font-weight:600;letter-spacing:-.01em;
-  margin-top:3rem;margin-bottom:.9rem;max-width:28ch;
+  font-size:var(--t-h3);font-weight:700;letter-spacing:-.02em;
+  margin-top:3rem;margin-bottom:.9rem;max-width:26ch;
 }
-.essay ul,.essay ol{margin:1.15rem 0 0;padding-left:1.25rem;color:var(--ink-body);max-width:65ch}
+.essay ul,.essay ol{margin:1.15rem 0 0;padding-left:1.25rem;color:var(--ink-body);max-width:68ch}
 .essay li{margin-top:.4rem;line-height:1.6}
 .essay li:first-child{margin-top:0}
 .essay blockquote{
-  margin:1.75rem 0 0;padding-left:1.25rem;border-left:2px solid var(--rule);
-  color:var(--ink);font-size:var(--t-lede);line-height:1.55;max-width:60ch;
+  margin:1.75rem 0 0;padding-left:1.25rem;border-left:2px solid var(--ink);
+  color:var(--ink);font-size:var(--t-lede);line-height:1.5;max-width:56ch;
 }
 
-/* a figure — chart, video, diagram — deliberately wider than the prose
-   column. The one break in an otherwise single-column grid. */
+/* a figure — chart, video, diagram — deliberately wider than the prose column */
 .figure{
   width:calc(100% + clamp(0px,6vw,4rem));
   margin:2rem calc(clamp(0px,6vw,4rem) / -2) 0;
 }
 .figure figcaption{
   margin-top:.9rem;color:var(--ink-muted);font-size:var(--t-small);
-  line-height:1.55;max-width:65ch;
+  line-height:1.55;max-width:68ch;
 }
-.figure video{
-  width:100%;height:auto;border:1px solid var(--rule);border-radius:var(--r-lg);
-  background:var(--sunk);
-}
-
-/* the process-reel bumper is compact and sits inline, unlike the full-width
-   demo — a smaller, quieter figure inside the same rhythm */
-.figure--reel{max-width:30rem;margin-inline:auto}
-.figure--reel video{aspect-ratio:1100/619}
-
-/* ─────────── mono-chart tiles ───────────
-   Reskinned from the mono-charts registry: real numbers, three token
-   colours, no dev-dashboard chrome. */
-.mono-chart{margin:0;background:var(--sunk);border:1px solid var(--rule);
-  border-radius:var(--r-lg);padding:clamp(1.25rem,3vw,1.75rem)}
-.mono-chart figcaption{margin-top:1rem;color:var(--ink-muted);font-size:var(--t-small);line-height:1.5}
-
-/* two mono-chart figures side by side — each is already its own bordered
-   figure, so this only owns the gap between them */
-.chart-pair{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,16rem),1fr));gap:1rem}
-
-.stat-tiles{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));
-  background:var(--sunk);border:1px solid var(--rule);border-radius:var(--r-lg);overflow:hidden}
-.stat-tile{
-  padding:clamp(1.25rem,3vw,1.75rem) clamp(1rem,2vw,1.25rem);
-  display:flex;flex-direction:column;align-items:flex-start;gap:.75rem;
-}
-.stat-tile + .stat-tile{border-left:1px solid var(--rule)}
-.stat-tile-ring{position:relative;width:64px;height:64px;flex:none}
-.stat-tile-ring--wide{width:88px;height:58px}
-.stat-tile-n{
-  position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
-  font-family:var(--fd);font-weight:600;font-size:1.25rem;letter-spacing:-.03em;
-  color:var(--ink);font-variant-numeric:tabular-nums;
-}
-.stat-tile-n--gauge{align-items:flex-end;padding-bottom:2px;font-size:var(--t-h3)}
-.stat-tile-caption{font-size:.9375rem;color:var(--ink-body);line-height:1.5}
-.stat-tile-caption-sub{display:block;color:var(--ink-muted);font-size:.8125rem}
-
-.stat-tile--bullet{width:100%}
-.stat-tile-bullet-head{display:flex;align-items:baseline;gap:.4rem;align-self:stretch}
-.stat-tile-bullet-head .stat-tile-n{
-  position:static;font-family:var(--fd);font-weight:600;font-size:var(--t-figure);
-  line-height:1;letter-spacing:-.04em;color:var(--wine);
-}
-.stat-tile-unit{font-size:.9375rem;color:var(--ink-muted)}
-.stat-tile-bullet-track{
-  align-self:stretch;height:6px;border-radius:99px;background:var(--rule);overflow:hidden;
-}
-.stat-tile-bullet-fill{height:100%;width:100%;border-radius:99px}
-.stat-tile-bullet-ends{
-  align-self:stretch;display:flex;justify-content:space-between;
-  font-size:.8125rem;color:var(--ink-muted);
-}
-
-/* treemap — real category counts, sized by opacity rather than invented
-   percentages, so no number appears that wasn't just counted */
-.treemap{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,7rem),1fr));gap:.5rem}
-.treemap__tile{
-  background:var(--wine);color:var(--on-wine);border-radius:var(--r-md);
-  padding:.9rem 1rem;display:flex;flex-direction:column;justify-content:space-between;
-  min-height:5.5rem;gap:1.5rem;
-}
-.treemap__name{font-size:.8125rem;font-weight:600;line-height:1.25}
-.treemap__n{font-family:var(--fd);font-size:1.375rem;font-weight:600;
-  color:var(--on-wine-muted);font-variant-numeric:tabular-nums;letter-spacing:-.02em}
-
-/* step flow — a real 3-stage process, connected by a line, not a metric */
-.step-flow{list-style:none;margin:0;padding:0;display:grid;gap:1px;
-  background:var(--rule);border:1px solid var(--rule);border-radius:var(--r-lg);overflow:hidden}
-.step-flow__step{background:var(--paper);padding:1.25rem 1.5rem;display:flex;gap:1rem;align-items:flex-start}
-.step-flow__n{
-  flex:none;width:1.75rem;height:1.75rem;border-radius:50%;background:var(--wine);color:var(--on-wine);
-  display:flex;align-items:center;justify-content:center;font-family:var(--fd);
-  font-weight:600;font-size:.8125rem;font-variant-numeric:tabular-nums;
-}
-.step-flow__body{color:var(--ink-body);font-size:.9375rem;line-height:1.6}
-.step-flow__body b{display:block;color:var(--ink);font-weight:600;margin-bottom:.15rem}
-
-/* ─────────── connection map ───────────
-   A structural diagram, not a chart. */
-.cmap{margin:0}
-.cmap svg{width:100%;height:auto;display:block;overflow:visible}
-.cmap-wire path{
-  fill:none;stroke:var(--wine);stroke-width:1.25;
-  opacity:.34;vector-effect:non-scaling-stroke;
-}
-.cmap-node{
-  font-family:var(--fd);font-size:15px;font-weight:500;
-  fill:var(--ink-body);letter-spacing:-.01em;
-}
-.cmap-hub{fill:var(--wine)}
-.cmap-hub-name{
-  font-family:var(--fd-donna);font-size:19px;
-  fill:var(--on-wine);letter-spacing:-.01em;
-}
-@media (max-width:48rem){
-  .cmap svg{display:none}
-}
-
 /* ─────────── form ─────────── */
-form.enq{background:var(--sunk);border:1px solid var(--rule);border-radius:var(--r-lg);
+form.enq{background:var(--sunk);border:1px solid var(--ink);border-radius:0;
   padding:clamp(1.5rem,3vw,2rem);display:grid;gap:1rem}
 .enq-field{display:grid;gap:.4rem}
-.enq-field label{font-size:.875rem;font-weight:500;color:var(--ink-body)}
+.enq-field label{font-size:1rem;font-weight:600;color:var(--ink-body)}
 .enq-field input,.enq-field textarea,.enq-field button[role="combobox"]{font-family:var(--fb)}
-.enq-field input[aria-invalid="true"]{border-color:var(--wine)}
-.enq-note{font-size:.875rem;color:var(--ink-muted);min-height:1.25rem}
-.enq-note[data-state="error"]{color:var(--wine)}
+.enq-field input[aria-invalid="true"]{border-color:var(--ink)}
+.enq-note{font-size:1rem;color:var(--ink-muted);min-height:1.25rem}
+.enq-note[data-state="error"]{color:var(--ink)}
 .enq-done{padding:2.5rem 1rem;text-align:center}
 .enq-done h3{margin-bottom:.5rem}
 .enq-done p{color:var(--ink-body);font-size:var(--t-small)}
 
 /* ─────────── faq · shadcn accordion ─────────── */
 .faq-item button{
-  font-family:var(--fd);font-weight:500;font-size:var(--t-h3);letter-spacing:-.02em;
+  font-family:var(--fd);font-weight:700;font-size:var(--t-h3);letter-spacing:-.025em;
 }
-.faq-item p{color:var(--ink-body);font-size:.9375rem;line-height:1.65;max-width:60ch}
+.faq-item p{color:var(--ink-body);font-size:1.0625rem;line-height:1.62;max-width:62ch}
 
-/* ─────────── blog index ─────────── */
+/* ─────────── blog index ───────────
+   Four across, sharing hairlines, so thirty posts read as one ruled index
+   rather than thirty floating cards. The card's own vocabulary is the page's:
+   a bordered uppercase category like the console's state column, a display
+   title, a mono date pinned to the bottom so the baselines line up across a
+   row no matter how long the titles run. */
 .cards{list-style:none;margin:0;padding:0;display:grid;gap:1px;
-  background:var(--rule);border:1px solid var(--rule);border-radius:var(--r-lg);overflow:hidden;
-  grid-template-columns:repeat(auto-fit,minmax(min(100%,17rem),1fr))}
+  background:var(--rule-strong);border:1px solid var(--ink);
+  grid-template-columns:repeat(4,minmax(0,1fr))}
 .card{background:var(--paper)}
-.card-in{display:block;height:100%;padding:1.5rem 1.35rem;
-  text-decoration:none;color:inherit;
-  transition:background var(--dur) var(--ease)}
+.card-in{
+  display:flex;flex-direction:column;align-items:flex-start;gap:.85rem;
+  height:100%;padding:1.35rem 1.25rem;text-decoration:none;color:inherit;
+  transition:background var(--dur) var(--ease);
+}
 a.card-in:hover{background:var(--sunk)}
-.card h3{font-size:1.0625rem;letter-spacing:-.02em;line-height:1.3;margin-bottom:.6rem}
-a.card-in:hover h3{color:var(--wine)}
-.card-meta{font-family:var(--fd);font-size:.8125rem;color:var(--ink-muted);
-  font-variant-numeric:tabular-nums;display:flex;align-items:center;gap:.5rem}
-.card--scheduled .card-in{opacity:.62}
-.card--scheduled h3{font-weight:500}
+.card-cat{
+  color:var(--ink-muted);border:1px solid var(--rule-strong);
+  padding:.25rem .5rem;line-height:1;
+}
+.card h3{font-size:1.0625rem;letter-spacing:-.025em;line-height:1.26}
+a.card-in:hover h3{color:var(--wine);text-decoration:underline;text-underline-offset:.18em}
+.card-meta{margin-top:auto;padding-top:.5rem;font-family:var(--fm);
+  font-size:var(--t-meta);color:var(--ink-muted);font-variant-numeric:tabular-nums}
+.card--scheduled .card-in{opacity:.55}
+.card--scheduled h3{font-weight:400}
+@media (max-width:72rem){ .cards{grid-template-columns:repeat(2,minmax(0,1fr))} }
+@media (max-width:40rem){ .cards{grid-template-columns:minmax(0,1fr)} }
 
 /* ─────────── article (single post) ───────────
    .sec/.in are otherwise-retired section primitives from the previous
    macrostructure — kept only because the 30 extracted post bodies in
-   src/content/posts/*.html are pre-rendered HTML strings, not JSX, and are
-   marked as content to preserve rather than page structure to redesign. */
-.sec{border-top:1px solid var(--rule)}
+   src/content/posts/*.html are pre-rendered HTML strings, not JSX. */
+.sec{border-top:1px solid var(--rule-strong)}
 .sec .in{padding-block:var(--pad-mid)}
-.byline{margin-top:1.25rem;font-family:var(--fd);font-size:var(--t-small);
+.byline{margin-top:1.25rem;font-family:var(--fm);font-size:var(--t-meta);
   color:var(--ink-muted);font-variant-numeric:tabular-nums}
 .article{
   padding-block:var(--pad-mid);
   padding-inline:clamp(1.25rem,4vw,3rem);
   max-width:44rem;margin-inline:auto;
-  border-inline:2px solid var(--wine);
 }
-.article h2{font-size:var(--t-h3);margin-top:2.5rem;margin-bottom:.75rem;max-width:28ch}
+.article h2{font-size:var(--t-h3);margin-top:2.5rem;margin-bottom:.75rem;max-width:26ch}
 .article h2:first-child{margin-top:0}
-.article p{color:var(--ink-body);max-width:65ch}
+.article p{color:var(--ink-body);max-width:68ch}
 .article p + p{margin-top:1rem}
 
 .more{list-style:none;margin:2rem 0 0;padding:0;display:grid;gap:1px;
-  background:var(--rule);border:1px solid var(--rule);border-radius:var(--r-lg);overflow:hidden}
+  background:var(--rule-strong);border:1px solid var(--ink)}
 .more li{background:var(--paper)}
-.more a{display:block;padding:1.25rem 0;text-decoration:none;
-  font-family:var(--fd);font-weight:500;
-  transition:color var(--dur) var(--ease)}
-.more a:hover{color:var(--wine)}
-.more .dir{display:block;font-size:.75rem;letter-spacing:.06em;
-  color:var(--ink-muted);margin-bottom:.3rem;font-weight:500}
+.more a{display:block;padding:1.25rem;text-decoration:none;
+  font-family:var(--fd);font-weight:700;font-size:1.125rem;letter-spacing:-.02em;
+  transition:background var(--dur) var(--ease)}
+.more a:hover{background:var(--sunk)}
+.more .dir{display:block;font-family:var(--fm);font-size:var(--t-meta);
+  color:var(--ink-muted);margin-bottom:.3rem;font-weight:400;letter-spacing:.01em}
 
 /* ─────────── footer · Ft1 mast-headed, plain ─────────── */
-.foot-simple{border-top:1px solid var(--rule);padding-block:var(--pad-tight) var(--pad-tight)}
+.foot-simple{border-top:1px solid var(--ink);padding-block:var(--pad-tight)}
 .foot-simple__grid{
   display:grid;gap:2rem;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr) minmax(0,1fr);
-  font-family:var(--fd);font-size:.9375rem;
+  font-family:var(--fb);font-size:1rem;
 }
-.foot-simple .wm{font-weight:700;letter-spacing:-.04em;font-size:1.0625rem}
+.foot-simple .wm{font-family:var(--fd);font-weight:900;letter-spacing:-.05em;font-size:1.375rem}
+.foot-simple .wm i{font-style:normal}
 .foot-simple .muted{margin-top:.4rem;color:var(--ink-muted)}
 .foot-simple__grid nav,.foot-simple__grid > div:last-child{display:flex;flex-direction:column;gap:.6rem}
 .foot-simple a{text-decoration:none;color:var(--ink-body);transition:color var(--dur) var(--ease)}
-.foot-simple a:hover{color:var(--wine)}
+.foot-simple a:hover{color:var(--wine);text-decoration:underline;text-underline-offset:.18em}
 .foot-simple__cp{
   max-width:var(--w-wide);margin:2.5rem auto 0;padding-inline:var(--gut);
-  color:var(--ink-muted);font-size:.8125rem;
+  color:var(--ink-muted);font-family:var(--fm);font-size:var(--t-meta);
 }
 @media (max-width:40rem){
   .foot-simple__grid{grid-template-columns:minmax(0,1fr)}
@@ -548,26 +713,18 @@ a.card-in:hover h3{color:var(--wine)}
 /* ─────────── responsive ─────────── */
 @media (max-width:60rem){
   .nav__center{display:none}
-  .stat-tiles{grid-template-columns:repeat(2,minmax(0,1fr))}
-}
-@media (max-width:26rem){
-  .stat-tiles{grid-template-columns:minmax(0,1fr)}
-}
-@media (max-width:26rem){
-  .stat-tile + .stat-tile{border-left:none;border-top:1px solid var(--rule)}
 }
 @media (max-width:36rem){
-  .essay,.article{border-inline-width:1px;padding-inline:1rem}
+  .essay,.article{padding-inline:1rem}
 }
 
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
   *,*::before,*::after{transition-duration:.01ms !important;animation-duration:.01ms !important}
-  .figure video[autoplay]{display:none}
+  .console__caret{animation:none}
 }
 
-/* Route suspense holds the page height so the footer doesn't jump up and
-   then back down while a split chunk loads. */
+/* Route suspense holds the page height so the footer doesn't jump. */
 .route-wait{min-height:60vh}
 
 /* Blog post footer — date and the way back. */

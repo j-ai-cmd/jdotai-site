@@ -8,7 +8,7 @@ import Home from './routes/Home'
 // Home is in the main chunk — it is the landing page and must not wait on a
 // second request. Everything else is split; the registry also exposes the
 // importers so the prerenderer can resolve them before rendering.
-import { Blog, Contact, Legal, NotFound, Post } from './routes/registry'
+import { Blog, Contact, Donna, Legal, NotFound, Post } from './routes/registry'
 
 function usePageChrome() {
   const { pathname, hash } = useLocation()
@@ -37,7 +37,8 @@ export default function App() {
       <Suspense fallback={<div className="route-wait" aria-hidden="true" />}>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/legal" element={<Legal />} />
+          <Route path="/donna" element={<Donna />} />
+        <Route path="/legal" element={<Legal />} />
           <Route path="/blog" element={<Blog />} />
           <Route path="/blog/:slug" element={<Post />} />
           <Route path="/contact" element={<Contact />} />

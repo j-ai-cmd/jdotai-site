@@ -4,14 +4,18 @@ import { Magnetic } from '@/components/amicro/magnetic'
 import { Button } from '@/components/ui/button'
 
 const LINKS = [
-  { to: '/#donna', label: 'donna', end: true },
+  { to: '/donna', label: 'donna', end: false },
   { to: '/blog', label: 'Blogs', end: false },
 ]
 
 /** N1b canonical SaaS three-section — brand hard-left, a real <nav> holding
  *  only the two link destinations, sign-in/CTA hard-right outside the <nav>
  *  element (so hallmark_check.py gate 42's <nav>-scoped link count stays at
- *  2, not 4). Frosts past a small scroll threshold; transparent at rest. */
+ *  2, not 4). Frosts past a small scroll threshold; transparent at rest.
+ *
+ *  The achromatic pass opens Home on paper rather than a dark band, so the
+ *  earlier on-dark inversion has no surface left to invert against and is
+ *  gone. Nav text is ink on every route now. */
 export default function Nav() {
   const ref = useRef<HTMLElement>(null)
   const { pathname } = useLocation()
@@ -22,12 +26,7 @@ export default function Nav() {
     let frame = 0
     const read = () => {
       frame = 0
-      const scrolled = scrollY > 24
-      header.classList.toggle('is-scrolled', scrolled)
-      // Only Home opens on a dark hero; re-queried per route since Nav
-      // persists across client-side navigation rather than remounting.
-      const onDark = !scrolled && !!document.querySelector('.hero-dark')
-      header.classList.toggle('nav--on-dark', onDark)
+      header.classList.toggle('is-scrolled', scrollY > 24)
     }
     const onScroll = () => { if (!frame) frame = requestAnimationFrame(read) }
     read()
@@ -35,13 +34,8 @@ export default function Nav() {
     return () => removeEventListener('scroll', onScroll)
   }, [pathname])
 
-  // SSR/no-JS fallback: guess from the route before the effect above can
-  // measure the real DOM (prerendering never runs effects at all, and a
-  // slow JS visitor would otherwise see one dark-on-dark frame first).
-  const initialClass = pathname === '/' ? 'nav nav--on-dark' : 'nav'
-
   return (
-    <header className={initialClass} id="nav" ref={ref}>
+    <header className="nav" id="nav" ref={ref}>
       <div className="nav__inner">
         <Link className="nav__brand" to="/">jdot<i>ai</i></Link>
         <nav className="nav__center" aria-label="Primary">

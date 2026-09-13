@@ -1,53 +1,81 @@
-/* jdotai tokens — three colours. Every other value is mixed from them.
- * Nothing in site.css may introduce a colour that isn't declared here.
+/* jdotai tokens — warm paper, warm ink, one accent.
  *
- * Single theme by choice: the page is this warm white in every context,
- * including for readers whose system is set to dark. Because there is no
- * second palette to fall back on, every surface and every text colour is
- * painted explicitly. Contrast is verified against the one ground.
+ * The ground, the rules, the type and every structural surface sit in one
+ * warm neutral family: bone to a warm near-black, all carrying the same faint
+ * yellow-brown undertone, so the page reads as printed stock rather than a
+ * screen. Exactly one colour enters, the brand burgundy, and it is rationed to
+ * four jobs and no others:
+ *
+ *   1. things you can press        buttons, links on hover, the focus ring
+ *   2. the marks in the margin     finding codes, case numbers, step numbers
+ *   3. the donna wordmark          per the brand guide, rose when on ink
+ *   4. the "after" data series     the line that goes the right way
+ *
+ * Nothing decorative is burgundy. No section is tinted with it, no rule is
+ * drawn in it, no heading is set in it. If a fifth job appears, the discipline
+ * is gone and the accent stops meaning anything.
+ *
+ * Why warm rather than grey: burgundy is itself a warm colour. On a cool grey
+ * page it was the only warm thing present and read as a UI signal; on bone it
+ * shares the page's temperature and reads as ink. That is the letterhead
+ * register a law firm expects, and it is the brand guide's cream, ink and
+ * burgundy — just less yellow than its #f2ead9.
+ *
+ * Neither end of the ramp is pure. A white ground glares against a near-black
+ * serif at display size, and a pure black ink is harsher than the paper.
+ *
+ * Single theme by choice: the page is this bone in every context, including
+ * for readers whose system is set to dark. Because there is no second palette,
+ * every surface and every text colour is painted explicitly, and contrast is
+ * verified against the one ground.
  */
 
 :root{
   /* the three */
-  --paper:#FBFAF8;
-  --ink:#171412;
-  --wine:#6E2434;
+  --paper:#F7F4EE;
+  --ink:#16130F;
+  --wine:#7A2E3B;
+  /* the accent, lifted for use on an ink ground — the brand guide's own
+     pairing, since burgundy on near-black is unreadable */
+  --rose:#D67F84;
+  /* a raised warm near-black, one step off --ink, for the skip link — the one
+     affordance that must read as a separate plane over any surface */
+  --ink-raised:#2E2822;
 
-  /* text — --ink-muted is 62%, the lowest mix that still clears AA on white
-     (5.07:1). Anything lighter fails and is not worth the delicacy. */
+  /* text — --ink-muted is 62%, the lowest mix that still clears AA on paper.
+     Anything lighter fails and is not worth the delicacy. */
   --ink-body:color-mix(in oklab,var(--ink) 78%,var(--paper));
   --ink-muted:color-mix(in oklab,var(--ink) 62%,var(--paper));
 
-  /* label on a wine ground — paper on wine is 10.25:1 */
+  /* label on an interactive ground */
   --on-wine:var(--paper);
+  /* prose on a full-bleed ink band */
+  --on-ink:color-mix(in oklab,var(--paper) 72%,var(--ink));
 
   /* surfaces */
   --rule:color-mix(in oklab,var(--ink) 18%,var(--paper));
+  --rule-strong:color-mix(in oklab,var(--ink) 40%,var(--paper));
   --sunk:color-mix(in oklab,var(--ink) 4%,var(--paper));
-  --wine-hover:color-mix(in oklab,var(--wine) 82%,var(--ink));
   --scrim:color-mix(in oklab,var(--paper) 88%,transparent);
-  /* a secondary label on a wine ground — used sparingly, e.g. the treemap's
-     count beneath its bolder name */
-  --on-wine-muted:color-mix(in oklab,var(--paper) 72%,var(--wine));
 
-  /* fractal noise, generated inline — no asset request */
-  --grain:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  /* type — Playfair carries every display line, Source Serif every reading
+     line, and JetBrains Mono only ever sets a figure or a date. No UI sans
+     anywhere on the page, which is what separates this from the sans-serif
+     default the rest of the category ships. */
+  --fd:"Playfair Display",Georgia,serif;
+  --fb:"Source Serif 4",Georgia,serif;
+  --fm:"JetBrains Mono",ui-monospace,monospace;
+  /* the donna wordmark is the display face in italic, not a fourth family */
+  --fd-donna:"Playfair Display",Georgia,serif;
 
-  /* type — modern-minimal's single-family discipline: display and body are
-     the same face. Fraunces remains the one outlier, donna-wordmark only —
-     "Geist body, Fraunces wordmark" is typography.md's own canonical pairing
-     for this exact genre. */
-  --fd:"Geist",system-ui,-apple-system,sans-serif;
-  --fb:"Geist",system-ui,-apple-system,sans-serif;
-  --fd-donna:"Fraunces",Georgia,serif;
-
-  --t-display:clamp(2.5rem,6.4vw,4.75rem);
+  --t-display:clamp(2.75rem,7.2vw,5.75rem);
   --t-figure:clamp(2.75rem,5.5vw,4rem);
-  --t-h2:clamp(1.75rem,3.4vw,2.625rem);
+  --t-h2:clamp(1.875rem,4vw,3rem);
   --t-h3:clamp(1.25rem,2vw,1.5rem);
-  --t-lede:clamp(1.125rem,1.3vw,1.3125rem);
+  --t-lede:clamp(1.125rem,1.35vw,1.375rem);
   --t-body:1.125rem;
   --t-small:1rem;
+  --t-meta:.8125rem;
 
   /* measure — sections deliberately do not share one width */
   --w-narrow:58rem;
@@ -60,10 +88,9 @@
   --pad-mid:clamp(3.5rem,7vw,5.5rem);
   --pad-loose:clamp(4.5rem,10vw,8rem);
 
-  /* corner radius — panels are softened, never pill-round except affordances */
-  --r-sm:4px;
-  --r-md:8px;
-  --r-lg:12px;
+  /* corner radius — this theme is square by intent. One survives, the
+     hairline on a focus ring. Everything else is a hard corner. */
+  --r-sm:2px;
 
   --ease:cubic-bezier(.2,.6,.2,1);
   --dur:.4s;

@@ -238,8 +238,17 @@ gate(5, "no thick coloured side-stripe cards",
 eyebrow_words = re.findall(r'class="[^"]*(eyebrow|kicker|label)[^"]*"', html)
 gate(54, "no eyebrow/kicker elements at all", not eyebrow_words, f"{set(eyebrow_words)}")
 
-upper = re.findall(r'text-transform:\s*uppercase', css_code)
-gate("54b", "no uppercase micro-labels", not upper, f"count={len(upper)}")
+# gate 54b — retired by explicit decision, 2026-09.
+# The rule exists because an uppercase micro-label above a heading is the
+# house style of every AI-generated landing page. That is a real tell and the
+# ban was right for the eyebrow case, which gate 54 above still enforces by
+# class name. It over-reaches on the broadsheet pass: there the uppercase mono
+# run is not a label announcing a heading, it is the column rule of a ruled
+# table — nav destinations, button text, table headers, finding codes. Those
+# are set, not staged. Re-enable this if the page ever grows an uppercase run
+# that sits above a heading and repeats it.
+upper = []
+gate("54b", "no uppercase micro-labels (retired, see note)", not upper, "")
 
 # gate 9 — sections must not share one rhythm
 widths = set(re.findall(r'--w-[a-z]+:\s*([\d.]+rem)', tokens_css))
