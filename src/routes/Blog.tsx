@@ -18,29 +18,38 @@ export default function Blog() {
   useSeo(META)
   return (
     <main id="main">
-      <section className="open">
-        <div className="narrow">
+      <section className="hero">
+        <div className="hero__in">
           <TextReveal as="h1" text="Notes on AI, automation, and where the hours go." />
+          <FadeUp delay={0.15}>
+            <div className="hero__dek">
+              <p className="lede">
+                {posts.length} posts, written as we build — not a content calendar working
+                backward from keywords.
+              </p>
+            </div>
+          </FadeUp>
         </div>
       </section>
 
-      <div className="essay">
-        <FadeUp>
-          <p className="lede">
-            {posts.length} posts, written as we build — not a content calendar working backward
-            from keywords.
-          </p>
-        </FadeUp>
+      <section className="section">
+        <div className="section-in">
+          <FigureReveal>
+            <div className="chart-row">
+              <BrandMonthlySparkline posts={posts} />
+              <BrandCategoryTreemap posts={posts} />
+            </div>
+          </FigureReveal>
+        </div>
+      </section>
 
-        <FigureReveal>
-          <div className="figure chart-pair">
-            <BrandMonthlySparkline posts={posts} />
-            <BrandCategoryTreemap posts={posts} />
-          </div>
-        </FigureReveal>
-
-        <PostCards posts={posts} />
-      </div>
+      {/* The index runs the full page width rather than the reading measure:
+          four across only works when the grid has the whole page to sit in. */}
+      <section className="section section--top" id="index">
+        <div className="section-in">
+          <PostCards posts={posts} />
+        </div>
+      </section>
     </main>
   )
 }

@@ -1,5 +1,4 @@
 import { Link } from 'react-router-dom'
-import { Badge } from '@/components/ui/badge'
 import type { Post } from '@/lib/posts'
 
 export function formatDate(iso: string) {
@@ -8,7 +7,11 @@ export function formatDate(iso: string) {
 }
 
 /** A post is only linkable once its page exists. Unpublished entries render as
- *  plain items so the site never ships a link to a page that isn't there. */
+ *  plain items so the site never ships a link to a page that isn't there.
+ *
+ *  The category sits in the same bordered uppercase frame the console's state
+ *  column and the illustrative-data flag use, so the index reads as part of
+ *  the same system rather than as a second card vocabulary. */
 export default function PostCards({ posts }: { posts: Post[] }) {
   return (
     <ul className="cards">
@@ -16,7 +19,7 @@ export default function PostCards({ posts }: { posts: Post[] }) {
         const body = (
           <>
             {p.published && p.category && (
-              <Badge variant="secondary" className="mb-2">{p.category}</Badge>
+              <span className="ucase card-cat">{p.category}</span>
             )}
             <h3>{p.title}</h3>
             <p className="card-meta">

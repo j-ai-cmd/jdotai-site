@@ -456,9 +456,6 @@ h3{font-size:var(--t-h3);letter-spacing:-.025em;line-height:1.16}
 .method__step p{margin-top:.6rem;color:var(--ink-body);font-size:1.0625rem;line-height:1.56}
 @media (max-width:56rem){ .method{grid-template-columns:minmax(0,1fr)} }
 
-/* two mono-chart figures side by side on the blog index */
-.chart-pair{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,16rem),1fr));gap:1rem}
-
 /* treemap — real category counts, sized by area, so no number appears that
    wasn't just counted */
 .treemap{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,7rem),1fr));gap:1px;
@@ -532,21 +529,34 @@ form.enq{background:var(--sunk);border:1px solid var(--ink);border-radius:0;
 }
 .faq-item p{color:var(--ink-body);font-size:1.0625rem;line-height:1.62;max-width:62ch}
 
-/* ─────────── blog index ─────────── */
+/* ─────────── blog index ───────────
+   Four across, sharing hairlines, so thirty posts read as one ruled index
+   rather than thirty floating cards. The card's own vocabulary is the page's:
+   a bordered uppercase category like the console's state column, a display
+   title, a mono date pinned to the bottom so the baselines line up across a
+   row no matter how long the titles run. */
 .cards{list-style:none;margin:0;padding:0;display:grid;gap:1px;
   background:var(--rule-strong);border:1px solid var(--ink);
-  grid-template-columns:repeat(auto-fit,minmax(min(100%,17rem),1fr))}
+  grid-template-columns:repeat(4,minmax(0,1fr))}
 .card{background:var(--paper)}
-.card-in{display:block;height:100%;padding:1.5rem 1.35rem;
-  text-decoration:none;color:inherit;
-  transition:background var(--dur) var(--ease)}
+.card-in{
+  display:flex;flex-direction:column;align-items:flex-start;gap:.85rem;
+  height:100%;padding:1.35rem 1.25rem;text-decoration:none;color:inherit;
+  transition:background var(--dur) var(--ease);
+}
 a.card-in:hover{background:var(--sunk)}
-.card h3{font-size:1.1875rem;letter-spacing:-.025em;line-height:1.24;margin-bottom:.6rem}
+.card-cat{
+  color:var(--ink-muted);border:1px solid var(--rule-strong);
+  padding:.25rem .5rem;line-height:1;
+}
+.card h3{font-size:1.0625rem;letter-spacing:-.025em;line-height:1.26}
 a.card-in:hover h3{text-decoration:underline;text-underline-offset:.18em}
-.card-meta{font-family:var(--fm);font-size:var(--t-meta);color:var(--ink-muted);
-  font-variant-numeric:tabular-nums;display:flex;align-items:center;gap:.5rem}
-.card--scheduled .card-in{opacity:.62}
+.card-meta{margin-top:auto;padding-top:.5rem;font-family:var(--fm);
+  font-size:var(--t-meta);color:var(--ink-muted);font-variant-numeric:tabular-nums}
+.card--scheduled .card-in{opacity:.55}
 .card--scheduled h3{font-weight:400}
+@media (max-width:72rem){ .cards{grid-template-columns:repeat(2,minmax(0,1fr))} }
+@media (max-width:40rem){ .cards{grid-template-columns:minmax(0,1fr)} }
 
 /* ─────────── article (single post) ───────────
    .sec/.in are otherwise-retired section primitives from the previous
