@@ -1,8 +1,10 @@
-/* jdotai tokens — a monochrome page with one accent.
+/* jdotai tokens — warm paper, warm ink, one accent.
  *
- * The ground, the rules, the type and every structural surface are achromatic:
- * R = G = B, no hue at all. Exactly one colour enters, the brand burgundy, and
- * it is rationed to four jobs and no others:
+ * The ground, the rules, the type and every structural surface sit in one
+ * warm neutral family: bone to a warm near-black, all carrying the same faint
+ * yellow-brown undertone, so the page reads as printed stock rather than a
+ * screen. Exactly one colour enters, the brand burgundy, and it is rationed to
+ * four jobs and no others:
  *
  *   1. things you can press        buttons, links on hover, the focus ring
  *   2. the marks in the margin     finding codes, case numbers, step numbers
@@ -11,15 +13,18 @@
  *
  * Nothing decorative is burgundy. No section is tinted with it, no rule is
  * drawn in it, no heading is set in it. If a fifth job appears, the discipline
- * is gone and the accent stops meaning anything — the whole point of rationing
- * a single hue on an otherwise grey page is that the eye goes where it lands.
+ * is gone and the accent stops meaning anything.
  *
- * Neither end of the ramp is pure. #FAFAFA rather than #FFFFFF because a pure
- * white ground glares against a near-black serif at display size; #0A0A0A
- * rather than #000000 for the same reason inverted. Both are still perfectly
- * achromatic.
+ * Why warm rather than grey: burgundy is itself a warm colour. On a cool grey
+ * page it was the only warm thing present and read as a UI signal; on bone it
+ * shares the page's temperature and reads as ink. That is the letterhead
+ * register a law firm expects, and it is the brand guide's cream, ink and
+ * burgundy — just less yellow than its #f2ead9.
  *
- * Single theme by choice: the page is this white in every context, including
+ * Neither end of the ramp is pure. A white ground glares against a near-black
+ * serif at display size, and a pure black ink is harsher than the paper.
+ *
+ * Single theme by choice: the page is this bone in every context, including
  * for readers whose system is set to dark. Because there is no second palette,
  * every surface and every text colour is painted explicitly, and contrast is
  * verified against the one ground.
@@ -27,15 +32,15 @@
 
 :root{
   /* the three */
-  --paper:#FAFAFA;
-  --ink:#0A0A0A;
+  --paper:#F7F4EE;
+  --ink:#16130F;
   --wine:#7A2E3B;
   /* the accent, lifted for use on an ink ground — the brand guide's own
      pairing, since burgundy on near-black is unreadable */
   --rose:#D67F84;
-  /* the near-black that interactive surfaces used before the accent returned;
-     still needed for the one button that sits on an ink band */
-  --ink-raised:#262626;
+  /* a raised warm near-black, one step off --ink, for the skip link — the one
+     affordance that must read as a separate plane over any surface */
+  --ink-raised:#2E2822;
 
   /* text — --ink-muted is 62%, the lowest mix that still clears AA on paper.
      Anything lighter fails and is not worth the delicacy. */
@@ -55,7 +60,7 @@
 
   /* type — Playfair carries every display line, Source Serif every reading
      line, and JetBrains Mono only ever sets a figure or a date. No UI sans
-     anywhere on the page, which is what separates this from the greyscale
+     anywhere on the page, which is what separates this from the sans-serif
      default the rest of the category ships. */
   --fd:"Playfair Display",Georgia,serif;
   --fb:"Source Serif 4",Georgia,serif;
