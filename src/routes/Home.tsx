@@ -1,57 +1,26 @@
-import { useEffect, useRef } from 'react'
-import ConnectionMap from '@/components/ConnectionMap'
-import DemoVideo from '@/components/DemoVideo'
 import EnquiryForm from '@/components/EnquiryForm'
 import { FadeUp } from '@/components/amicro/fade-up'
 import { FigureReveal } from '@/components/amicro/figure-reveal'
 import { Magnetic } from '@/components/amicro/magnetic'
 import { TextReveal } from '@/components/amicro/text-reveal'
-import { BrandBulletChart } from '@/components/mono-charts/BrandBulletChart'
-import { BrandGaugeRing } from '@/components/mono-charts/BrandGaugeRing'
 import { BrandHoursArea } from '@/components/mono-charts/BrandHoursArea'
-import { BrandStatTile } from '@/components/mono-charts/BrandStatTile'
-import { BrandStepFlow } from '@/components/mono-charts/BrandStepFlow'
+import { BrandTaskBars } from '@/components/mono-charts/BrandTaskBars'
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion'
-import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { initAskLine } from '@/lib/effects'
 import { useSeo } from '@/lib/seo'
 
 const META = {
-  title: 'jdotai — donna, an AI intake and PMS connector for law firms',
+  title: 'jdotai — AI advisory and custom tools, and donna for law firms',
   description:
-    'donna connects Clio, Smokeball, Actionstep, myCase and LEAP to Claude and ChatGPT, and gives your firm a custom intake form that syncs straight to your practice management system.',
+    'jdotai finds the work your business still does by hand and builds the tools that take it over. donna connects Clio, Smokeball, Actionstep, myCase and LEAP to Claude and ChatGPT.',
   path: '/',
 } as const
-
-const PMS = ['Clio', 'Smokeball', 'Actionstep', 'myCase', 'LEAP']
-const ASSISTANTS = ['Claude', 'ChatGPT', 'Kimi']
-const CONNECTS = { pms: 5, assistants: 3 }
-
-const QUESTIONS = [
-  'Which estate planning matters are missing a signed will?',
-  'What documents are still outstanding on my open matters?',
-  'Which intakes came in this week?',
-  'Which files are ready to close?',
-]
-
-/** The register. These are named pain points, not measured claims — nothing
- *  here counts anything, so nothing here can be wrong about a number. */
-const PROBLEMS = [
-  { n: 'F-01', title: 'Re-typing intake', body: 'Every new matter, copied by hand from an email into the practice management system.' },
-  { n: 'F-02', title: 'Chasing documents', body: 'Follow-ups that exist only because the first request went unanswered.' },
-  { n: 'F-03', title: 'Emails into tasks', body: 'Someone still has to read it, decide what it means, and open a task for it.' },
-  { n: 'F-04', title: 'Conflict checks by hand', body: 'Searching the same three places before a matter can be opened at all.' },
-  { n: 'F-05', title: 'Notes into the file', body: 'A call happens, and the record of it waits until someone types it up.' },
-  { n: 'F-06', title: 'The same five questions', body: 'Answered again by email, because the answer lives in someone’s head.' },
-]
 
 /** Four true counts. Each is something we can point at: the systems donna
  *  connects to, the assistants it speaks through, the time to go live, and
@@ -63,10 +32,39 @@ const FIGURES = [
   { n: '24', u: 'hrs', c: 'To hear back, every time' },
 ]
 
-const STEPS = [
-  { title: 'We map your intake', body: 'What your firm asks, in what order, for which matter types. We work from your existing forms.' },
-  { title: 'We wire your system', body: 'donna connects to your practice management system and we confirm fields land where you expect.' },
-  { title: 'You go live', body: 'You send clients a link. Matters arrive structured, and you stay in control of every field.' },
+/** What donna actually connects to. An inventory, not a customer list. */
+const CONNECTS = ['Clio', 'Smokeball', 'Actionstep', 'myCase', 'LEAP', 'Claude', 'ChatGPT', 'Kimi']
+
+/** The register. Named pain points, not measured claims — nothing here counts
+ *  anything, so nothing here can be wrong about a number. */
+const REGISTER = [
+  { n: 'F-01', t: 'Re-typing intake', b: 'Every new matter, copied by hand from an email into the practice management system.' },
+  { n: 'F-02', t: 'Chasing documents', b: 'Follow-ups that exist only because the first request went unanswered.' },
+  { n: 'F-03', t: 'Emails into tasks', b: 'Someone still has to read it, decide what it means, and open a task for it.' },
+  { n: 'F-04', t: 'Conflict checks by hand', b: 'Searching the same three places before a matter can be opened at all.' },
+  { n: 'F-05', t: 'Notes into the file', b: 'A call happens, and the record of it waits until someone types it up.' },
+  { n: 'F-06', t: 'The same five questions', b: 'Answered again by email, because the answer lives in someone’s head.' },
+]
+
+const OFFERS = [
+  {
+    n: '01',
+    name: 'Advisory',
+    line: 'A monthly read on what changed in AI and what applies to you.',
+    points: ['What shipped this month', 'What it means for your firm', 'What to do about it'],
+  },
+  {
+    n: '02',
+    name: 'Labs',
+    line: 'When the tool you need does not exist, we build it.',
+    points: ['Custom automations', 'Agents on your systems', 'You own the result'],
+  },
+]
+
+const METHOD = [
+  { n: '01', t: 'We map your intake', b: 'What your firm asks, in what order, for which matter types. We work from your existing forms.' },
+  { n: '02', t: 'We wire your system', b: 'donna connects to your practice management system and we confirm fields land where you expect.' },
+  { n: '03', t: 'You go live', b: 'You send clients a link. Matters arrive structured, and you stay in control of every field.' },
 ]
 
 const FAQ = [
@@ -83,44 +81,47 @@ const FAQ = [
     q: 'How does the MCP connector work?',
     a: 'donna lets you talk to your practice management system in plain English, right inside Claude or ChatGPT.',
   },
+  {
+    q: 'Who owns what you build?',
+    a: 'You do. It runs on your systems, in your accounts, and we hand over the keys at the end.',
+  },
+]
+
+/** Sample rows for the console. Shaped like real matters and labelled as a
+ *  sample in the UI — the point is the interface, not the records. */
+const MATTERS = [
+  { ref: 'M-2041', client: 'Whitfield', type: 'Estate planning', state: 'Synced' },
+  { ref: 'M-2042', client: 'Okonkwo', type: 'Conveyancing', state: 'Synced' },
+  { ref: 'M-2043', client: 'Baptiste', type: 'Family law', state: 'In review' },
+  { ref: 'M-2044', client: 'Nakamura', type: 'Estate planning', state: 'Awaiting docs' },
+]
+
+const INTAKE_FIELDS: [string, string][] = [
+  ['Full name', 'Ada Whitfield'],
+  ['Matter type', 'Estate planning'],
+  ['Email', 'ada@example.com'],
+  ['Executor', 'R. Whitfield'],
 ]
 
 export default function Home() {
   useSeo(META)
-  const askRef = useRef<HTMLSpanElement>(null)
-
-  useEffect(() => {
-    if (!askRef.current) return
-    return initAskLine(askRef.current, QUESTIONS)
-  }, [])
 
   return (
     <main id="main">
-      {/* ── hero · the broadsheet front page ────────────────────────── */}
+      {/* ── hero ─────────────────────────────────────────────────────── */}
       <section className="hero">
         <div className="hero__in">
-          <TextReveal as="h1" text="Which part of your week shouldn’t need a lawyer?" />
+          <TextReveal as="h1" text="New AI tools land every week." />
           <FadeUp delay={0.15}>
             <div className="hero__dek">
-              <div>
-                <p className="lede">
-                  <span className="donna">donna</span> handles intake and connects your practice
-                  management system to Claude and ChatGPT. Live in two weeks.
-                </p>
-                <div className="askline">
-                  <span className="q" id="askq" ref={askRef} aria-live="off" />
-                  <span className="go" aria-hidden="true">Ask</span>
-                </div>
-              </div>
+              <p className="lede">
+                You don’t have time to sort them. We do that, then build what’s missing.
+              </p>
               <div className="go">
                 <Magnetic>
-                  <Button asChild size="lg">
-                    <a href="#enquire">Get donna for your firm</a>
-                  </Button>
+                  <Button asChild size="lg"><a href="#donna">See donna</a></Button>
                 </Magnetic>
-                <Button asChild variant="outline" size="lg">
-                  <a href="#demo">Watch it work</a>
-                </Button>
+                <Button asChild variant="outline" size="lg"><a href="#enquire">Book a call</a></Button>
               </div>
             </div>
             <div className="figures">
@@ -137,191 +138,223 @@ export default function Home() {
         </div>
       </section>
 
-      <div className="hero-clip">
-        <FigureReveal>
-          <DemoVideo
-            className="figure"
-            src="/assets/video/donna-hero-loop.mp4"
-            poster="/assets/video/donna-hero-poster.jpg"
-            caption="A client completes intake, and the matter lands in the practice management system."
-            ambient
-          />
-        </FigureReveal>
+      {/* ── what donna connects to ───────────────────────────────────── */}
+      <div className="marquee">
+        <div className="marquee__run">
+          {CONNECTS.map((c) => <span className="marquee__item" key={c}>{c}</span>)}
+          {CONNECTS.map((c) => (
+            <span className="marquee__item" key={`${c}-echo`} aria-hidden="true">{c}</span>
+          ))}
+        </div>
       </div>
 
-      {/* ── trust bar — real integrations, not customer logos ───────── */}
-      <section className="trust" id="donna">
+      {/* ── donna ────────────────────────────────────────────────────── */}
+      <section className="section" id="donna">
         <div className="section-in">
-          <FadeUp>
-            <p className="trust__caption">Connects to</p>
-            <div className="trust__row">
-              {PMS.map((p) => <Badge key={p} variant="outline">{p}</Badge>)}
-            </div>
-            <div className="trust__row">
-              {ASSISTANTS.map((a) => <Badge key={a} variant="secondary">{a}</Badge>)}
-            </div>
-          </FadeUp>
-        </div>
-      </section>
-
-      {/* ── problems — the real pain points, numbered ───────────────── */}
-      <section className="section section--tint">
-        <div className="section-in">
-          <FigureReveal>
-            <div className="problems">
-              {PROBLEMS.map((p) => (
-                <div className="problem-card" key={p.n}>
-                  <span className="problem-card__n">{p.n}</span>
-                  <h3>{p.title}</h3>
-                  <p>{p.body}</p>
-                </div>
-              ))}
-            </div>
-          </FigureReveal>
-        </div>
-      </section>
-
-      {/* ── where the hours go ───────────────────────────────────────── */}
-      <section className="section">
-        <div className="section-in section-in--mid">
-          <div className="section-head">
-            <h2>Where the hours go.</h2>
-          </div>
-          <div className="flag-row"><span className="flag">Illustrative, not measured</span></div>
-          <FigureReveal>
-            <div className="chart-row">
-              <BrandHoursArea />
+          <div className="pair">
+            <FadeUp>
+              <h2><span className="donna">donna</span>, for law firms.</h2>
               <p className="lede">
-                The work above doesn’t appear on a timesheet, so it never gets costed.
-                It lands in the gaps around the work you bill for, and it compounds.
+                Clients fill in the intake themselves. It lands in your practice management
+                system as a matter, with contacts and documents attached. Then you ask about
+                it in plain English, inside Claude or ChatGPT.
               </p>
-            </div>
-          </FigureReveal>
-        </div>
-      </section>
+              <ul className="ticks">
+                <li>Custom intake, built for your fields</li>
+                <li>Syncs to your practice management system</li>
+                <li>Ask your matters a question</li>
+              </ul>
+            </FadeUp>
+            <FigureReveal>
+              <div className="console">
+                <div className="console__bar">
+                  <span className="console__dot" aria-hidden="true" />
+                  <span className="console__dot" aria-hidden="true" />
+                  <span className="console__dot" aria-hidden="true" />
+                  <span className="ucase console__name">donna console</span>
+                  <span className="flag console__flag">Sample</span>
+                </div>
+                <Tabs defaultValue="matters">
+                  <TabsList className="console__tabs">
+                    <TabsTrigger className="ucase" value="matters">Matters</TabsTrigger>
+                    <TabsTrigger className="ucase" value="intake">Intake</TabsTrigger>
+                    <TabsTrigger className="ucase" value="ask">Ask</TabsTrigger>
+                  </TabsList>
 
-      {/* ── solution bento ───────────────────────────────────────────── */}
-      <section className="section">
-        <div className="section-in">
-          <FigureReveal>
-            <div className="bento">
-              <Card className="bento__tile border-0 shadow-none rounded-none">
-                <CardHeader className="p-0">
-                  <CardTitle asChild><h3>Custom intake forms.</h3></CardTitle>
-                </CardHeader>
-                <CardContent className="p-0">
-                  <p><span className="donna">donna</span> collects exactly what your firm needs. No account required.</p>
-                </CardContent>
-              </Card>
-              <Card className="bento__tile border-0 shadow-none rounded-none">
-                <CardHeader className="p-0">
-                  <CardTitle asChild><h3>An MCP connector.</h3></CardTitle>
-                </CardHeader>
-                <CardContent className="p-0">
-                  <p>Ask for matters, documents, records — right inside Claude or ChatGPT.</p>
-                </CardContent>
-              </Card>
-              <Card className="bento__tile bento__tile--wide border-0 shadow-none rounded-none">
-                <CardHeader className="p-0">
-                  <CardTitle asChild><h3>Five systems, three assistants, one connector.</h3></CardTitle>
-                </CardHeader>
-                <CardContent className="p-0">
-                  <ConnectionMap />
-                </CardContent>
-              </Card>
-            </div>
-          </FigureReveal>
-        </div>
-      </section>
+                  <TabsContent value="matters">
+                    <div className="console__scroll">
+                    <table className="console__table">
+                      <thead>
+                        <tr className="ucase">
+                          <th>Ref</th><th>Client</th><th>Type</th><th>State</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {MATTERS.map((m) => (
+                          <tr key={m.ref}>
+                            <td className="console__ref">{m.ref}</td>
+                            <td>{m.client}</td>
+                            <td className="console__dim">{m.type}</td>
+                            <td><span className="console__state">{m.state}</span></td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                    </div>
+                  </TabsContent>
 
-      {/* ── stats band ───────────────────────────────────────────────── */}
-      <section className="section section--tint section--top">
-        <div className="section-in section-in--mid">
-          <div className="section-head center">
-            <h2><span className="donna">donna</span>, by the numbers.</h2>
-          </div>
-          <FigureReveal>
-            <div className="stat-tiles">
-              <BrandStatTile value={CONNECTS.pms} outOf={CONNECTS.pms} label="Practice management systems" />
-              <BrandStatTile value={CONNECTS.assistants} outOf={CONNECTS.assistants} label="AI assistants" />
-              <BrandBulletChart weeks={2} fromLabel="Signing" toLabel="Live" />
-              <BrandGaugeRing value={24} unit="hours" label="to hear back — every time" />
-            </div>
-          </FigureReveal>
-          <div className="step-row">
-            <FigureReveal className="step-row__flow">
-              <BrandStepFlow steps={STEPS} />
+                  <TabsContent value="intake">
+                    <div className="console__body">
+                      <div className="console__fields">
+                        {INTAKE_FIELDS.map(([k, v]) => (
+                          <div key={k}>
+                            <div className="ucase console__k">{k}</div>
+                            <div className="console__v">{v}</div>
+                          </div>
+                        ))}
+                      </div>
+                      <div className="console__foot">
+                        <span className="ucase">Step 2 of 4</span>
+                        <span className="console__track"><span className="console__fill" /></span>
+                      </div>
+                    </div>
+                  </TabsContent>
+
+                  <TabsContent value="ask">
+                    <div className="console__body console__ask">
+                      <p className="console__q">&gt; which matters are waiting on documents?</p>
+                      <p className="console__a">
+                        One matter is waiting: M-2044, Nakamura, estate planning. The client has
+                        not uploaded the executor ID. Last chased four days ago.
+                      </p>
+                      <p className="console__q">&gt; draft a follow-up</p>
+                      <p className="console__typing">
+                        <span className="console__caret" aria-hidden="true" />writing
+                      </p>
+                    </div>
+                  </TabsContent>
+                </Tabs>
+              </div>
             </FigureReveal>
           </div>
         </div>
       </section>
 
-      {/* ── demo tabs ────────────────────────────────────────────────── */}
-      <section className="section" id="demo">
-        <div className="section-in section-in--mid">
-          <div className="section-head center">
-            <h2>See it work.</h2>
+      {/* ── the register ─────────────────────────────────────────────── */}
+      <section className="section section--tint section--top">
+        <div className="section-in">
+          <div className="pair pair--head">
+            <FadeUp>
+              <h2>The work nobody logs.</h2>
+              <p className="lede">It lands in the gaps around the work you bill for.</p>
+            </FadeUp>
+            <FigureReveal>
+              <div className="register">
+                {REGISTER.map((r) => (
+                  <div className="register__row" key={r.n}>
+                    <span className="ucase register__n">{r.n}</span>
+                    <h3>{r.t}</h3>
+                    <p>{r.b}</p>
+                  </div>
+                ))}
+              </div>
+            </FigureReveal>
+          </div>
+        </div>
+      </section>
+
+      {/* ── where the hours go ───────────────────────────────────────── */}
+      <section className="section">
+        <div className="section-in">
+          <div className="flag-row">
+            <h2>Where the hours go.</h2>
+            <span className="flag">Illustrative, not measured</span>
           </div>
           <FigureReveal>
-            <Tabs defaultValue="intake" className="demo-tabs">
-              <TabsList>
-                <TabsTrigger className="ucase" value="intake">Intake</TabsTrigger>
-                <TabsTrigger className="ucase" value="mcp">MCP</TabsTrigger>
-              </TabsList>
-              <TabsContent value="intake">
-                <DemoVideo
-                  src="/assets/video/donna-intake.mp4"
-                  poster="/assets/video/donna-intake-poster.jpg"
-                  caption="A client completes intake; the matter lands in the PMS."
-                />
-              </TabsContent>
-              <TabsContent value="mcp">
-                <DemoVideo
-                  src="/assets/video/donna-mcp.mp4"
-                  poster="/assets/video/donna-mcp-poster.jpg"
-                  caption="Asking a practice management system questions in plain English."
-                />
-              </TabsContent>
-            </Tabs>
+            <div className="chart-row">
+              <BrandHoursArea />
+              <BrandTaskBars />
+            </div>
           </FigureReveal>
-          <FigureReveal>
-            <figure className="figure figure--reel">
-              <video
-                src="/assets/video/process-reel.mp4"
-                poster="/assets/video/process-reel-poster.png"
-                muted
-                playsInline
-                autoPlay
-                loop
-                preload="metadata"
-                aria-label="Client, donna, and your practice management system, in sequence"
-              />
-            </figure>
-          </FigureReveal>
+        </div>
+      </section>
+
+      {/* ── engagements ──────────────────────────────────────────────── */}
+      <section className="section section--top">
+        <div className="section-in">
+          <div className="section-head">
+            <h2>Two ways to work with jdotai.</h2>
+          </div>
+          <div className="offers">
+            {OFFERS.map((o) => (
+              <FadeUp key={o.n}>
+                <div className="offer">
+                  <span className="ucase offer__n">{o.n}</span>
+                  <h3>{o.name}</h3>
+                  <p>{o.line}</p>
+                  <ul className="ticks">
+                    {o.points.map((p) => <li key={p}>{p}</li>)}
+                  </ul>
+                </div>
+              </FadeUp>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── method ───────────────────────────────────────────────────── */}
+      <section className="section section--tint">
+        <div className="section-in">
+          <FadeUp>
+            <p className="belief">Software should take the jobs nobody wants.</p>
+          </FadeUp>
+          <div className="method">
+            {METHOD.map((m) => (
+              <FadeUp key={m.n}>
+                <div className="method__step">
+                  <span className="ucase method__n">{m.n}</span>
+                  <h3>{m.t}</h3>
+                  <p>{m.b}</p>
+                </div>
+              </FadeUp>
+            ))}
+          </div>
         </div>
       </section>
 
       {/* ── faq ──────────────────────────────────────────────────────── */}
       <section className="section">
-        <div className="section-in section-in--mid">
-          <div className="section-head center">
-            <h2>Questions.</h2>
+        <div className="section-in">
+          <div className="pair pair--head">
+            <FadeUp><h2>Questions.</h2></FadeUp>
+            <Accordion type="single" collapsible>
+              {FAQ.map((f) => (
+                <AccordionItem value={f.q} key={f.q} className="faq-item">
+                  <AccordionTrigger>{f.q}</AccordionTrigger>
+                  <AccordionContent>{f.a}</AccordionContent>
+                </AccordionItem>
+              ))}
+            </Accordion>
           </div>
-          <Accordion type="single" collapsible>
-            {FAQ.map((f) => (
-              <AccordionItem value={f.q} key={f.q} className="faq-item">
-                <AccordionTrigger>{f.q}</AccordionTrigger>
-                <AccordionContent>{f.a}</AccordionContent>
-              </AccordionItem>
-            ))}
-          </Accordion>
         </div>
       </section>
 
-      {/* ── closing cta band · dark, bookends the hero ──────────────── */}
+      {/* ── enquiry ──────────────────────────────────────────────────── */}
+      <section className="section section--top" id="enquire">
+        <div className="section-in">
+          <div className="pair pair--head">
+            <FadeUp><h2>Tell us what’s taking the time.</h2></FadeUp>
+            <FigureReveal>
+              <EnquiryForm />
+            </FigureReveal>
+          </div>
+        </div>
+      </section>
+
+      {/* ── closing ──────────────────────────────────────────────────── */}
       <section className="cta-band">
         <div className="section-in section-in--mid">
-          <h2>Get <span className="donna">donna</span> for your firm.</h2>
+          <h2>Stop doing work that shouldn’t need you.</h2>
           <div className="go">
             <Magnetic>
               <Button asChild size="lg" variant="secondary">
@@ -329,18 +362,6 @@ export default function Home() {
               </Button>
             </Magnetic>
           </div>
-        </div>
-      </section>
-
-      {/* ── enquiry form ─────────────────────────────────────────────── */}
-      <section className="section" id="enquire">
-        <div className="section-in section-in--mid">
-          <div className="section-head center">
-            <h2>Tell us about your firm.</h2>
-          </div>
-          <FigureReveal>
-            <EnquiryForm />
-          </FigureReveal>
         </div>
       </section>
     </main>

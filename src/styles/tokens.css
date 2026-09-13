@@ -41,7 +41,6 @@
   --rule-strong:color-mix(in oklab,var(--ink) 40%,var(--paper));
   --sunk:color-mix(in oklab,var(--ink) 4%,var(--paper));
   --scrim:color-mix(in oklab,var(--paper) 88%,transparent);
-  --shadow:color-mix(in oklab,var(--ink) 12%,transparent);
 
   /* type — Playfair carries every display line, Source Serif every reading
      line, and JetBrains Mono only ever sets a figure or a date. No UI sans
@@ -73,11 +72,9 @@
   --pad-mid:clamp(3.5rem,7vw,5.5rem);
   --pad-loose:clamp(4.5rem,10vw,8rem);
 
-  /* corner radius — this theme is square by intent. Only two survive: the
-     hairline used on focus rings, and the one the ask pill falls back to on
-     narrow screens. Everything else is a hard corner. */
+  /* corner radius — this theme is square by intent. One survives, the
+     hairline on a focus ring. Everything else is a hard corner. */
   --r-sm:2px;
-  --r-lg:4px;
 
   --ease:cubic-bezier(.2,.6,.2,1);
   --dur:.4s;

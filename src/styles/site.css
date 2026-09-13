@@ -30,7 +30,7 @@ body{
 }
 a{color:inherit}
 p{margin:0}
-img,video{max-width:100%;display:block}
+img{max-width:100%;display:block}
 :focus-visible{outline:2px solid var(--wine);outline-offset:3px;border-radius:var(--r-sm)}
 
 h1,h2,h3{
@@ -142,7 +142,7 @@ h3{font-size:var(--t-h3);letter-spacing:-.025em;line-height:1.16}
   font-family:var(--fm);font-size:var(--t-meta);font-weight:500;
   letter-spacing:.16em;text-transform:uppercase;
 }
-.flag-row{display:flex;justify-content:flex-end;margin-bottom:1rem}
+.flag-row{display:flex;align-items:baseline;justify-content:space-between;gap:1rem;flex-wrap:wrap;margin-bottom:2rem}
 
 /* ─────────── the hero figure row ───────────
    Four true counts, set at display size. This is the page's second-loudest
@@ -180,40 +180,17 @@ h3{font-size:var(--t-h3);letter-spacing:-.025em;line-height:1.16}
   .figure-cell + .figure-cell{border-left:none;padding-left:0;border-top:1px solid var(--rule);margin-top:.5rem}
 }
 
-/* the hours plot needs an explicit height: recharts' responsive container
-   measures its parent, and a flex/grid parent with no height collapses it */
+/* charts. The plot needs an explicit height: recharts' responsive container
+   measures its parent, and a grid parent with no height collapses it. */
+.mono-chart{margin:0;background:var(--sunk);border:1px solid var(--ink);
+  padding:clamp(1.25rem,3vw,1.75rem)}
+.mono-chart figcaption{margin-top:1rem;color:var(--ink-muted);font-size:var(--t-small);line-height:1.5}
 .mono-chart__plot{height:clamp(15rem,26vw,19rem)}
-.chart-row{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:1.5rem;align-items:start}
-@media (max-width:56rem){ .chart-row{grid-template-columns:minmax(0,1fr)} }
+.chart-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,20rem),1fr));gap:1.25rem;align-items:start}
 
 /* ─────────── opener · the headline only ─────────── */
 .open{padding-block:clamp(6rem,11vw,8.5rem) 0}
 .open h1{max-width:17ch}
-
-/* the typed question-line — a functioning demo of the product sitting under
-   the headline, not decoration */
-.askline{
-  margin-top:2rem;max-width:34rem;display:flex;align-items:center;gap:.75rem;
-  border:1px solid var(--rule-strong);border-radius:999px;padding:.85rem 1.15rem;
-  background:var(--paper);box-shadow:0 1px 3px var(--shadow);
-}
-.askline .q{
-  flex:1;min-width:0;font-family:var(--fb);font-size:1rem;
-  color:var(--ink-body);white-space:nowrap;overflow:hidden;
-}
-.askline .caret{
-  display:inline-block;width:2px;height:1em;vertical-align:-.15em;
-  background:var(--ink);margin-left:1px;animation:caret 1.1s step-end infinite;
-}
-@keyframes caret{50%{opacity:0}}
-.askline .go{
-  flex:none;margin-top:0;background:var(--ink);color:var(--on-wine);border-radius:999px;
-  padding:.4rem .95rem;font-size:.875rem;font-weight:600;
-}
-@media (max-width:34rem){
-  .askline{border-radius:var(--r-lg);flex-wrap:wrap}
-  .askline .q{white-space:normal}
-}
 
 /* ─────────── one-page sections (Home) ───────────
    Each section owns its own width and padding on purpose — the rhythm is
@@ -224,9 +201,7 @@ h3{font-size:var(--t-h3);letter-spacing:-.025em;line-height:1.16}
 .section-in{max-width:var(--w-wide);margin:0 auto;padding-inline:var(--gut)}
 .section-in--mid{max-width:var(--w-mid)}
 .section-head{max-width:36rem;margin:0 0 2.5rem}
-.section-head.center{margin-inline:auto;text-align:center}
 .section-head h2{max-width:19ch}
-.section-head.center h2{margin-inline:auto}
 
 /* hero — the broadsheet front page. Light, ruled hard top and bottom, with
    the headline set as large as the measure will carry. The previous pass
@@ -250,79 +225,252 @@ h3{font-size:var(--t-h3);letter-spacing:-.025em;line-height:1.16}
   .hero__dek .go{margin-top:.5rem}
 }
 
-/* the clip sits directly under the rule, framed rather than floated */
-.hero-clip{
-  padding-inline:var(--gut);max-width:var(--w-mid);margin-inline:auto;
-  margin-top:clamp(2.5rem,5vw,4rem);
+/* ─────────── the uppercase run ───────────
+   Mono, letterspaced, uppercase. It is never a label announcing a heading —
+   gate 54 still forbids that, by class name. It is the column rule of a
+   ruled table: a nav destination, a button, a table header, a finding code.
+   Set, not staged. */
+.ucase{
+  font-family:var(--fm);font-size:var(--t-meta);font-weight:500;
+  letter-spacing:.18em;text-transform:uppercase;
 }
-.hero-clip .figure{width:100%;margin:0}
-.hero-clip video{border:1px solid var(--ink);border-radius:0}
 
-/* trust bar — what donna actually connects to. Real integration partners,
-   not customers; nothing here is a claim, just an inventory. */
-.trust{
-  padding-block:var(--pad-tight);border-block:1px solid var(--rule-strong);background:var(--sunk);
-}
-.trust__caption{
+/* the honesty flag that rides beside any figure we did not measure */
+.flag{
+  display:inline-block;border:1px solid var(--rule-strong);
+  padding:.4rem .7rem;color:var(--ink-muted);
   font-family:var(--fm);font-size:var(--t-meta);font-weight:500;
   letter-spacing:.16em;text-transform:uppercase;
-  color:var(--ink-muted);margin:0 0 1.25rem;
 }
-.trust__row{display:flex;flex-wrap:wrap;gap:.6rem}
-.trust__row + .trust__row{margin-top:.6rem}
+.flag-row{display:flex;align-items:baseline;justify-content:space-between;gap:1rem;flex-wrap:wrap;margin-bottom:2rem}
 
-/* the problem register — a ruled list, the way an index reads. Replaces the
-   previous pass's three equal cards, which shared one rhythm and said less. */
-.problems{border-top:1px solid var(--ink);margin-top:1rem}
-.problem-card{
+/* ─────────── the hero figure row ───────────
+   Four true counts, set at display size. This is the page's second-loudest
+   typographic event after the headline, which is what a number deserves when
+   it is the whole argument. */
+.figures{
+  display:grid;grid-template-columns:repeat(4,minmax(0,1fr));
+  border-top:1px solid var(--ink);margin-top:clamp(3rem,6vw,4.5rem);
+}
+.figure-cell{
+  padding:1.5rem clamp(.75rem,2vw,1.5rem) .5rem 0;
+}
+.figure-cell + .figure-cell{border-left:1px solid var(--rule);padding-left:clamp(.75rem,2vw,1.5rem)}
+.figure-cell__n{
+  font-family:var(--fd);font-weight:900;font-size:var(--t-figure);
+  line-height:.88;letter-spacing:-.05em;color:var(--ink);
+  font-variant-numeric:tabular-nums;
+}
+.figure-cell__u{
+  font-family:var(--fm);font-size:1rem;font-weight:400;
+  letter-spacing:.02em;margin-left:.2em;color:var(--ink-muted);
+}
+.figure-cell__c{
+  margin-top:.85rem;color:var(--ink-muted);
+  font-family:var(--fm);font-size:var(--t-meta);
+  letter-spacing:.14em;text-transform:uppercase;line-height:1.45;
+}
+@media (max-width:56rem){
+  .figures{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .figure-cell:nth-child(3){border-left:none;padding-left:0}
+  .figure-cell:nth-child(n+3){border-top:1px solid var(--rule);margin-top:.5rem}
+}
+@media (max-width:26rem){
+  .figures{grid-template-columns:minmax(0,1fr)}
+  .figure-cell + .figure-cell{border-left:none;padding-left:0;border-top:1px solid var(--rule);margin-top:.5rem}
+}
+
+/* charts. The plot needs an explicit height: recharts' responsive container
+   measures its parent, and a grid parent with no height collapses it. */
+.mono-chart{margin:0;background:var(--sunk);border:1px solid var(--ink);
+  padding:clamp(1.25rem,3vw,1.75rem)}
+.mono-chart figcaption{margin-top:1rem;color:var(--ink-muted);font-size:var(--t-small);line-height:1.5}
+.mono-chart__plot{height:clamp(15rem,26vw,19rem)}
+.chart-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,20rem),1fr));gap:1.25rem;align-items:start}
+
+/* ─────────── opener · the headline only ─────────── */
+.open{padding-block:clamp(6rem,11vw,8.5rem) 0}
+.open h1{max-width:17ch}
+
+/* ─────────── one-page sections (Home) ───────────
+   Each section owns its own width and padding on purpose — the rhythm is
+   meant to feel dense and varied. */
+.section{padding-block:var(--pad-loose)}
+.section--tint{background:var(--sunk)}
+.section--top{border-top:1px solid var(--ink)}
+.section-in{max-width:var(--w-wide);margin:0 auto;padding-inline:var(--gut)}
+.section-in--mid{max-width:var(--w-mid)}
+.section-head{max-width:36rem;margin:0 0 2.5rem}
+.section-head h2{max-width:19ch}
+
+/* hero — the broadsheet front page. Light, ruled hard top and bottom, with
+   the headline set as large as the measure will carry. The previous pass
+   opened on a dark band with a coloured glow; with no hue left to glow, the
+   honest move is to let the type be the event. */
+.hero{
+  border-bottom:1px solid var(--ink);
+  padding-block:clamp(7rem,13vw,10rem) clamp(3rem,6vw,4.5rem);
+}
+.hero__in{max-width:var(--w-wide);margin:0 auto;padding-inline:var(--gut)}
+.hero h1{max-width:14ch}
+.hero__dek{
+  margin-top:clamp(2rem,4vw,3rem);
+  display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);
+  gap:clamp(1.5rem,5vw,4rem);align-items:end;
+}
+.hero__dek .lede{max-width:48ch}
+.hero__dek .go{margin-top:0}
+@media (max-width:56rem){
+  .hero__dek{grid-template-columns:minmax(0,1fr)}
+  .hero__dek .go{margin-top:.5rem}
+}
+
+/* ─────────── the pair ───────────
+   The page's one recurring split: something said on the left, something
+   shown on the right. Every section that has both uses it, which is what
+   holds a long page together once the sections stop sharing a rhythm. */
+.pair{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(2rem,5vw,4.5rem);align-items:start}
+.pair--head{grid-template-columns:minmax(0,4fr) minmax(0,8fr)}
+.pair .lede{margin-top:1.25rem}
+@media (max-width:60rem){
+  .pair,.pair--head{grid-template-columns:minmax(0,1fr);gap:2rem}
+}
+
+/* a ruled checklist — no bullets, no icons, just rules */
+.ticks{list-style:none;margin:2rem 0 0;padding:0;border-top:1px solid var(--rule)}
+.ticks li{padding-block:.85rem;border-bottom:1px solid var(--rule);font-size:1.0625rem}
+
+/* ─────────── the register ───────────
+   Six named pain points as a ruled index. Nothing counts anything here, so
+   nothing here can be wrong about a number. */
+.register{border-top:1px solid var(--ink)}
+.register__row{
   display:grid;grid-template-columns:auto minmax(0,1fr) minmax(0,1.6fr);
   gap:.5rem clamp(1rem,3vw,3rem);align-items:baseline;
-  padding-block:clamp(1.25rem,2.5vw,1.75rem);border-bottom:1px solid var(--rule);
+  padding-block:clamp(1.1rem,2.2vw,1.5rem);border-bottom:1px solid var(--rule);
   transition:background var(--dur) var(--ease);
 }
-.problem-card:hover{background:var(--sunk)}
-.problem-card__n{
+.register__row:hover{background:var(--paper)}
+.register__n{color:var(--ink-muted);font-variant-numeric:tabular-nums}
+.register h3{font-size:1.1875rem}
+.register p{color:var(--ink-body);font-size:1.0625rem;line-height:1.56;max-width:56ch}
+@media (max-width:56rem){
+  .register__row{grid-template-columns:auto minmax(0,1fr)}
+  .register p{grid-column:2}
+}
+
+/* ─────────── the marquee ───────────
+   What donna connects to, running as a strip. An inventory, not a customer
+   wall: every name here is a system it actually speaks to. */
+.marquee{overflow:hidden;border-block:1px solid var(--ink);padding-block:1.15rem;background:var(--sunk)}
+.marquee__run{display:flex;width:max-content;animation:marquee 38s linear infinite}
+.marquee__item{
   font-family:var(--fm);font-size:var(--t-meta);font-weight:500;
-  letter-spacing:.14em;text-transform:uppercase;
-  color:var(--ink-muted);font-variant-numeric:tabular-nums;
+  letter-spacing:.2em;text-transform:uppercase;color:var(--ink-muted);
+  padding-inline:clamp(1.5rem,4vw,3rem);white-space:nowrap;
 }
-.problem-card h3{font-size:1.25rem}
-.problem-card p{color:var(--ink-body);font-size:1.0625rem;line-height:1.58;max-width:58ch}
-@media (max-width:56rem){
-  .problem-card{grid-template-columns:auto minmax(0,1fr)}
-  .problem-card p{grid-column:2}
+@keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@media (prefers-reduced-motion:reduce){
+  .marquee__run{animation:none;width:100%;flex-wrap:wrap;justify-content:center;row-gap:.5rem}
 }
 
-.step-row{margin-top:2.5rem}
-.step-row__flow{min-width:0}
+/* ─────────── the console ───────────
+   donna's interface, drawn rather than filmed. The recorded demos were shot
+   in the previous brand's colour and read as a foreign object here; this
+   also stays legible on a phone, which a 16:9 screen capture does not. */
+.console{border:1px solid var(--ink);background:var(--paper)}
+.console__bar{display:flex;align-items:center;gap:.5rem;padding:.85rem 1rem;border-bottom:1px solid var(--ink)}
+.console__dot{width:7px;height:7px;border-radius:50%;background:var(--rule-strong)}
+.console__name{color:var(--ink-muted);margin-left:.65rem}
+.console__flag{margin-left:auto}
+.console__tabs{display:flex;gap:0;border-bottom:1px solid var(--rule);background:transparent;padding:0}
+.console__tabs button{
+  background:transparent;border:0;border-bottom:2px solid transparent;
+  padding:.85rem 1.15rem;color:var(--ink-muted);cursor:pointer;
+  transition:color var(--dur) var(--ease),border-color var(--dur) var(--ease);
+}
+.console__tabs button[data-state="active"]{color:var(--ink);border-bottom-color:var(--ink)}
+/* On a phone the four columns cannot fit 335px, and html/body carry
+   overflow-x:clip, so without this the rightmost column is silently cut off
+   rather than reachable. The table scrolls inside its own frame instead. */
+.console__scroll{overflow-x:auto}
+.console__table{width:100%;min-width:25rem;border-collapse:collapse;text-align:left}
+.console__table th{
+  padding:.65rem 1rem;border-bottom:1px solid var(--rule);
+  color:var(--ink-muted);font-weight:500;
+}
+.console__table td{padding:.85rem 1rem;border-bottom:1px solid var(--rule);font-size:1rem}
+.console__table tr{transition:background var(--dur) var(--ease)}
+.console__table tbody tr:hover{background:var(--sunk)}
+.console__ref{font-family:var(--fm);font-size:var(--t-meta);color:var(--ink-muted)}
+.console__dim{color:var(--ink-muted)}
+.console__state{
+  display:inline-block;border:1px solid var(--rule-strong);padding:.25rem .5rem;
+  font-family:var(--fm);font-size:var(--t-meta);letter-spacing:.1em;text-transform:uppercase;
+}
+.console__body{padding:1.25rem}
+.console__fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem}
+.console__k{color:var(--ink-muted);margin-bottom:.35rem}
+.console__v{border:1px solid var(--rule-strong);padding:.6rem .75rem;font-size:1rem}
+.console__foot{display:flex;align-items:center;justify-content:space-between;gap:1rem;
+  margin-top:1.25rem;padding-top:1rem;border-top:1px solid var(--rule);color:var(--ink-muted)}
+.console__track{width:9rem;height:3px;background:var(--rule);flex:none}
+.console__fill{display:block;width:50%;height:100%;background:var(--ink)}
+.console__ask p{font-family:var(--fm);font-size:.9375rem;line-height:1.6}
+.console__q{color:var(--ink-muted)}
+.console__a{border-left:2px solid var(--ink);padding-left:.85rem;margin-block:.75rem;color:var(--ink)}
+.console__typing{display:flex;align-items:center;gap:.5rem;color:var(--ink-muted)}
+.console__caret{display:inline-block;width:7px;height:1em;background:var(--ink);
+  animation:caret 1.1s step-end infinite}
+@keyframes caret{50%{opacity:0}}
+@media (max-width:34rem){
+  .console__fields{grid-template-columns:minmax(0,1fr)}
+}
 
-/* bento — mixed-span feature grid. Never three equal columns: the third tile
-   runs full width to hold the connection diagram. */
-.bento{
-  display:grid;gap:1px;background:var(--rule-strong);border:1px solid var(--ink);
-  grid-template-columns:repeat(6,minmax(0,1fr));
-}
-.bento__tile{
-  background:var(--paper);padding:clamp(1.5rem,3vw,2.25rem);
-  grid-column:span 3;display:flex;flex-direction:column;gap:.75rem;
-}
-.bento__tile--wide{grid-column:span 6}
-.bento__tile h3{font-size:1.375rem;letter-spacing:-.025em}
-.bento__tile p{color:var(--ink-body);font-size:1.0625rem;line-height:1.58}
-.bento__tile .cmap{margin-top:auto}
-@media (max-width:56rem){
-  .bento{grid-template-columns:repeat(2,minmax(0,1fr))}
-  .bento__tile{grid-column:span 2}
-}
+/* ─────────── engagements ───────────
+   Two, side by side, sharing a hairline. Not three, and not a card with a
+   shadow: the border is the whole frame. */
+.offers{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1px;
+  background:var(--rule-strong);border:1px solid var(--ink)}
+.offer{background:var(--paper);padding:clamp(1.5rem,3.5vw,2.5rem);height:100%}
+.offer__n{color:var(--ink-muted);font-variant-numeric:tabular-nums}
+.offer h3{margin-top:1rem;font-size:clamp(1.5rem,2.6vw,2rem);letter-spacing:-.035em}
+.offer p{margin-top:.85rem;color:var(--ink-body);font-size:1.0625rem;line-height:1.58;max-width:46ch}
+.offer .ticks{margin-top:1.75rem}
+@media (max-width:56rem){ .offers{grid-template-columns:minmax(0,1fr)} }
 
-/* the tabbed demo — shadcn Tabs switching between the two real product loops */
-.demo-tabs{margin-top:2rem}
-.demo-tabs figure{margin:0}
-.demo-tabs video{
-  width:100%;height:auto;aspect-ratio:16/10;object-fit:cover;
-  border:1px solid var(--ink);border-radius:0;background:var(--sunk);
+/* ─────────── method ─────────── */
+.belief{
+  font-family:var(--fd);font-style:italic;font-weight:400;
+  font-size:clamp(1.75rem,4vw,3rem);line-height:1.12;letter-spacing:-.03em;
+  max-width:22ch;margin-bottom:clamp(2.5rem,5vw,4rem);
 }
-.demo-tabs figcaption{margin-top:.9rem;color:var(--ink-muted);font-size:var(--t-small);line-height:1.55}
+/* Deliberately unequal: step one carries the longest body and does the most
+   explaining, so it gets the room. Three equal columns would also trip
+   hallmark_check gate 3, which exists to stop exactly that default. */
+.method{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr) minmax(0,1fr);
+  gap:clamp(1.5rem,3vw,2.5rem)}
+.method__step{border-top:1px solid var(--ink);padding-top:1.25rem}
+.method__n{color:var(--ink-muted);font-variant-numeric:tabular-nums}
+.method__step h3{margin-top:.85rem;font-size:1.375rem}
+.method__step p{margin-top:.6rem;color:var(--ink-body);font-size:1.0625rem;line-height:1.56}
+@media (max-width:56rem){ .method{grid-template-columns:minmax(0,1fr)} }
+
+/* two mono-chart figures side by side on the blog index */
+.chart-pair{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,16rem),1fr));gap:1rem}
+
+/* treemap — real category counts, sized by area, so no number appears that
+   wasn't just counted */
+.treemap{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,7rem),1fr));gap:1px;
+  background:var(--rule-strong);border:1px solid var(--ink)}
+.treemap__tile{
+  background:var(--ink);color:var(--on-ink);
+  padding:.9rem 1rem;display:flex;flex-direction:column;justify-content:space-between;
+  min-height:5.5rem;gap:1.5rem;
+}
+.treemap__name{font-size:.9375rem;font-weight:600;line-height:1.25;color:var(--paper)}
+.treemap__n{font-family:var(--fm);font-size:1.25rem;
+  font-variant-numeric:tabular-nums;letter-spacing:-.02em}
 
 /* closing CTA band — a full inversion. With no accent colour available, the
    page's one loud moment is the ground itself flipping to ink. */
@@ -365,107 +513,6 @@ h3{font-size:var(--t-h3);letter-spacing:-.025em;line-height:1.16}
   margin-top:.9rem;color:var(--ink-muted);font-size:var(--t-small);
   line-height:1.55;max-width:68ch;
 }
-.figure video{
-  width:100%;height:auto;border:1px solid var(--ink);border-radius:0;
-  background:var(--sunk);
-}
-
-/* The recorded demos predate this pass and are still graded in the previous
-   brand's colour — measured at 88% of frame pixels carrying hue, mostly a
-   blue UI chrome. On a page with no hue anywhere they read as a foreign
-   object rather than as the product. Desaturating them is a stopgap, not a
-   fix: the real answer is to re-record or re-render the footage against this
-   palette, after which this single rule should be deleted. */
-.figure video,.demo-tabs video{filter:grayscale(1)}
-.figure--reel{max-width:30rem;margin-inline:auto}
-.figure--reel video{aspect-ratio:1100/619}
-
-/* ─────────── mono-chart tiles ─────────── */
-.mono-chart{margin:0;background:var(--sunk);border:1px solid var(--rule-strong);
-  border-radius:0;padding:clamp(1.25rem,3vw,1.75rem)}
-.mono-chart figcaption{margin-top:1rem;color:var(--ink-muted);font-size:var(--t-small);line-height:1.5}
-
-.chart-pair{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,16rem),1fr));gap:1rem}
-
-.stat-tiles{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));
-  background:var(--sunk);border:1px solid var(--ink)}
-.stat-tile{
-  padding:clamp(1.25rem,3vw,1.75rem) clamp(1rem,2vw,1.25rem);
-  display:flex;flex-direction:column;align-items:flex-start;gap:.75rem;
-}
-.stat-tile + .stat-tile{border-left:1px solid var(--rule-strong)}
-.stat-tile-ring{position:relative;width:64px;height:64px;flex:none}
-.stat-tile-ring--wide{width:88px;height:58px}
-.stat-tile-n{
-  position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
-  font-family:var(--fd);font-weight:700;font-size:1.375rem;letter-spacing:-.04em;
-  color:var(--ink);font-variant-numeric:tabular-nums;
-}
-.stat-tile-n--gauge{align-items:flex-end;padding-bottom:2px;font-size:var(--t-h3)}
-.stat-tile-caption{font-size:1rem;color:var(--ink-body);line-height:1.45}
-.stat-tile-caption-sub{display:block;color:var(--ink-muted);font-size:var(--t-meta)}
-
-.stat-tile--bullet{width:100%}
-.stat-tile-bullet-head{display:flex;align-items:baseline;gap:.4rem;align-self:stretch}
-.stat-tile-bullet-head .stat-tile-n{
-  position:static;font-family:var(--fd);font-weight:900;font-size:var(--t-figure);
-  line-height:.9;letter-spacing:-.05em;color:var(--ink);
-}
-.stat-tile-unit{font-size:1rem;color:var(--ink-muted)}
-.stat-tile-bullet-track{
-  align-self:stretch;height:6px;background:var(--rule);overflow:hidden;
-}
-.stat-tile-bullet-fill{height:100%;width:100%}
-.stat-tile-bullet-ends{
-  align-self:stretch;display:flex;justify-content:space-between;
-  font-size:var(--t-meta);color:var(--ink-muted);
-}
-
-/* treemap — real category counts, sized by area, so no number appears that
-   wasn't just counted */
-.treemap{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,7rem),1fr));gap:1px;
-  background:var(--rule-strong);border:1px solid var(--ink)}
-.treemap__tile{
-  background:var(--ink);color:var(--on-ink);
-  padding:.9rem 1rem;display:flex;flex-direction:column;justify-content:space-between;
-  min-height:5.5rem;gap:1.5rem;
-}
-.treemap__name{font-size:.9375rem;font-weight:600;line-height:1.25;color:var(--paper)}
-.treemap__n{font-family:var(--fm);font-size:1.25rem;
-  font-variant-numeric:tabular-nums;letter-spacing:-.02em}
-
-/* step flow — a real 3-stage process, connected by rules, not a metric */
-.step-flow{list-style:none;margin:0;padding:0;display:grid;gap:1px;
-  background:var(--rule-strong);border:1px solid var(--ink)}
-.step-flow__step{background:var(--paper);padding:1.25rem 1.5rem;display:flex;gap:1.25rem;align-items:flex-start}
-.step-flow__n{
-  flex:none;font-family:var(--fm);font-size:var(--t-meta);color:var(--ink-muted);
-  font-variant-numeric:tabular-nums;padding-top:.35rem;
-}
-.step-flow__body{color:var(--ink-body);font-size:1.0625rem;line-height:1.58}
-.step-flow__body b{display:block;font-family:var(--fd);color:var(--ink);font-weight:700;
-  font-size:1.25rem;letter-spacing:-.02em;margin-bottom:.25rem;line-height:1.15}
-
-/* ─────────── connection map ─────────── */
-.cmap{margin:0}
-.cmap svg{width:100%;height:auto;display:block;overflow:visible}
-.cmap-wire path{
-  fill:none;stroke:var(--ink);stroke-width:1.25;
-  opacity:.3;vector-effect:non-scaling-stroke;
-}
-.cmap-node{
-  font-family:var(--fb);font-size:15px;font-weight:400;
-  fill:var(--ink-body);letter-spacing:-.01em;
-}
-.cmap-hub{fill:var(--ink)}
-.cmap-hub-name{
-  font-family:var(--fd-donna);font-style:italic;font-size:19px;
-  fill:var(--paper);letter-spacing:-.01em;
-}
-@media (max-width:48rem){
-  .cmap svg{display:none}
-}
-
 /* ─────────── form ─────────── */
 form.enq{background:var(--sunk);border:1px solid var(--ink);border-radius:0;
   padding:clamp(1.5rem,3vw,2rem);display:grid;gap:1rem}
@@ -552,11 +599,6 @@ a.card-in:hover h3{text-decoration:underline;text-underline-offset:.18em}
 /* ─────────── responsive ─────────── */
 @media (max-width:60rem){
   .nav__center{display:none}
-  .stat-tiles{grid-template-columns:repeat(2,minmax(0,1fr))}
-}
-@media (max-width:26rem){
-  .stat-tiles{grid-template-columns:minmax(0,1fr)}
-  .stat-tile + .stat-tile{border-left:none;border-top:1px solid var(--rule-strong)}
 }
 @media (max-width:36rem){
   .essay,.article{padding-inline:1rem}
@@ -565,8 +607,7 @@ a.card-in:hover h3{text-decoration:underline;text-underline-offset:.18em}
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
   *,*::before,*::after{transition-duration:.01ms !important;animation-duration:.01ms !important}
-  .askline .caret{animation:none}
-  .figure video[autoplay]{display:none}
+  .console__caret{animation:none}
 }
 
 /* Route suspense holds the page height so the footer doesn't jump. */
