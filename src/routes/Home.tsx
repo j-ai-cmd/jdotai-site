@@ -8,6 +8,7 @@ import { Magnetic } from '@/components/amicro/magnetic'
 import { TextReveal } from '@/components/amicro/text-reveal'
 import { BrandBulletChart } from '@/components/mono-charts/BrandBulletChart'
 import { BrandGaugeRing } from '@/components/mono-charts/BrandGaugeRing'
+import { BrandHoursArea } from '@/components/mono-charts/BrandHoursArea'
 import { BrandStatTile } from '@/components/mono-charts/BrandStatTile'
 import { BrandStepFlow } from '@/components/mono-charts/BrandStepFlow'
 import {
@@ -41,10 +42,25 @@ const QUESTIONS = [
   'Which files are ready to close?',
 ]
 
+/** The register. These are named pain points, not measured claims — nothing
+ *  here counts anything, so nothing here can be wrong about a number. */
 const PROBLEMS = [
-  { n: '01', title: 'Re-typing intake', body: 'Every new matter, copied by hand from an email into the practice management system.' },
-  { n: '02', title: 'Chasing documents', body: 'Follow-ups that exist only because the first request went unanswered.' },
-  { n: '03', title: 'Emails into tasks', body: 'Someone still has to read it, decide what it means, and open a task for it.' },
+  { n: 'F-01', title: 'Re-typing intake', body: 'Every new matter, copied by hand from an email into the practice management system.' },
+  { n: 'F-02', title: 'Chasing documents', body: 'Follow-ups that exist only because the first request went unanswered.' },
+  { n: 'F-03', title: 'Emails into tasks', body: 'Someone still has to read it, decide what it means, and open a task for it.' },
+  { n: 'F-04', title: 'Conflict checks by hand', body: 'Searching the same three places before a matter can be opened at all.' },
+  { n: 'F-05', title: 'Notes into the file', body: 'A call happens, and the record of it waits until someone types it up.' },
+  { n: 'F-06', title: 'The same five questions', body: 'Answered again by email, because the answer lives in someone’s head.' },
+]
+
+/** Four true counts. Each is something we can point at: the systems donna
+ *  connects to, the assistants it speaks through, the time to go live, and
+ *  the reply window we hold ourselves to. */
+const FIGURES = [
+  { n: '5', u: '', c: 'Practice management systems' },
+  { n: '3', u: '', c: 'AI assistants' },
+  { n: '2', u: 'wks', c: 'Signing to live' },
+  { n: '24', u: 'hrs', c: 'To hear back, every time' },
 ]
 
 const STEPS = [
@@ -107,6 +123,16 @@ export default function Home() {
                 </Button>
               </div>
             </div>
+            <div className="figures">
+              {FIGURES.map((f) => (
+                <div className="figure-cell" key={f.c}>
+                  <div className="figure-cell__n">
+                    {f.n}{f.u && <span className="figure-cell__u">{f.u}</span>}
+                  </div>
+                  <div className="figure-cell__c">{f.c}</div>
+                </div>
+              ))}
+            </div>
           </FadeUp>
         </div>
       </section>
@@ -150,6 +176,25 @@ export default function Home() {
                   <p>{p.body}</p>
                 </div>
               ))}
+            </div>
+          </FigureReveal>
+        </div>
+      </section>
+
+      {/* ── where the hours go ───────────────────────────────────────── */}
+      <section className="section">
+        <div className="section-in section-in--mid">
+          <div className="section-head">
+            <h2>Where the hours go.</h2>
+          </div>
+          <div className="flag-row"><span className="flag">Illustrative, not measured</span></div>
+          <FigureReveal>
+            <div className="chart-row">
+              <BrandHoursArea />
+              <p className="lede">
+                The work above doesn’t appear on a timesheet, so it never gets costed.
+                It lands in the gaps around the work you bill for, and it compounds.
+              </p>
             </div>
           </FigureReveal>
         </div>
@@ -220,8 +265,8 @@ export default function Home() {
           <FigureReveal>
             <Tabs defaultValue="intake" className="demo-tabs">
               <TabsList>
-                <TabsTrigger value="intake">Intake</TabsTrigger>
-                <TabsTrigger value="mcp">MCP</TabsTrigger>
+                <TabsTrigger className="ucase" value="intake">Intake</TabsTrigger>
+                <TabsTrigger className="ucase" value="mcp">MCP</TabsTrigger>
               </TabsList>
               <TabsContent value="intake">
                 <DemoVideo
