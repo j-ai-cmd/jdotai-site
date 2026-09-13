@@ -1,4 +1,4 @@
-import { Bar, BarChart, Cell, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
+import { Bar, BarChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 import { CHART } from './brand'
 
 /** PLACEHOLDER DATA — not a measured result.
@@ -30,7 +30,7 @@ export function BrandTaskBars() {
             <YAxis
               type="category" dataKey="task" width={132}
               tickLine={false} axisLine={false}
-              tick={{ fontSize: 11, fill: CHART.wine }}
+              tick={{ fontSize: 11, fill: CHART.muted }}
             />
             <Tooltip
               cursor={{ fill: CHART.sunk }}
@@ -39,11 +39,7 @@ export function BrandTaskBars() {
                 borderRadius: 0, fontSize: 12, color: CHART.ink,
               }}
             />
-            <Bar dataKey="hours" name="Hours a week" barSize={13}>
-              {TASKS.map((_, i) => (
-                <Cell key={i} fill={i % 2 === 0 ? CHART.ink : CHART.wine} />
-              ))}
-            </Bar>
+            <Bar dataKey="hours" name="Hours a week" barSize={13} fill={CHART.ink} />
           </BarChart>
         </ResponsiveContainer>
       </div>

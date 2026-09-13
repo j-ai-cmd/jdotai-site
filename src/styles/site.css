@@ -1,5 +1,5 @@
 /* Hallmark · macrostructure: studied-DNA (source: url, harvey.ai) · genre: editorial-broadsheet
- * theme: custom · paper #FAFAFA · ink #0A0A0A · interactive slot #262626
+ * theme: custom · paper #FAFAFA · ink #0A0A0A · accent burgundy #7A2E3B
  * type: Playfair Display (display) + Source Serif 4 (reading) + JetBrains Mono (figures)
  * nav: N1b canonical SaaS three-section · footer: Ft1 mast-headed, plain
  * studied DNA: the dense SaaS sequence is kept — split hero, integration bar,
@@ -9,10 +9,12 @@
  * user's request: it read as generic, its type was too even to carry a page,
  * and it carried motifs (rotated diamonds) that meant nothing. Every element
  * that survived here names something real.
- * The premise is a page with no hue at all, so hierarchy has to come from
- * size, weight and rule-work instead of from colour. Display runs to 5.75rem
- * against 1.125rem prose — a 5x step — because that contrast is the only
- * loud instrument left once colour is gone.
+ * The premise is a monochrome page with one rationed accent. Hierarchy comes
+ * from size, weight and rule-work — display runs to 5.75rem against 1.125rem
+ * prose, a 5x step — and the brand burgundy is spent on four jobs only:
+ * things you can press, the marks in the margin, the donna wordmark, and the
+ * data series that goes the right way. Nothing decorative is burgundy, no
+ * section is tinted, no rule is drawn in it. See tokens.css.
  * No eyebrows, no section numbering, no uppercase micro-labels anywhere.
  * Motion: reading-progress · page-load reveals · a magnetic CTA · one
  * figure-reveal voice for charts/video · one character-emphasis moment.
@@ -50,20 +52,21 @@ h3{font-size:var(--t-h3);letter-spacing:-.025em;line-height:1.16}
 .skip{position:absolute;left:-9999px}
 .skip:focus{
   left:var(--gut);top:.75rem;z-index:99;
-  background:var(--ink);color:var(--on-wine);
+  background:var(--ink-raised);color:var(--on-wine);
   padding:.6rem 1rem;border-radius:999px;font-size:var(--t-small);
 }
 
 
 /* the donna wordmark — set in the display face's italic, never drawn */
 .donna{font-family:var(--fd-donna);font-weight:400;font-style:italic;
-  letter-spacing:-.01em;color:var(--ink)}
-.cta-band .donna{color:inherit}
+  letter-spacing:-.01em;color:var(--wine)}
+/* on an ink band burgundy goes muddy; the brand guide's own pairing is rose */
+.cta-band .donna{color:var(--rose)}
 
 /* ─────────── reading progress ─────────── */
 .reading-progress{
   position:fixed;top:0;left:0;right:0;height:2px;transform-origin:0%;
-  background:var(--ink);z-index:70;
+  background:var(--wine);z-index:70;
 }
 
 /* ─────────── nav · N1b canonical SaaS three-section ─────────── */
@@ -92,7 +95,7 @@ h3{font-size:var(--t-h3);letter-spacing:-.025em;line-height:1.16}
 }
 .nav__link{text-decoration:none;padding:.3rem 0;white-space:nowrap;color:inherit;
   transition:color var(--dur) var(--ease)}
-.nav__link:hover{color:var(--ink)}
+.nav__link:hover{color:var(--wine)}
 .nav__link[aria-current]{color:var(--ink);font-weight:600}
 /* explicit grid-column so removing .nav__center (display:none below 60rem)
    doesn't shift this into the now-empty middle track */
@@ -109,7 +112,7 @@ h3{font-size:var(--t-h3);letter-spacing:-.025em;line-height:1.16}
   transition:background var(--dur) var(--ease),color var(--dur) var(--ease),
              border-color var(--dur) var(--ease),opacity var(--dur) var(--ease);
 }
-.btn:hover{background:var(--paper);color:var(--ink);border-color:var(--ink)}
+.btn:hover{background:var(--paper);color:var(--wine);border-color:var(--wine)}
 .btn:active{transform:translateY(1px)}
 .btn[disabled],.btn[aria-busy="true"]{opacity:.55;cursor:default;pointer-events:none}
 .btn--line{background:transparent;color:var(--ink);border-color:var(--rule-strong)}
@@ -117,7 +120,7 @@ h3{font-size:var(--t-h3);letter-spacing:-.025em;line-height:1.16}
 
 /* an inline typographic CTA — a call to action inside a sentence */
 .cta-link{
-  color:var(--ink);text-decoration:underline;text-underline-offset:.2em;
+  color:var(--wine);text-decoration:underline;text-underline-offset:.2em;
   text-decoration-thickness:1px;font-weight:600;white-space:nowrap;
   transition:text-decoration-thickness var(--dur) var(--ease);
 }
@@ -351,7 +354,7 @@ h3{font-size:var(--t-h3);letter-spacing:-.025em;line-height:1.16}
   transition:background var(--dur) var(--ease);
 }
 .register__row:hover{background:var(--paper)}
-.register__n{color:var(--ink-muted);font-variant-numeric:tabular-nums}
+.register__n{color:var(--wine);font-variant-numeric:tabular-nums}
 .register h3{font-size:1.1875rem}
 .register p{color:var(--ink-body);font-size:1.0625rem;line-height:1.56;max-width:56ch}
 @media (max-width:56rem){
@@ -389,7 +392,7 @@ h3{font-size:var(--t-h3);letter-spacing:-.025em;line-height:1.16}
   padding:.85rem 1.15rem;color:var(--ink-muted);cursor:pointer;
   transition:color var(--dur) var(--ease),border-color var(--dur) var(--ease);
 }
-.console__tabs button[data-state="active"]{color:var(--ink);border-bottom-color:var(--ink)}
+.console__tabs button[data-state="active"]{color:var(--ink);border-bottom-color:var(--wine)}
 /* On a phone the four columns cannot fit 335px, and html/body carry
    overflow-x:clip, so without this the rightmost column is silently cut off
    rather than reachable. The table scrolls inside its own frame instead. */
@@ -415,16 +418,116 @@ h3{font-size:var(--t-h3);letter-spacing:-.025em;line-height:1.16}
 .console__foot{display:flex;align-items:center;justify-content:space-between;gap:1rem;
   margin-top:1.25rem;padding-top:1rem;border-top:1px solid var(--rule);color:var(--ink-muted)}
 .console__track{width:9rem;height:3px;background:var(--rule);flex:none}
-.console__fill{display:block;width:50%;height:100%;background:var(--ink)}
+.console__fill{display:block;width:50%;height:100%;background:var(--wine)}
 .console__ask p{font-family:var(--fm);font-size:.9375rem;line-height:1.6}
 .console__q{color:var(--ink-muted)}
 .console__a{border-left:2px solid var(--ink);padding-left:.85rem;margin-block:.75rem;color:var(--ink)}
 .console__typing{display:flex;align-items:center;gap:.5rem;color:var(--ink-muted)}
-.console__caret{display:inline-block;width:7px;height:1em;background:var(--ink);
+.console__caret{display:inline-block;width:7px;height:1em;background:var(--wine);
   animation:caret 1.1s step-end infinite}
 @keyframes caret{50%{opacity:0}}
 @media (max-width:34rem){
   .console__fields{grid-template-columns:minmax(0,1fr)}
+}
+
+/* ─────────── the ledger ───────────
+   The same five rows, twice. With no colour to mark better and worse, the
+   argument has to be made by the two columns sitting at the same baseline
+   and simply not saying the same thing. */
+.ledger{border-top:1px solid var(--ink)}
+.ledger__head,.ledger__row{
+  display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr) minmax(0,1.15fr);
+  gap:clamp(1rem,3vw,2.5rem);align-items:baseline;
+}
+.ledger__head{padding-block:.85rem;border-bottom:1px solid var(--rule);color:var(--ink-muted)}
+.ledger__row{padding-block:clamp(1rem,2.2vw,1.4rem);border-bottom:1px solid var(--rule);
+  transition:background var(--dur) var(--ease)}
+.ledger__row:hover{background:var(--paper)}
+.ledger__what{font-family:var(--fd);font-weight:700;font-size:1.125rem;letter-spacing:-.025em}
+.ledger__hand{color:var(--ink-muted);font-size:1.0625rem}
+.ledger__sys{color:var(--ink);font-size:1.0625rem}
+@media (max-width:56rem){
+  .ledger__head{display:none}
+  .ledger__row{grid-template-columns:minmax(0,1fr);gap:.35rem}
+  .ledger__hand::before{content:"By hand: ";color:var(--ink-muted)}
+  .ledger__sys::before{content:"On a system: ";color:var(--ink-muted)}
+}
+
+/* ─────────── the calculator ───────────
+   Inputs left, arithmetic right. Every printed figure is derived from the
+   four numbers the reader typed, which is why the note at the bottom can
+   say so plainly. */
+.calc{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);
+  gap:1px;background:var(--rule-strong);border:1px solid var(--ink)}
+.calc__in,.calc__out{background:var(--paper);padding:clamp(1.5rem,3vw,2.25rem)}
+.calc__out{background:var(--sunk)}
+.calc__field{margin-bottom:1.35rem}
+.calc__field label{display:block;font-size:1.0625rem;font-weight:600;margin-bottom:.45rem}
+.calc__field input{
+  width:100%;font-family:var(--fm);font-size:1.25rem;
+  background:var(--paper);border:1px solid var(--rule-strong);border-radius:0;
+  padding:.6rem .75rem;color:var(--ink);font-variant-numeric:tabular-nums;
+}
+.calc__field input:focus-visible{border-color:var(--ink)}
+.calc__hint{margin-top:.4rem;color:var(--ink-muted);font-size:var(--t-meta);line-height:1.45}
+.calc__headline{display:flex;align-items:baseline;gap:.5rem}
+.calc__n{font-family:var(--fd);font-weight:900;font-size:var(--t-figure);line-height:.88;
+  letter-spacing:-.05em;font-variant-numeric:tabular-nums}
+.calc__u{font-family:var(--fm);font-size:1rem;color:var(--ink-muted)}
+.calc__sub{margin-top:.75rem;color:var(--ink-body);font-size:1.0625rem}
+.calc__bars{margin-top:1.75rem;border-top:1px solid var(--rule)}
+.calc__bar{display:grid;grid-template-columns:minmax(0,9rem) minmax(0,1fr) auto;
+  gap:.75rem;align-items:center;padding-block:.7rem;border-bottom:1px solid var(--rule)}
+.calc__bar-name{font-size:1rem;color:var(--ink-body)}
+.calc__bar-track{height:8px;background:var(--rule)}
+/* scaleX rather than width: animating width lays the row out again on every
+   keystroke, and hallmark_check gate 14 rightly refuses it. */
+.calc__bar-fill{display:block;height:100%;width:100%;background:var(--wine);
+  transform-origin:left center;transition:transform var(--dur) var(--ease)}
+.calc__bar-n{font-family:var(--fm);font-size:var(--t-meta);color:var(--ink-muted);
+  font-variant-numeric:tabular-nums}
+.calc__note{margin-top:1.5rem;color:var(--ink-muted);font-size:1rem;line-height:1.55;max-width:52ch}
+@media (max-width:60rem){ .calc{grid-template-columns:minmax(0,1fr)} }
+@media (max-width:34rem){
+  .calc__bar{grid-template-columns:minmax(0,1fr) auto;gap:.4rem}
+  .calc__bar-track{grid-column:1 / -1;order:3}
+}
+
+/* ─────────── case studies ───────────
+   The redaction bar is the loudest thing on each card by design. The work is
+   real and the firms are real; the names are withheld, and that belongs at
+   the top of the card rather than in a footnote nobody reads. */
+.cases{border-top:1px solid var(--ink)}
+.case{padding-block:clamp(2rem,4vw,3rem);border-bottom:1px solid var(--rule-strong)}
+.case__head{display:grid;grid-template-columns:auto minmax(0,1fr);gap:.4rem 1.25rem;align-items:baseline}
+.case__id{color:var(--wine);font-variant-numeric:tabular-nums}
+.case__head h3{font-size:clamp(1.375rem,2.4vw,1.875rem);letter-spacing:-.03em}
+.case__tags{grid-column:2;display:flex;flex-wrap:wrap;gap:.5rem;margin-top:.35rem}
+.case__tag{border:1px solid var(--rule-strong);padding:.25rem .55rem;color:var(--ink-muted);line-height:1}
+.case__redact{display:flex;align-items:center;gap:.65rem;margin:1.25rem 0 1.5rem;color:var(--ink-muted)}
+.case__bar{display:block;width:5.5rem;height:1rem;background:var(--ink);flex:none}
+.case__body{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(1.5rem,4vw,3.5rem);align-items:start}
+.case__problem{color:var(--ink-body);font-size:1.0625rem;line-height:1.62;max-width:52ch}
+.case__steps{margin:1.5rem 0 0;padding:0;list-style:none;counter-reset:step;border-top:1px solid var(--rule)}
+.case__steps li{
+  counter-increment:step;display:grid;grid-template-columns:1.75rem minmax(0,1fr);
+  gap:.5rem;padding-block:.7rem;border-bottom:1px solid var(--rule);
+  font-size:1rem;line-height:1.5;
+}
+.case__steps li::before{
+  content:counter(step);font-family:var(--fm);font-size:var(--t-meta);
+  color:var(--ink-muted);font-variant-numeric:tabular-nums;
+}
+.case__rail{padding-top:.5rem}
+.rail{width:100%;height:auto;display:block;overflow:visible}
+.rail__line{stroke:var(--rule-strong);stroke-width:2}
+.rail__node{fill:var(--paper);stroke:var(--ink);stroke-width:2}
+.rail__node--end{fill:var(--wine)}
+.rail__n{font-family:var(--fm);font-size:13px;fill:var(--ink)}
+.rail__n--end{fill:var(--paper)}
+.rail__cap{font-family:var(--fb);font-size:12px;fill:var(--ink-muted)}
+@media (max-width:60rem){
+  .case__body{grid-template-columns:minmax(0,1fr)}
 }
 
 /* ─────────── engagements ───────────
@@ -433,7 +536,7 @@ h3{font-size:var(--t-h3);letter-spacing:-.025em;line-height:1.16}
 .offers{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1px;
   background:var(--rule-strong);border:1px solid var(--ink)}
 .offer{background:var(--paper);padding:clamp(1.5rem,3.5vw,2.5rem);height:100%}
-.offer__n{color:var(--ink-muted);font-variant-numeric:tabular-nums}
+.offer__n{color:var(--wine);font-variant-numeric:tabular-nums}
 .offer h3{margin-top:1rem;font-size:clamp(1.5rem,2.6vw,2rem);letter-spacing:-.035em}
 .offer p{margin-top:.85rem;color:var(--ink-body);font-size:1.0625rem;line-height:1.58;max-width:46ch}
 .offer .ticks{margin-top:1.75rem}
@@ -451,7 +554,7 @@ h3{font-size:var(--t-h3);letter-spacing:-.025em;line-height:1.16}
 .method{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr) minmax(0,1fr);
   gap:clamp(1.5rem,3vw,2.5rem)}
 .method__step{border-top:1px solid var(--ink);padding-top:1.25rem}
-.method__n{color:var(--ink-muted);font-variant-numeric:tabular-nums}
+.method__n{color:var(--wine);font-variant-numeric:tabular-nums}
 .method__step h3{margin-top:.85rem;font-size:1.375rem}
 .method__step p{margin-top:.6rem;color:var(--ink-body);font-size:1.0625rem;line-height:1.56}
 @media (max-width:56rem){ .method{grid-template-columns:minmax(0,1fr)} }
@@ -479,6 +582,7 @@ h3{font-size:var(--t-h3);letter-spacing:-.025em;line-height:1.16}
   font-size:clamp(2.25rem,6vw,4.5rem);font-weight:900;letter-spacing:-.045em;line-height:.96}
 .cta-band .go{justify-content:center;margin-top:2.5rem}
 .cta-band .btn{background:var(--paper);color:var(--ink);border-color:var(--paper)}
+.cta-band .btn:focus-visible{outline-color:var(--rose)}
 .cta-band .btn:hover{background:transparent;color:var(--paper);border-color:var(--paper)}
 
 /* ─────────── essay · the continuous read ─────────── */
@@ -550,7 +654,7 @@ a.card-in:hover{background:var(--sunk)}
   padding:.25rem .5rem;line-height:1;
 }
 .card h3{font-size:1.0625rem;letter-spacing:-.025em;line-height:1.26}
-a.card-in:hover h3{text-decoration:underline;text-underline-offset:.18em}
+a.card-in:hover h3{color:var(--wine);text-decoration:underline;text-underline-offset:.18em}
 .card-meta{margin-top:auto;padding-top:.5rem;font-family:var(--fm);
   font-size:var(--t-meta);color:var(--ink-muted);font-variant-numeric:tabular-nums}
 .card--scheduled .card-in{opacity:.55}
@@ -597,7 +701,7 @@ a.card-in:hover h3{text-decoration:underline;text-underline-offset:.18em}
 .foot-simple .muted{margin-top:.4rem;color:var(--ink-muted)}
 .foot-simple__grid nav,.foot-simple__grid > div:last-child{display:flex;flex-direction:column;gap:.6rem}
 .foot-simple a{text-decoration:none;color:var(--ink-body);transition:color var(--dur) var(--ease)}
-.foot-simple a:hover{color:var(--ink);text-decoration:underline;text-underline-offset:.18em}
+.foot-simple a:hover{color:var(--wine);text-decoration:underline;text-underline-offset:.18em}
 .foot-simple__cp{
   max-width:var(--w-wide);margin:2.5rem auto 0;padding-inline:var(--gut);
   color:var(--ink-muted);font-family:var(--fm);font-size:var(--t-meta);

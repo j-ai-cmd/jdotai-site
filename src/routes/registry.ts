@@ -9,6 +9,7 @@ import { lazy } from 'react'
  *  site with 30 SEO posts is worse than not prerendering at all.
  */
 export const importers = {
+  Donna: () => import('./Donna'),
   Legal: () => import('./Legal'),
   Blog: () => import('./Blog'),
   Post: () => import('./Post'),
@@ -16,6 +17,7 @@ export const importers = {
   NotFound: () => import('./NotFound'),
 } as const
 
+export const Donna = lazy(importers.Donna)
 export const Legal = lazy(importers.Legal)
 export const Blog = lazy(importers.Blog)
 export const Post = lazy(importers.Post)

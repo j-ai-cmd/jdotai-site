@@ -42,11 +42,11 @@ export function BrandHoursArea() {
             <CartesianGrid stroke={CHART.rule} vertical={false} />
             <XAxis
               dataKey="week" tickLine={false} axisLine={false}
-              tick={{ fontSize: 11, fill: CHART.wine }}
+              tick={{ fontSize: 11, fill: CHART.muted }}
             />
             <YAxis
               tickLine={false} axisLine={false} width={40}
-              tick={{ fontSize: 11, fill: CHART.wine }}
+              tick={{ fontSize: 11, fill: CHART.muted }}
             />
             <Tooltip
               cursor={{ stroke: CHART.rule }}

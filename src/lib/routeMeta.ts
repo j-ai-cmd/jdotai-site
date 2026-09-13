@@ -5,16 +5,16 @@ import { articleJsonLd, canonical, type Meta } from './seo'
  *  build script — means a new route can't be added without its head. */
 export const routeMeta: Meta[] = [
   {
-    title: 'jdotai — Bridging the gap between AI and legal',
+    title: 'jdotai — AI advisory and custom tools',
     description:
-      'jdotai builds custom tools, AI agents and automations for legal firms and helps them save 20+ hours every week.',
+      'jdotai finds the work your business still runs on people instead of systems, and builds the tools that take it over. Advisory every month, custom builds when the tool does not exist.',
     path: '/',
   },
   {
     title: 'donna — AI intake and PMS connector for law firms | jdotai',
     description:
       'donna connects Clio, Smokeball, Actionstep, myCase and LEAP to Claude and ChatGPT, and gives your firm a custom intake form that syncs straight to your practice management system.',
-    path: '/legal',
+    path: '/donna',
   },
   {
     title: 'Blogs — AI implementation for law firms | jdotai',

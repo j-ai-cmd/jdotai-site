@@ -4,19 +4,35 @@
   "cleanUrls": true,
   "trailingSlash": true,
   "redirects": [
-    { "source": "/legal", "destination": "/#donna", "permanent": true },
-    { "source": "/legal/", "destination": "/#donna", "permanent": true }
+    {
+      "source": "/legal",
+      "destination": "/donna/",
+      "permanent": true
+    },
+    {
+      "source": "/legal/",
+      "destination": "/donna/",
+      "permanent": true
+    }
   ],
   "headers": [
     {
       "source": "/assets/(.*)",
       "headers": [
-        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
       ]
     },
     {
       "source": "/legacy/(.*)",
-      "headers": [{ "key": "X-Robots-Tag", "value": "noindex" }]
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex"
+        }
+      ]
     }
   ]
 }

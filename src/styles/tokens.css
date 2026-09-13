@@ -1,13 +1,18 @@
-/* jdotai tokens — true achromatic. Every colour below satisfies R = G = B,
- * so the page carries no hue at any point: not in text, not in rules, not in
- * the interactive slot, not in the charts. That is the whole design premise,
- * and it is checkable by reading this block alone.
+/* jdotai tokens — a monochrome page with one accent.
  *
- * The token names paper / ink / wine are fixed by hallmark_check.py gate 40,
- * which resolves the palette by those three names. "wine" is therefore a slot,
- * not a colour: in this theme it holds the near-black used for interactive
- * surfaces, one step off --ink so a button reads as a distinct plane from the
- * prose around it.
+ * The ground, the rules, the type and every structural surface are achromatic:
+ * R = G = B, no hue at all. Exactly one colour enters, the brand burgundy, and
+ * it is rationed to four jobs and no others:
+ *
+ *   1. things you can press        buttons, links on hover, the focus ring
+ *   2. the marks in the margin     finding codes, case numbers, step numbers
+ *   3. the donna wordmark          per the brand guide, rose when on ink
+ *   4. the "after" data series     the line that goes the right way
+ *
+ * Nothing decorative is burgundy. No section is tinted with it, no rule is
+ * drawn in it, no heading is set in it. If a fifth job appears, the discipline
+ * is gone and the accent stops meaning anything — the whole point of rationing
+ * a single hue on an otherwise grey page is that the eye goes where it lands.
  *
  * Neither end of the ramp is pure. #FAFAFA rather than #FFFFFF because a pure
  * white ground glares against a near-black serif at display size; #0A0A0A
@@ -24,7 +29,13 @@
   /* the three */
   --paper:#FAFAFA;
   --ink:#0A0A0A;
-  --wine:#262626;
+  --wine:#7A2E3B;
+  /* the accent, lifted for use on an ink ground — the brand guide's own
+     pairing, since burgundy on near-black is unreadable */
+  --rose:#D67F84;
+  /* the near-black that interactive surfaces used before the accent returned;
+     still needed for the one button that sits on an ink band */
+  --ink-raised:#262626;
 
   /* text — --ink-muted is 62%, the lowest mix that still clears AA on paper.
      Anything lighter fails and is not worth the delicacy. */
