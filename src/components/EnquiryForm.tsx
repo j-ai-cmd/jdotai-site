@@ -12,7 +12,7 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 
-const WEBHOOK = 'https://hook.eu1.make.com/waciaz78ykdmfaxh4glg6vdhjjqi4jh5'
+const WEBHOOK = '/api/enquiry'
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
 const PMS = ['Clio', 'Smokeball', 'Actionstep', 'myCase', 'LEAP', 'Something else']
