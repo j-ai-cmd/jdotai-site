@@ -1,9 +1,9 @@
-/* Enquiry form. Posts to the Make webhook, then replaces itself with a receipt. */
+/* Enquiry form. Posts to /api/enquiry (server relays to Make), then replaces itself with a receipt. */
 (function () {
   var form = document.getElementById('enq');
   if (!form) return;
 
-  var WEBHOOK = 'https://hook.eu1.make.com/waciaz78ykdmfaxh4glg6vdhjjqi4jh5';
+  var WEBHOOK = '/api/enquiry';
   var note = document.getElementById('enq-note');
   var submit = document.getElementById('enq-submit');
 
